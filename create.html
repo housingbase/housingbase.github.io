@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Addon</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Character counter style */
+    .char-counter {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 4px;
+      display: block;
+    }
+    .char-counter.full {
+      color: #8d1717; /* red when maxed out */
+    }
+
+    /* Input styling */
+    #addonName, #addonDesc {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="announcement" style="display:none;"></div>
+
+  <!-- Header -->
+  <header class="banner">
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <div class="overlay-bar">
+      <div class="nav-left">
+        <h1 class="logo">Addon Browser</h1>
+        <nav class="nav-links">
+          <a href="/index.html">Addons</a><span class="divider"></span>
+          <a href="#">Projects</a><span class="divider"></span>
+          <a href="#">Placeholder</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <div id="logged-out">
+          <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+        </div>
+        <div id="logged-in" style="display:none; align-items:center;">
+          <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer;">
+          <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h3>Create a New Addon</h3>
+    <section id="upload-section">
+      <div id="drop-area">
+        <p>Drag & Drop your .htsl file here or</p>
+        <p>click to select a file from explorer.</p>
+        <input type="file" id="addonFile" accept=".htsl" hidden>
+      </div>
+      <div id="file-name" style="margin-bottom: 10px; color: #333;"></div>
+
+      <label for="addonName">Project Name</label>
+      <input id="addonName" placeholder="Addon name" maxlength="30" required>
+      <span id="nameCounter" class="char-counter">0 / 30</span>
+
+      <label for="addonDesc">Project Description</label>
+      <input id="addonDesc" placeholder="Description (optional)" maxlength="80">
+      <span id="descCounter" class="char-counter">0 / 80</span>
+
+      <button id="uploadBtn" class="upload-btn">Upload</button>
+      <a href="index.html"><button id="cancelBtn" class="red-btn">Cancel</button></a>
+      <span id="upload-status" style="display:block; margin-top:10px;"></span>
+
+      
+      
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>ByteBukkit</b>. All Rights Reserved</p>
+    </div>
+  </footer>
+
+<div id="warn-overlay">
+  <div id="warn-box">
+    <div class="warn-header">
+      <h3>Warning!</h3>
+    </div>
+    <div class="warn-body">
+      <p>You must be verified and signed in to upload and distribute on the HTSL Browser.</p>
+      <button id="warn-continue" class="blue-btn" style="margin-top:12px; font-size:1rem;">Continue</button>
+    </div>
+  </div>
+</div>
+
+
+  <script src="/script.js"></script>
+<script src="/create.js"></script>
+
+</body>
+</html>

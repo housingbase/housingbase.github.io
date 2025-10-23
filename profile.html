@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile — Addon Browser</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/favicon.ico">
+
+  <style>
+
+  input {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  width: 392px;
+  height: 30px;
+}
+  /* Profile card */
+  .profile-card {
+    background: #e6e6e6;
+    border: 1px solid #979797;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    max-width: 650px;
+    margin: 2rem auto;
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .avatar-container {
+    position: relative;
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    flex-shrink: 0;
+  }
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .avatar-container:hover .profile-avatar {
+    transform: scale(1.05);
+  }
+
+  .avatar-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .avatar-container:hover .avatar-overlay {
+    background: rgba(0,0,0,0.6);
+    opacity: 1;
+  }
+
+  /* Hide actual file input since overlay triggers it */
+  #avatarFile {
+    display: none;
+  }
+
+  .profile-info h2.username {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .profile-info p {
+    margin-top: 0.25rem;
+    color: #555;
+  }
+
+  /* Inputs and buttons */
+  .profile-card input[type="text"],
+  .profile-card input[type="color"],
+  .profile-card button {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  .profile-card input[type="text"],
+  .profile-card input[type="color"] {
+    border: 1px solid #ccc;
+    background: #fff;
+  }
+
+  .profile-card button {
+    border: none;
+    background: #2a72e5;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .profile-card button:hover {
+    background: #1f5ac3;
+  }
+
+  /* Sections */
+  #addons-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 3rem;
+    padding: 2rem 0;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+  }
+
+  /* Modals */
+  #modal-overlay, #del-confirm-overlay, #warn-overlay, #success-overlay {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  #modal-box, #del-confirm-box, #warn-box, #success-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .modal-header, .del-modal-header, .warn-header, .success-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .modal-header h3, .del-modal-header h3, .warn-header h3, .success-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .modal-body, .del-modal-body, .warn-body, .success-body {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .blue-btn {
+    background: #2a72e5;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .blue-btn:hover {
+    background: #1f5ac3;
+  }
+  </style>
+</head>
+<body>
+<div id="announcement" style="display:none;"></div>
+
+<header class="banner">
+  <img src="/image/header.png" alt="Header Banner" class="header-img">
+  <div class="overlay-bar">
+    <div class="nav-left">
+      <h1 class="logo">ByteBukkit</h1>
+      <nav class="nav-links">
+        <a href="/index.html">HTSL Browser</a><span class="divider"></span>
+        <a href="/projects.html">Projects</a><span class="divider"></span>
+        <a href="#">About</a><span class="divider"></span>
+        <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
+        <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
+      </nav>
+    </div>
+    <div class="nav-right">
+      <div id="logged-out" style="display:flex; align-items:center;">
+        <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+      </div>
+
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section id="profile">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="avatar-container">
+          <img id="avatar" width="128" height="128" alt="User avatar" class="profile-avatar">
+          <div class="avatar-overlay" id="avatarEditOverlay">Edit</div>
+          <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg">
+        </div>
+        <div class="profile-info">
+          <h2 id="username" class="username"></h2>
+          <p id="bio"></p>
+        </div>
+      </div>
+
+      <!-- owner controls -->
+      <div id="owner-controls" style="display:none;margin-top:1rem;">
+        <h3>Edit Profile</h3>
+        <div style="margin-top:0.5rem;">
+          <button id="uploadAvatar">Update Avatar</button>
+        </div>
+        <div style="margin-top:0.5rem;">
+          <label>Bio</label><br>
+          <input id="bioInput" maxlength="100" placeholder="Your bio">
+          <button id="saveBio">Save Bio</button>
+        </div>
+        <p id="ownerStatus" style="margin-top:0.5rem;"></p>
+      </div>
+
+      <!-- admin announcement controls -->
+      <div id="announcement-admin" style="display:none;margin-top:1rem;">
+        <h3>Manage Announcement</h3>
+        <input id="annText" placeholder="Announcement text">
+        <input id="annBg" type="color" value="#fffae6">
+        <input id="annColor" type="color" value="#000000">
+        <button id="saveAnn">Save</button>
+        <button id="clearAnn" style="background:#c62828;color:#fff;">Clear</button>
+        <span id="annStatus"></span>
+      </div>
+
+      <!-- admin delete user -->
+      <div id="admin-delete-user" style="display:none;margin-top:1rem;">
+        <h3>Danger Zone</h3>
+        <button id="deleteUser" style="background:#c62828;color:#fff;">Delete User</button>
+        <span id="deleteStatus"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="addons-section" style="margin-top:2rem;">
+    <h3>User Addons</h3>
+    <div id="addon-list" class="card-grid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Addon Browser — Inspired by dev.bukkit.org</p>
+  </div>
+</footer>
+
+<div id="modal-overlay">
+  <div id="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <span id="modal-close">&times;</span>
+    </div>
+    <div class="modal-body">
+      <p id="modal-desc"></p>
+      <a id="modal-download" href="#" target="_blank">
+        <button class="blue-btn" style="margin-top:12px; font-size:1rem;">Download</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="del-confirm-overlay" class="del-modal-overlay">
+  <div id="del-confirm-box" class="del-modal-box">
+    <div class="del-modal-header">
+      <h3>Confirm Action?</h3>
+      <span id="del-confirm-close" class="del-modal-close">&times;</span>
+    </div>
+    <div class="del-modal-body">
+      <p id="del-confirm-desc">Are you sure you want to delete '<Addon Name>'?</p>
+      <div style="margin-top:12px; display:flex; gap:10px;">
+        <button id="del-confirm-yes" class="blue-btn">Confirm</button>
+        <button id="del-confirm-no" style="background:#c62828; color:#fff;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="warn-overlay">
+  <div id="warn-box">
+    <div class="warn-header">
+      <h3>Warning!</h3>
+    </div>
+    <div class="warn-body">
+      <p id="warn-message">Default warning message</p>
+      <button id="warn-continue" class="blue-btn" style="margin-top:12px; font-size:1rem;">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div id="success-overlay">
+  <div id="success-box">
+    <div class="success-header">
+      <h3>Success!</h3>
+    </div>
+    <div class="success-body">
+      <p id="success-message">Default success message</p>
+      <button id="success-continue" class="blue-btn" style="margin-top:12px; font-size:1rem;">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script src="/profile.js"></script>
+<script>
+  // Avatar overlay click triggers file input
+  document.getElementById("avatarEditOverlay")?.addEventListener("click", () => {
+    const fileInput = document.getElementById("avatarFile");
+    if (fileInput) fileInput.click();
+  });
+</script>
+</body>
+</html>

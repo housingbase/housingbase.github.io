@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* reset */
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    /* layout: top-centered like sign-in */
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+
+    /* auth box identical to sign-in */
+    .auth-box {
+      background: #e9e9e9;
+      border: 1px solid #cfcfcf;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
+
+    .auth-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .auth-box input,
+    .auth-box button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .auth-box input {
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+
+    .auth-box button {
+      border: none;
+      background: #2a72e5;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .auth-box button:hover {
+      background: #1f5ac3;
+    }
+
+    /* hCaptcha match */
+    .h-captcha {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    /* status message */
+    #status {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #c62828;
+    }
+
+    .auth-footer {
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+
+    .auth-footer a {
+      color: #2a72e5;
+      text-decoration: none;
+    }
+
+    @media (max-width: 420px) {
+      .auth-box {
+        padding: 24px;
+        max-width: 90%;
+      }
+      .auth-box input,
+      .auth-box button {
+        padding: 9px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="banner">
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <div class="overlay-bar">
+      <div class="nav-left">
+        <h1 class="logo">ByteBukkit</h1>
+        <nav class="nav-links">
+          <a href="/index.html">HTSL Browser</a><span class="divider"></span>
+          <a href="/projects.html">Projects</a><span class="divider"></span>
+          <a href="#">About</a><span class="divider"></span>
+          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
+          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="auth-box">
+      <h2>Create an Account</h2>
+
+      <input type="text" id="username" placeholder="Username" maxlength="20" required>
+      <input type="text" id="displayName" placeholder="Display Name" maxlength="30" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password" required>
+
+      <div class="h-captcha" data-sitekey="24627c72-5c72-47dc-a80a-dbac3ba48d30"></div>
+      <script src="https://hcaptcha.com/1/api.js" async defer></script>
+
+      <button id="registerBtn">Register</button>
+      <div id="status"></div>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/login.html">Sign In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/register.js"></script>
+</body>
+</html>
