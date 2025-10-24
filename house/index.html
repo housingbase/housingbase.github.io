@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Housings - ByteBukkit</title>
+    <link rel="stylesheet" href="/style.css">
+      <link rel="icon" href="/image/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<!-- Announcement -->
+<div id="announcement" style="display:none;"></div>
+
+<!-- Header -->
+<header class="banner">
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <div class="overlay-bar">
+        <div class="nav-left">
+            <h1 class="logo">ByteBukkit</h1>
+            <nav class="nav-links">
+                <a href="/index.html">HTSL Browser</a><span class="divider"></span>
+                <a href="/projects.html">Projects</a><span class="divider"></span>
+                <a href="#">About</a><span class="divider"></span>
+                <a href="/housing.html">Housing Browser</a><span class="divider"></span>
+                <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
+                <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <div id="logged-out" style="display:flex; align-items:center;">
+                <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+            </div>
+            <div id="logged-in" style="display:none; align-items:center;">
+                <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+                <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+            </div>
+        </div>
+    </div>
+</header>
+<a href="/housing.html"><button class="blue-btn" style="margin: 10px;">Go Back</button></a>
+<!-- Search area -->
+
+<!-- Notification area -->
+<div id="notification-area"></div>
+
+<!-- Main content -->
+ <div class="timetext nocursor" style="display: none;"></div>
+<h1 class="bigname"><a href="">Housing Info</a></h1>
+
+<h2 id="preoutput" class="preoutput"></h2>
+<div class="houseOutput" id="houseOutput"></div>
+<div class="nodata" hidden>
+    <h2>No data was found for the house's UUID you entered.</h2>
+</div>
+
+<script src="/MinecraftColorCodes.3.7.js"></script>
+<script src="https://kit.fontawesome.com/bdb0f81e24.js" crossorigin="anonymous"></script>
+<script src="/script.js"></script>
+<script src="/index.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        if(location.search.substring(1) == '') {
+            document.getElementsByClassName("preoutput")[0].hidden = true;
+            document.getElementsByClassName("nodata")[0].hidden = false;
+        } else {
+            getHouseData(location.search.substring(1));
+        }
+    });
+</script>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p>&copy; 2025 <b>ByteBukkit</b>. All Rights Reserved</p>
+        <p>Housing Browser by luckycdev</p>
+    </div>
+</footer>
+
+</body>
+</html>

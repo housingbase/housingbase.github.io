@@ -639,3 +639,446 @@ footer {
   transition: width 0.2s ease;
   border-radius: 8px;
 }
+/* Scrollbar Styling for Modal Body */
+
+/* Container below header, absolute/fixed to not affect other elements */
+.search-container {
+    position: absolute; /* take it out of the normal flow */
+    top: 220px; /* distance from top of page/header */
+    left: 20px; /* distance from left edge */
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-start; /* align to left */
+    width: auto; /* shrink to fit content */
+}
+
+/* The inner box for styling */
+.search-box {
+    width: 200px; /* fixed width like login box */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* space between textarea and button */
+}
+
+/* Make textarea like auth input */
+.search-box textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    resize: none;
+    height: 40px;
+    font-family: sans-serif;
+    background-color: #f7f7f7;
+    color: #000;
+    box-sizing: border-box;
+}
+
+/* Placeholder style */
+.search-box textarea::placeholder {
+    color: #999;
+}
+
+/* Focus style */
+.search-box textarea:focus {
+    outline: none;
+    border-color: #2a72e5;
+}
+
+/* Button style like login page */
+.search-box button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    border: none;
+    background: #2a72e5;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-box button:hover {
+    background: #1f5ac3;
+}
+
+
+.nocursor {
+    cursor: default;
+}
+
+.bigname {
+    font-family: 'Monocraft', sans-serif;
+    text-align: center;
+    color:rgb(0, 0, 0);
+}
+
+.bigname a {
+    color:rgb(87, 87, 87);
+    text-decoration: none;
+}
+
+.preoutput {
+    text-align: center;
+    color: black;
+    text-shadow: 2px 2px 0 white;
+    user-select: none;
+}
+
+#activeOutput {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    place-items: center;
+    margin: auto;
+    max-width: 1500px;
+}
+
+#houseOutput {
+    font-family: 'Monocraft', sans-serif;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    place-items: center;
+    margin: auto;
+    max-width: 1500px;
+}
+
+#playerOutput {
+    font-family: 'Monocraft', sans-serif; /* custom font */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    place-items: center;
+    margin: auto;
+    max-width: 1300px;
+    background-color: #e4e4e4;
+    border-radius: 8px;
+    border: 1px solid #b1b1b1;
+}
+
+.coloredname {
+    text-shadow: 2px 2px 2px black;
+    will-change: filter;
+    transition: all 0.2s ease-in-out;
+}
+
+.coloredname:hover {
+    filter: brightness(150%);
+}
+
+.individualcoloredname {
+    text-shadow: 2px 2px 2px black;
+    transition: all 0.2s ease-in-out;
+}
+
+.rankedname {
+    text-shadow: 2px 2px 2px black;
+}
+
+.playertext {
+    font-weight: bold;
+    color: rgb(93, 150, 236);
+    text-shadow: 2px 2px 2px black;
+}
+
+.cookietext {
+    font-weight: bold;
+    color: #e67834;
+    text-shadow: 2px 2px 2px black;
+}
+
+.nodata {
+    text-align: center;
+    color:rgb(255, 26, 26);
+    cursor: default;
+    text-shadow: 2px 2px 2px black;
+}
+
+.playerinfo {
+    text-align: center;
+}
+
+.houseinfo {
+   cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border:rgb(204, 204, 204), solid, 1px;
+    border-radius: 4px;
+    width: 300px;
+    height: 100px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    padding: 16px; /* inner spacing like addon-card */
+    box-shadow: 0 3px 7px rgba(41, 41, 41, 0.1); /* addon-card style */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.houseinfo:hover {
+
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12); /* addon-card hover effect */
+}
+
+.houseinfo p {
+    text-align: center;
+    margin-bottom: 0.05em;
+    margin-top: 0.05em;
+}
+
+.individualhouseinfo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    background-color: rgb(219, 219, 219);
+    border-radius: 5px;
+    border: 1px solid rgb(177, 177, 177);
+    outline:solid;
+    outline-color: white;
+    width: 1080px;/*TODO too big on smaller screen*/
+    height: 440px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    margin-right: 20px;
+}
+
+.individualhouseinfo p {
+    text-align: left;
+    margin-bottom: 0.05em;
+    margin-top: 0.05em;
+    font-size: x-large;
+}
+
+@font-face {
+    font-family: 'Monocraft';
+    src: url('Monocraft.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.housecontainer {
+    cursor: pointer;
+    background-color: rgb(221, 221, 221); /* original bg */
+    border: 1px solid rgb(177, 177, 177); /* original border */
+    font-family: 'Monocraft', sans-serif; /* custom font */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* evenly space top, middle, bottom */
+    padding: 16px; /* inner spacing like addon-card */
+    box-shadow: 0 3px 7px rgba(41, 41, 41, 0.1); /* addon-card style */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    width: 320px; /* keep original width */
+    height: 180px; /* keep original height */
+    margin-bottom: 20px; /* keep spacing */
+    margin-right: 20px; /* keep spacing */
+    outline: solid white; /* keep outline */
+    text-align: center; /* center text */
+}
+
+.housecontainer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12); /* addon-card hover effect */
+}
+
+/* Internal elements for cleaner layout */
+.housecontainer img.headimg {
+    width: 64px; /* avatar size */
+    height: 64px;
+    margin-bottom: 8px;
+}
+
+.housecontainer .coloredname {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.housecontainer .playertext,
+.housecontainer .cookietext,
+.housecontainer .small {
+    font-size: 0.85rem;
+    margin: 2px 0;
+}
+
+/* clickable copy text */
+.housecontainer .clickable-copy {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+
+
+.housecontainer p {
+    text-align: center;
+    margin-bottom: 0.05em;
+    margin-top: 0.05em;
+}
+
+.small {/*TODO if view is squished it can hide the date*/
+    position: absolute;
+    font-size: 10px;
+    right: 5px;
+    bottom: 5px;
+    text-align: right;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.individualsmall {
+    position: absolute;
+    font-size: 10px;
+    right: 5px;
+    bottom: 5px;
+    text-align: right;
+    line-height: 30px;
+}
+
+.headimg{
+    margin-top: 7px;
+    width: 35px;
+    height: 35px;
+    transition: all 0.2s ease-in-out;
+}
+
+.headimg:hover {
+    filter: brightness(120%);
+}
+
+.househeadimg{
+    width: 70px;
+    height: 70px;
+    transition: all 0.2s ease-in-out;
+}
+
+.househeadimg:hover {
+    filter: brightness(120%);
+}
+
+.individualheadimg{
+    transition: all 0.2s ease-in-out;
+}
+
+.individualheadimg:hover {
+    filter: brightness(120%);
+}
+
+.nodecoration {
+    text-decoration: none;
+}
+
+.clickable-copy {
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.clickable-copy:hover {
+    filter:invert(20%)
+}
+
+.clickable-copy i {
+    position: relative;
+    top: -5px;
+    margin-top: 9px;
+    margin-left: 5px;
+}
+
+.timetext {
+    position: fixed;
+    top: 25px;
+    right: 20px;
+    width: 10%;
+    text-align: center;
+    z-index: 99999;
+    text-shadow: 0 0 15px white;
+}
+
+.social-icons {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+img.social{
+    height: 30px;
+}
+
+.watermark{
+    position:fixed;
+    left:10px;
+    bottom:10px;
+}
+
+.watermark a {
+    font-size:12px;
+    color:black;
+}
+
+.status{
+    position:fixed;
+    right:100px;
+    bottom:0px;
+}
+
+.status a {
+    font-size:15px;
+    color:black;
+}
+
+.links {
+    transition: 0.4s;
+    color: #6dabee;
+    cursor: pointer;
+}
+
+.links:hover {
+    transition: 0.4s;
+    color: #0f76e4;
+}
+
+#notification-area {
+    position: fixed; 
+    top: 20px;
+    right: 20px;
+    z-index: 100000;
+}
+
+.notification {
+    opacity: 0;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transform: translateX(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.notification.fade-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.fade-out {
+    opacity: 0;
+    transform: translateX(100%);
+}  
+
+.chart {
+    background-color: rgb(27, 27, 27); 
+    border-radius: 2px;
+}

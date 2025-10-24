@@ -1,0 +1,81 @@
+<!-- i know yall can see this part so uh i used some ai here :skull:-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Housings - ByteBukkit</title>
+    <link rel="stylesheet" href="style.css">
+      <link rel="icon" href="/image/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+
+</head>
+<body>
+    <!-- Announcement -->
+<div id="announcement" style="display:none;"></div>
+
+<!-- Header -->
+<header class="banner">
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <div class="overlay-bar">
+      <div class="nav-left">
+        <h1 class="logo">ByteBukkit</h1>
+        <nav class="nav-links">
+          <a href="/index.html">HTSL Browser</a><span class="divider"></span>
+          <a href="/projects.html">Projects</a><span class="divider"></span>
+          <a href="#">About</a><span class="divider"></span>
+          <a href="/housing.html">Housing Browser</a><span class="divider"></span>
+          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
+          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
+        </nav>
+      </div>
+        <div class="nav-right">
+            <div id="logged-out" style="display:flex; align-items:center;">
+                <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+            </div>
+            <div id="logged-in" style="display:none; align-items:center;">
+                <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+                <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Search area -->
+<div class="search-container">
+  <div class="search-box">
+    <textarea id="searchbar" placeholder="Enter username..."></textarea>
+    <button onclick="searchPlayer(document.getElementById('searchbar').value)">Search</button>
+  </div>
+</div>
+
+
+<!-- Social icons -->
+
+<!-- Notification area -->
+<div id="notification-area"></div>
+
+<!-- Main content -->
+<div class="timetext nocursor", style="display: none;"></div>
+<h1 class="bigname"><a href="">Browse Hypixel Housing</a></h1>
+<h2 class="bigname"><a href="">on the web.</a></h2>
+
+<h2 id="preoutput" class="preoutput"></h2>
+<div id="activeOutput"></div>
+
+<script src="MinecraftColorCodes.3.7.js"></script>
+<script src="https://kit.fontawesome.com/bdb0f81e24.js" crossorigin="anonymous"></script>
+<script src="/script.js"></script>
+<script src="index.js"></script>
+<script>
+    // Ensure active houses load after DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+        getActive();
+    });
+</script>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>ByteBukkit</b>. All Rights Reserved</p>
+      <p>Housing Browser by luckycdev</p>
+    </div>
+  </footer>
+</body>
+</html>
