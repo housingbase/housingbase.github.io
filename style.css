@@ -310,7 +310,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease;
@@ -323,27 +322,34 @@ body {
 
 #modal-box {
   background: #fff;
-  border-radius: 4px;
-  max-width: 500px;
-  width: 500px;
-  height: 205px;
-  overflow: hidden;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh; /* never overflow viewport */
+  overflow-y: auto; /* scroll if needed */
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
-  background: #8023cc; 
+  background: #8023cc;
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  color:rgb(221, 221, 221)
+  color: rgb(221, 221, 221);
 }
 
 #modal-close {
@@ -359,21 +365,30 @@ body {
 }
 
 .modal-body {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 5px;
+  padding: 16px 20px;
   color: #000;
+  overflow-y: auto;
+  flex: 1;
 }
-
-
-#modal-overlay.show #modal-box {
-  transform: scale(1);
-}
-
 
 #modal-box h3 {
   margin-top: 0;
 }
+
+/* 🧩 Code Preview Block */
+.modal-body pre {
+  background: #111;
+  color: #0f0;
+  padding: 10px;
+  border-radius: 6px;
+  max-height: 100px; /* fixed size */
+  overflow-y: auto;  /* scrollable if long */
+  font-family: monospace;
+  white-space: pre-wrap;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
 
 
 .addon-card {

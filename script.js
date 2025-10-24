@@ -257,17 +257,6 @@ card.addEventListener("click", async e => {
     // Create <pre> element for code display
     const pre = document.createElement("pre");
     pre.textContent = data.content || "(empty file)";
-    pre.style.cssText = `
-      background:#111;
-      color:#0f0;
-      padding:10px;
-      border-radius:6px;
-      max-height:200px;
-      overflow:auto;
-      font-family: monospace;
-      white-space: pre-wrap;
-      margin-top:10px;
-    `;
 
     // ✅ Safely append after the download button
     modalBody.appendChild(pre);
@@ -356,11 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadAnnouncement();
-  const me = await getMe();
-  renderAuth(me);
 
-  if (document.getElementById("addon-list")) loadAddons();
+document.addEventListener("DOMContentLoaded", async () => {
+ await loadAnnouncement();
+ const me = await getMe();
+ renderAuth(me);
+if (document.getElementById("addon-list")) loadAddons();
 
 });
