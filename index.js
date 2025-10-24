@@ -130,30 +130,41 @@ function getActive() {
       lastUpdatedTimeDiv.innerText=`Viewing data from: ${lastUpdatedTime}`;
       document.getElementsByClassName('timetext')[0].appendChild(lastUpdatedTimeDiv);
 
-      data.forEach(house => {
-        const div = document.createElement('div');
-        div.className = 'housecontainer';
+data.forEach(house => {
+  const div = document.createElement('div');
+  div.className = 'housecontainer';
+  div.style.cursor = 'pointer';
 
-        fetch(`https://playerdb.co/api/player/minecraft/${house.owner}`, {//TODO switch off playerdb and use hypixel playerinfo displayname - for active i didnt do it because it would be a ton of requests
-          headers: {
-            'User-Agent': YOUR_DOMAIN
-          }})
-        .then(response => response.json())
-        .then(data => {
-          const username = data.data.player.username;
-          const headimg = 'https://mc-heads.net/head/'+house.owner;
+  fetch(`https://playerdb.co/api/player/minecraft/${house.owner}`, { // TODO switch off playerdb and use hypixel playerinfo displayname - for active i didnt do it because it would be a ton of requests
+    headers: {
+      'User-Agent': YOUR_DOMAIN
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    const username = data.data.player.username;
+    const headimg = 'https://mc-heads.net/head/' + house.owner;
 
-        div.innerHTML = `
-          <p class="clickable-copy copytext" onclick="copyText(this)">/visit ${username} <i class="clipboard fa-regular fa-clipboard"></i></p>
-          <a href="player/?${house.owner}"><img class='headimg' src="${headimg}"></a>
-          <a class="nodecoration" href="house/?${house.uuid}"><p class="coloredname"></p></a>
-          <p class="nocursor playertext">${house.players} players</p>
-          <p class="nocursor cookietext">${house.cookies.current} cookies</p>
-        `;
-        div.querySelector(".coloredname").appendChild(getColoredName(house.name));
-        document.getElementsByClassName("preoutput")[0].hidden = true;
-        output.appendChild(div);
-      })
+    div.innerHTML = `
+      <p class="clickable-copy copytext" onclick="copyText(this)">/visit ${username} <i class="clipboard fa-regular fa-clipboard"></i></p>
+      <a href="player/?${house.owner}"><img class='headimg' src="${headimg}"></a>
+      <p class="coloredname"></p>
+      <p class="nocursor playertext">${house.players} players</p>
+      <p class="nocursor cookietext">${house.cookies.current} cookies</p>
+    `;
+
+    div.querySelector(".coloredname").appendChild(getColoredName(house.name));
+
+    // Make the entire container clickable, except for the avatar and copy button
+    div.addEventListener('click', (e) => {
+      if (!e.target.closest('a') && !e.target.closest('.clickable-copy')) {
+        window.location.href = `house/?${house.uuid}`;
+      }
+    });
+
+    document.getElementsByClassName("preoutput")[0].hidden = true;
+    output.appendChild(div);
+  })
       .catch(err => {
         div.innerHTML = `Error loading player data: ${err.message}`;
         output.appendChild(div);
