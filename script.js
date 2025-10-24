@@ -229,20 +229,61 @@ if (me && (me.username === a.username || me.is_admin)) {
 
 
     card.appendChild(btnContainer);
-    card.addEventListener("click", e => {
-      if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
+card.addEventListener("click", e => {
+  if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
-      document.getElementById("modal-title").textContent = a.name;
-      document.getElementById("modal-desc").textContent = a.description || "No description provided.";
-      document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
+  // Existing setup
+  document.getElementById("modal-title").textContent = a.name;
+  document.getElementById("modal-desc").textContent = a.description || "No description provided.";
+  document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
 
-      const overlay = document.getElementById("modal-overlay");
-      const box = document.getElementById("modal-box");
+  const overlay = document.getElementById("modal-overlay");
+  const box = document.getElementById("modal-box");
 
-      overlay.classList.add("show");
-      overlay.style.opacity = "1";
-      box.style.transform = "scale(1)";
+  // Show modal
+  overlay.classList.add("show");
+  overlay.style.opacity = "1";
+  box.style.transform = "scale(1)";
+
+  // -------------------------------
+  // 🔽 Fetch and show file contents
+  // -------------------------------
+  fetch(`${API_BASE}/api/addons/${a.id}/contents`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data || !data.contents) return;
+
+      // Escape HTML for safe display
+      const escaped = data.contents
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // Add code block dynamically
+      const modalBody = document.querySelector(".modal-body");
+
+      // Make sure not to duplicate old blocks
+      const oldPre = modalBody.querySelector("pre");
+      if (oldPre) oldPre.remove();
+
+      const pre = document.createElement("pre");
+      pre.style.background = "#222";
+      pre.style.color = "#0f0";
+      pre.style.padding = "10px";
+      pre.style.overflow = "auto";
+      pre.style.maxHeight = "250px";
+      pre.style.borderRadius = "6px";
+      pre.style.fontFamily = "monospace";
+      pre.style.whiteSpace = "pre-wrap";
+      pre.textContent = data.contents;
+
+      modalBody.insertBefore(pre, document.getElementById("modal-download").parentNode);
+    })
+    .catch(err => {
+      console.error("Error fetching file contents:", err);
     });
+});
+
 
     container.appendChild(card);
   });
