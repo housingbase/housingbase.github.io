@@ -229,59 +229,51 @@ if (me && (me.username === a.username || me.is_admin)) {
 
 
     card.appendChild(btnContainer);
-card.addEventListener("click", e => {
+card.addEventListener("click", async e => {
   if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
-  // Existing setup
   document.getElementById("modal-title").textContent = a.name;
   document.getElementById("modal-desc").textContent = a.description || "No description provided.";
   document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
 
   const overlay = document.getElementById("modal-overlay");
   const box = document.getElementById("modal-box");
+  const modalBody = document.querySelector(".modal-body");
 
-  // Show modal
   overlay.classList.add("show");
   overlay.style.opacity = "1";
   box.style.transform = "scale(1)";
 
-  // -------------------------------
-  // 🔽 Fetch and show file contents
-  // -------------------------------
-  fetch(`${API_BASE}/api/addons/${a.id}/contents`)
-    .then(res => res.json())
-    .then(data => {
-      if (!data || !data.contents) return;
+  // 🧠 Clear old code block if it exists
+  const oldPre = modalBody.querySelector("pre");
+  if (oldPre) oldPre.remove();
 
-      // Escape HTML for safe display
-      const escaped = data.contents
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+  // 🧩 Fetch file contents
+  try {
+    const res = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
+    if (!res.ok) throw new Error("Failed to load addon contents.");
+    const data = await res.json();
 
-      // Add code block dynamically
-      const modalBody = document.querySelector(".modal-body");
+    // Create <pre> element for code display
+    const pre = document.createElement("pre");
+    pre.textContent = data.content || "(empty file)";
+    pre.style.cssText = `
+      background:#111;
+      color:#0f0;
+      padding:10px;
+      border-radius:6px;
+      max-height:200px;
+      overflow:auto;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top:10px;
+    `;
 
-      // Make sure not to duplicate old blocks
-      const oldPre = modalBody.querySelector("pre");
-      if (oldPre) oldPre.remove();
-
-      const pre = document.createElement("pre");
-      pre.style.background = "#222";
-      pre.style.color = "#0f0";
-      pre.style.padding = "10px";
-      pre.style.overflow = "auto";
-      pre.style.maxHeight = "250px";
-      pre.style.borderRadius = "6px";
-      pre.style.fontFamily = "monospace";
-      pre.style.whiteSpace = "pre-wrap";
-      pre.textContent = data.contents;
-
-      modalBody.insertBefore(pre, document.getElementById("modal-download").parentNode);
-    })
-    .catch(err => {
-      console.error("Error fetching file contents:", err);
-    });
+    // ✅ Safely append after the download button
+    modalBody.appendChild(pre);
+  } catch (err) {
+    console.error("Error fetching file contents:", err);
+  }
 });
 
 
