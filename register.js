@@ -7,7 +7,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  // Validation
+  // ----- Validation -----
   if (!username || !/^[a-zA-Z0-9_]{1,20}$/.test(username)) {
     status.textContent = "Usernames only support A-Z, 0-9 and _.";
     status.className = "status-msg status-error";
@@ -30,14 +30,17 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   }
 
   try {
+    // ----- Grab hCaptcha token -----
     const hcaptchaToken = document.querySelector('[name="h-captcha-response"]')?.value;
     if (!hcaptchaToken) {
-      status.textContent = "Please complete the verification.";
+      status.textContent = "Please complete the CAPTCHA.";
       status.className = "status-msg status-error";
       return;
     }
 
-    // ---- Register the user ----
+    console.log("hCaptcha token:", hcaptchaToken); // Debug: check token
+
+    // ----- Register the user -----
     const res = await fetch(`${API_BASE}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -45,32 +48,39 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
       status.textContent = data.error || "Oops! Something went wrong during registration.";
       status.className = "status-msg status-error";
       return;
     }
 
-    // ---- Auto-login without CAPTCHA ----
+    // ----- Auto-login after successful registration -----
     const loginRes = await fetch(`${API_BASE}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usernameOrEmail: email, password }) // <-- remove hcaptchaToken here
+      body: JSON.stringify({ usernameOrEmail: email, password, hcaptchaToken }) // send hCaptcha again for login
     });
 
     const loginData = await loginRes.json();
+
     if (!loginRes.ok) {
       status.textContent = loginData.error || "Account created, but login failed. Please log in manually.";
       status.className = "status-msg status-error";
       return;
     }
 
+    // ----- Store token and redirect -----
     localStorage.setItem("authToken", loginData.token);
     status.textContent = "Account created! Logging in...";
     status.className = "status-msg status-ok";
-    setTimeout(() => window.location.href = "/index.html", 1000);
+
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 1000);
 
   } catch (err) {
+    console.error(err);
     status.textContent = "Oops! An error occurred: " + err.message;
     status.className = "status-msg status-error";
   }
