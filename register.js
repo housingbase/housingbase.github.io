@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   registerBtn.addEventListener("click", async () => {
     // Grab input values safely
     const username = document.getElementById("username")?.value?.trim();
-    const displayName = document.getElementById("displayName")?.value?.trim();
+    const displayName = document.getElementById("displayNameInput")?.value?.trim();
     const email = document.getElementById("email")?.value?.trim();
     const password = document.getElementById("password")?.value;
 
