@@ -36,23 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ----- hCaptcha -----
-    const hcaptchaToken = document.querySelector('[name="h-captcha-response"]')?.value;
-    if (!hcaptchaToken) {
-      status.textContent = "Please complete the CAPTCHA.";
-      status.style.color = "#c62828";
-      return;
-    }
-
-    status.textContent = "Registering...";
+    status.textContent = "Creating account...";
     status.style.color = "#000";
 
     try {
-      // ----- Register user -----
+      // ----- Register user without hCaptcha -----
       const res = await fetch(`${API_BASE}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, displayName, email, password, hcaptchaToken })
+        body: JSON.stringify({ username, displayName, email, password })
       });
 
       const data = await res.json();
@@ -63,29 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // ----- Auto-login -----
-      const loginRes = await fetch(`${API_BASE}/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ usernameOrEmail: email, password, hcaptchaToken }) // hCaptcha optional for login
-      });
-
-      const loginData = await loginRes.json();
-
-      if (!loginRes.ok) {
-        status.textContent = loginData.error || "Account created, but login failed. Please log in manually.";
-        status.style.color = "#c62828";
-        return;
-      }
-
-      // ----- Store token and redirect -----
-      localStorage.setItem("authToken", loginData.token);
-      status.textContent = "Account created! Logging in...";
-      status.style.color = "green";
-
-      setTimeout(() => {
-        window.location.href = "/index.html";
-      }, 1000);
+      // ----- Redirect to login page -----
+      window.location.href = "/login.html";
 
     } catch (err) {
       console.error(err);
