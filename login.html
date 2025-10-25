@@ -5,89 +5,18 @@
   <title>Sign In</title>
   <link rel="stylesheet" href="/style.css">
   <style>
-/* reset */
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-/* main layout — centered horizontally, but near top */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* horizontal centering */
-  justify-content: flex-start; /* push content to top */
-  padding-top: 80px; /* spacing from header */
-  padding-bottom: 40px;
-}
-
-/* auth box — comfortable width */
-.auth-box {
-  background: #e9e9e9;
-  border: 1px solid #cfcfcf;
-  padding: 32px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 380px; /* reduced width */
-  text-align: center;
-}
-
-/* consistent inputs + button */
-.auth-box input,
-.auth-box button {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.auth-box input {
-  border: 1px solid #ccc;
-  background: #fff;
-}
-
-.auth-box button {
-  border: none;
-  background: #2a72e5;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.auth-box button:hover {
-  background: #1f5ac3;
-}
-
-/* keep hCaptcha neat */
-.h-captcha {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
-}
-
- .auth-footer {
-      margin-top: 12px;
-      font-size: 0.9rem;
-    }
-
-   .auth-footer a {
-      color: #2a72e5;
-      text-decoration: none;
-    }
-
-@media (max-width: 420px) {
-  .auth-box {
-    padding: 24px;
-    max-width: 90%;
-  }
-}
-
-
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    main { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 80px; padding-bottom: 40px; }
+    .auth-box { background: #e9e9e9; border: 1px solid #cfcfcf; padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 380px; text-align: center; }
+    .auth-box input, .auth-box button { width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; font-size: 1rem; }
+    .auth-box input { border: 1px solid #ccc; background: #fff; }
+    .auth-box button { border: none; background: #2a72e5; color: #fff; cursor: pointer; transition: background 0.2s; }
+    .auth-box button:hover { background: #1f5ac3; }
+    .h-captcha { display: flex; justify-content: center; margin-bottom: 12px; }
+    #status { margin-top: 10px; font-size: 0.9rem; color: #c62828; }
+    .auth-footer { margin-top: 12px; font-size: 0.9rem; }
+    .auth-footer a { color: #2a72e5; text-decoration: none; }
   </style>
 </head>
 <body>
@@ -97,7 +26,7 @@ main {
       <div class="nav-left">
         <h1 class="logo">SpigotBase</h1>
         <nav class="nav-links">
-          <a href="/index.html">HTSL Browser</a><span class="divider"></span>
+          <a href="#">HTSL Browser</a><span class="divider"></span>
           <a href="/projects.html">Projects</a><span class="divider"></span>
           <a href="#">About</a><span class="divider"></span>
           <a href="/housing.html">Housing Browser</a><span class="divider"></span>
@@ -107,7 +36,7 @@ main {
       </div>
       <div class="nav-right">
 <div id="logged-out" style="display:flex; align-items:center;">
-  
+  <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
 </div>
 
 <div id="logged-in" style="display:none; align-items:center;">
@@ -118,23 +47,20 @@ main {
       </div>
     </div>
   </header>
+<main>
+  <div class="auth-box">
+    <h2>Sign In</h2>
+    <input type="text" id="username" placeholder="Username/Email" required>
+    <input type="password" id="password" placeholder="Password" required>
 
-  <main>
-    <div class="auth-box">
-      <h2>Sign In</h2>
-      <input type="text" id="username" placeholder="Username/Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <div class="h-captcha" data-sitekey="6062dcde-8ffc-47ae-97a0-e6bc5b0880a6"></div>
-<script src="https://hcaptcha.com/1/api.js" async defer></script>
+    <div class="h-captcha" data-sitekey="6062dcde-8ffc-47ae-97a0-e6bc5b0880a6"></div>
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
 
-      <button id="loginBtn">Log In</button>
-      <div id="status" style="margin-top:10px;color:#c62828;"></div>
-      <div class="auth-footer">
-        Don’t have an account? <a href="/register.html">Register</a>
-      </div>
-    </div>
-  </main>
-
-  <script src="/login.js"></script>
+    <button id="loginBtn">Log In</button>
+    <div id="status"></div>
+    <div class="auth-footer">Don’t have an account? <a href="/register.html">Register</a></div>
+  </div>
+</main>
+<script src="/login.js"></script>
 </body>
 </html>

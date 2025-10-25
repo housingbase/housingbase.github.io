@@ -7,81 +7,45 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  // ----- Validation -----
-  if (!username || !/^[a-zA-Z0-9_]{1,20}$/.test(username)) {
-    status.textContent = "Usernames only support A-Z, 0-9 and _.";
-    status.className = "status-msg status-error";
-    return;
-  }
-  if (!displayName || displayName.length > 30) {
-    status.textContent = "Display Name must be 1-30 characters.";
-    status.className = "status-msg status-error";
-    return;
-  }
-  if (!email || !email.includes("@")) {
-    status.textContent = "Enter a valid email address.";
-    status.className = "status-msg status-error";
-    return;
-  }
-  if (!password || password.length < 6) {
-    status.textContent = "Password must be at least 6 characters.";
-    status.className = "status-msg status-error";
-    return;
-  }
+  // Validation
+  if (!username || !/^[a-zA-Z0-9_]{1,20}$/.test(username)) return showError("Usernames only support A-Z, 0-9 and _.");
+  if (!displayName || displayName.length > 30) return showError("Display Name must be 1-30 characters.");
+  if (!email || !email.includes("@")) return showError("Enter a valid email address.");
+  if (!password || password.length < 6) return showError("Password must be at least 6 characters.");
 
   try {
-    // ----- Grab hCaptcha token -----
     const hcaptchaToken = document.querySelector('[name="h-captcha-response"]')?.value;
-    if (!hcaptchaToken) {
-      status.textContent = "Please complete the CAPTCHA.";
-      status.className = "status-msg status-error";
-      return;
-    }
+    if (!hcaptchaToken) return showError("Please complete the CAPTCHA.");
 
-    console.log("hCaptcha token:", hcaptchaToken); // Debug: check token
-
-    // ----- Register the user -----
+    // Register
     const res = await fetch(`${API_BASE}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, displayName, email, password, hcaptchaToken })
     });
-
     const data = await res.json();
+    if (!res.ok) return showError(data.error || "Registration failed.");
 
-    if (!res.ok) {
-      status.textContent = data.error || "Oops! Something went wrong during registration.";
-      status.className = "status-msg status-error";
-      return;
-    }
-
-    // ----- Auto-login after successful registration -----
+    // Auto-login (no CAPTCHA needed)
     const loginRes = await fetch(`${API_BASE}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usernameOrEmail: email, password, hcaptchaToken }) // send hCaptcha again for login
+      body: JSON.stringify({ usernameOrEmail: email, password })
     });
-
     const loginData = await loginRes.json();
+    if (!loginRes.ok) return showError("Account created, but login failed. Please log in manually.");
 
-    if (!loginRes.ok) {
-      status.textContent = loginData.error || "Account created, but login failed. Please log in manually.";
-      status.className = "status-msg status-error";
-      return;
-    }
-
-    // ----- Store token and redirect -----
     localStorage.setItem("authToken", loginData.token);
+    status.style.color = "green";
     status.textContent = "Account created! Logging in...";
-    status.className = "status-msg status-ok";
-
-    setTimeout(() => {
-      window.location.href = "/index.html";
-    }, 1000);
+    setTimeout(() => window.location.href = "/index.html", 1000);
 
   } catch (err) {
-    console.error(err);
-    status.textContent = "Oops! An error occurred: " + err.message;
-    status.className = "status-msg status-error";
+    showError("Oops! An error occurred: " + err.message);
+  }
+
+  function showError(msg) {
+    status.style.color = "#c62828";
+    status.textContent = msg;
   }
 });
