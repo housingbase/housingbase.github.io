@@ -45,28 +45,26 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
     });
 
     const data = await res.json();
-
     if (!res.ok) {
       status.textContent = data.error || "Oops! Something went wrong during registration.";
       status.className = "status-msg status-error";
       return;
     }
 
-    // ---- Auto-login after registration ----
+    // ---- Auto-login without CAPTCHA ----
     const loginRes = await fetch(`${API_BASE}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ usernameOrEmail: email, password, hcaptchaToken })
+      body: JSON.stringify({ usernameOrEmail: email, password }) // <-- remove hcaptchaToken here
     });
 
     const loginData = await loginRes.json();
     if (!loginRes.ok) {
-      status.textContent = loginData.error || "Account created, but login failed. Please try manually.";
+      status.textContent = loginData.error || "Account created, but login failed. Please log in manually.";
       status.className = "status-msg status-error";
       return;
     }
 
-    // ---- Store token and redirect ----
     localStorage.setItem("authToken", loginData.token);
     status.textContent = "Account created! Logging in...";
     status.className = "status-msg status-ok";
