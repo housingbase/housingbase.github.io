@@ -7,6 +7,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
+  // Validation
   if (!username || !/^[a-zA-Z0-9_]{1,20}$/.test(username)) {
     status.textContent = "Usernames only support A-Z, 0-9 and _.";
     status.className = "status-msg status-error";
@@ -29,27 +30,27 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   }
 
   try {
-const hcaptchaToken = document.querySelector('[name="h-captcha-response"]').value;
+    const hcaptchaToken = document.querySelector('[name="h-captcha-response"]')?.value;
+    if (!hcaptchaToken) {
+      status.textContent = "Please complete the verification.";
+      status.className = "status-msg status-error";
+      return;
+    }
 
-if (!hcaptchaToken) {
-  status.textContent = "Please complete the verification.";
-  status.className = "status-msg status-error";
-  return;
-}
-
-const res = await fetch(`${API_BASE}/api/register`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  credentials: "include",
-  body: JSON.stringify({ username, displayName, email, password, hcaptchaToken })
-});
+    const res = await fetch(`${API_BASE}/api/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, displayName, email, password, hcaptchaToken })
+    });
 
     const data = await res.json();
 
-    if (data.ok && data.redirect) {
-      status.textContent = "Logging in...";
+    if (res.ok && data.token) {
+      // Store token for auth
+      localStorage.setItem("authToken", data.token);
+      status.textContent = "Account created! Logging in...";
       status.className = "status-msg status-ok";
-      setTimeout(() => window.location.href = data.redirect, 1000);
+      setTimeout(() => window.location.href = "/index.html", 1000);
     } else {
       status.textContent = data.error || "Oops! Looks like something went wrong..";
       status.className = "status-msg status-error";

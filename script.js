@@ -2,7 +2,11 @@ const API_BASE = "https://bytebukkit-server.onrender.com";
 
 async function getMe() {
   try {
-    const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+    const token = localStorage.getItem("authToken");
+const res = await fetch(`${API_BASE}/api/me`, {
+  headers: { Authorization: `Bearer ${token}` }
+});
+
     if (!res.ok) return null;
     return await res.json();
   } catch {
@@ -59,17 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const res = await fetch(`${API_BASE}/api/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ usernameOrEmail: email, password })
-        });
-        const data = await res.json();
+const res = await fetch(`${API_BASE}/api/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ usernameOrEmail: email, password })
+});
+const data = await res.json();
+if (res.ok) {
+  localStorage.setItem("authToken", data.token);
+  renderAuth(data);
+  window.location.href = "/index.html";
+}
 
-        if (!res.ok) throw new Error(data.error || "Login failed.");
-        renderAuth(data);
-        window.location.href = "/index.html";
       } catch (err) {
         alert(err.message);
       }
@@ -79,16 +84,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
-      await fetch(`${API_BASE}/api/logout`, { method: "POST", credentials: "include" });
+      const token = localStorage.getItem("authToken");
+await fetch(`${API_BASE}/api/logout`, {
+  method: "POST",
+  headers: { Authorization: `Bearer ${token}` }
+});
+localStorage.removeItem("authToken");
+
       renderAuth(null);
       if (window.location.pathname !== "/index.html") window.location.href = "/index.html";
     });
   }
 });
-
 async function loadAnnouncement() {
   try {
-    const res = await fetch(`${API_BASE}/api/announcement`, { credentials: "include" });
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${API_BASE}/api/announcement`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     if (!res.ok) return;
     const data = await res.json();
     const box = document.getElementById("announcement");
@@ -102,8 +115,11 @@ async function loadAnnouncement() {
     } else {
       box.style.display = "none";
     }
-  } catch {}
+  } catch (err) {
+    console.error("Failed to load announcement:", err);
+  }
 }
+
 
 function showDeleteModal(addonName, onConfirm) {
   document.getElementById("del-confirm-desc").textContent =
@@ -153,7 +169,11 @@ function closeDeleteModal() {
 
 
 async function loadAddons() {
-  const res = await fetch(`${API_BASE}/api/addons`, { credentials: "include" });
+  const token = localStorage.getItem("authToken");
+const res = await fetch(`${API_BASE}/api/addons`, {
+  headers: { Authorization: `Bearer ${token}` }
+});
+
   if (!res.ok) return;
   const addons = await res.json();
   const me = await getMe();
@@ -215,15 +235,17 @@ if (me && (me.username === a.username || me.is_admin)) {
   const delBtn = document.createElement("button");
   delBtn.textContent = "Delete";
   delBtn.style.backgroundColor = "#c62828";
-  delBtn.onclick = () => {
-    showDeleteModal(a.name, async () => {
-      const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
-      if (delRes.status === 204) loadAddons();
+delBtn.onclick = () => {
+  showDeleteModal(a.name, async () => {
+    const token = localStorage.getItem("authToken");
+    const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` }
     });
-  };
+    if (delRes.status === 204) loadAddons();
+  });
+};
+
   btnContainer.appendChild(delBtn);
 }
 
@@ -329,7 +351,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (status) { status.textContent = "Uploading..."; status.className = ""; }
 
     try {
-      const res = await fetch(`${API_BASE}/api/addons`, { method: "POST", body: formData, credentials: "include" });
+      const token = localStorage.getItem("authToken");
+const res = await fetch(`${API_BASE}/api/addons`, {
+  method: "POST",
+  headers: { Authorization: `Bearer ${token}` },
+  body: formData
+});
+
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
         if (status) { status.textContent = `Uploaded "${data.name}"! Redirecting...`; status.className = "status-ok"; }

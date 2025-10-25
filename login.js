@@ -1,4 +1,3 @@
-// Replace this with your Render backend URL
 const API_BASE = "https://bytebukkit-server.onrender.com";
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
@@ -16,27 +15,27 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   status.textContent = "Signing in...";
 
   try {
-const hcaptchaToken = document.querySelector('[name="h-captcha-response"]').value;
-if (!hcaptchaToken) {
-  status.style.color = "#c62828";
-  status.textContent = "Please complete the CAPTCHA.";
-  return;
-}
+    const hcaptchaToken = document.querySelector('[name="h-captcha-response"]').value;
+    if (!hcaptchaToken) {
+      status.style.color = "#c62828";
+      status.textContent = "Please complete the CAPTCHA.";
+      return;
+    }
 
-const res = await fetch(`${API_BASE}/api/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  credentials: "include",
-  body: JSON.stringify({ usernameOrEmail, password, hcaptchaToken })
-});
-
+    const res = await fetch(`${API_BASE}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usernameOrEmail, password, hcaptchaToken })
+    });
 
     const data = await res.json();
 
     if (res.ok) {
+      // Save the auth token to localStorage
+      localStorage.setItem("authToken", data.token);
+
       status.style.color = "green";
       status.textContent = "Login successful! Redirecting...";
-      // Redirect to index page on your GitHub Pages site
       setTimeout(() => {
         window.location.href = "/index.html";
       }, 1000);

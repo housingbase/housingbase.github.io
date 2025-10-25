@@ -2,7 +2,11 @@ const API_BASE = "https://bytebukkit-server.onrender.com";
 
 async function getMe() {
   try {
-    const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+    const token = localStorage.getItem("authToken");
+const res = await fetch(`${API_BASE}/api/me`, {
+  headers: { "Authorization": `Bearer ${token}` }
+});
+
     if (!res.ok) return null;
     return await res.json();
   } catch {
@@ -69,17 +73,20 @@ if (loginBtn) {
     if (!email || !password) return alert("Please enter email and password.");
 
     try {
-      const res = await fetch(`${API_BASE}/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ usernameOrEmail: email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login failed");
+const res = await fetch(`${API_BASE}/api/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ usernameOrEmail: email, password })
+});
 
-      renderAuth(data);
-      window.location.href = "/index.html";
+const data = await res.json();
+if (res.ok) {
+  localStorage.setItem("authToken", data.token);
+  renderAuth(data);
+  window.location.href = "/index.html";
+} else {
+  throw new Error(data.error || "Login failed");
+}
     } catch (err) {
       alert(err.message);
     }
@@ -88,16 +95,22 @@ if (loginBtn) {
 
 const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    await fetch(`${API_BASE}/api/logout`, { method: "POST", credentials: "include" });
+  logoutBtn.addEventListener("click", () => {
+    // Remove token from localStorage
+    localStorage.removeItem("authToken");
+    // Update UI
     renderAuth(null);
-    if (window.location.pathname !== "/index.html") window.location.href = "/index.html";
+    // Redirect if not on index
+    if (window.location.pathname !== "/index.html") {
+      window.location.href = "/index.html";
+    }
   });
 }
 
 async function loadAnnouncement() {
   const box = document.getElementById("announcement");
-  const res = await fetch(`${API_BASE}/api/announcement`, { credentials: "include" });
+  const res = await fetch(`${API_BASE}/api/announcement`, { headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
+ });
   if (!res.ok) return;
   const data = await res.json();
   if (data?.text) {
@@ -127,8 +140,11 @@ function setupAnnouncementAdmin(me) {
     const color = document.getElementById("annColor").value;
     const res = await fetch(`${API_BASE}/api/announcement`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      headers: {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+}
+,
       body: JSON.stringify({ text, bg_color: bg, text_color: color })
     });
     status.textContent = res.ok ? "Saved!" : "Error";
@@ -138,8 +154,12 @@ function setupAnnouncementAdmin(me) {
   clear.onclick = async () => {
     const res = await fetch(`${API_BASE}/api/announcement`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
+     headers: {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+}
+
+,
       body: JSON.stringify({ text: "" })
     });
     status.textContent = res.ok ? "Cleared!" : "Error";
@@ -253,7 +273,8 @@ async function loadProfile() {
     return;
   }
 
-  const res = await fetch(`${API_BASE}/api/users/${username}`, { credentials: "include" });
+  const res = await fetch(`${API_BASE}/api/users/${username}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
+ });
   if (!res.ok) return document.body.textContent = "User not found";
 
   const data = await res.json();
@@ -292,7 +313,8 @@ async function loadProfile() {
       form.append("avatar", file);
       const r = await fetch(`${API_BASE}/api/me/avatar`, {
         method: "POST",
-        credentials: "include",
+        headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
+,
         body: form
       });
       const out = await r.json();
@@ -317,8 +339,12 @@ async function loadProfile() {
       if (!newName) return showWarnModal("Display Name cannot be empty.");
       const r = await fetch(`${API_BASE}/api/me/display-name`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+       headers: {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+}
+
+,
         body: JSON.stringify({ displayName: newName })
       });
       const out = await r.json();
@@ -337,8 +363,12 @@ async function loadProfile() {
       const newBio = document.getElementById("bioInput").value.trim();
       const r = await fetch(`${API_BASE}/api/me/bio`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+       headers: {
+  "Content-Type": "application/json",
+  "Authorization": `Bearer ${localStorage.getItem("authToken")}`
+}
+
+,
         body: JSON.stringify({ bio: newBio })
       });
       const out = await r.json();
@@ -415,7 +445,8 @@ userLink.className = "user-link";
         showDeleteModal(a.name, async () => {
           const r = await fetch(`${API_BASE}/api/addons/${a.id}`, {
             method: "DELETE",
-            credentials: "include"
+            headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
+
           });
           if (r.status === 204) {
             loadProfile();

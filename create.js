@@ -4,7 +4,9 @@
   // ----------------------- HELPERS -----------------------
   async function getMe() {
     try {
-      const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+      const token = localStorage.getItem("authToken");
+      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+      const res = await fetch(`${API_BASE}/api/me`, { headers });
       if (!res.ok) return null;
       return await res.json();
     } catch {
@@ -13,7 +15,7 @@
   }
 
   function getAvatarURL(avatarPath) {
-    if (!avatarPath) return `${API_BASE}/uploads/avatars/default.png`;
+    if (!avatarPath) return `${API_BASE}/api/avatar/default.png`;
     if (avatarPath.startsWith("http")) return avatarPath;
     return `${API_BASE}${avatarPath}`;
   }
@@ -52,22 +54,20 @@
   const me = await getMe();
   renderAuth(me);
 
-if (!me) {
-  const overlay = document.getElementById("warn-overlay");
-  const box = document.getElementById("warn-box");
+  if (!me) {
+    const overlay = document.getElementById("warn-overlay");
+    const box = document.getElementById("warn-box");
 
-  overlay.classList.add("show");
-  overlay.style.opacity = "1";
-  box.style.transform = "scale(1)";
+    overlay.classList.add("show");
+    overlay.style.opacity = "1";
+    box.style.transform = "scale(1)";
 
-  document.getElementById("warn-continue").onclick = () => {
-    window.location.href = "/index.html";
-  };
+    document.getElementById("warn-continue").onclick = () => {
+      window.location.href = "/index.html";
+    };
 
-  return;
-}
-
-
+    return;
+  }
 
   const dropArea = document.getElementById("drop-area");
   const fileInput = document.getElementById("addonFile");
@@ -154,10 +154,13 @@ if (!me) {
     formData.append("file", file);
 
     try {
+      const token = localStorage.getItem("authToken");
+      const headers = token ? { "Authorization": `Bearer ${token}` } : {};
+
       const res = await fetch(`${API_BASE}/api/addons`, { 
         method: "POST", 
         body: formData,
-        credentials: "include"
+        headers
       });
 
       if (res.ok) {
