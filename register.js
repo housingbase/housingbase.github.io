@@ -37,6 +37,7 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
       return;
     }
 
+    // ---- Register the user ----
     const res = await fetch(`${API_BASE}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -45,19 +46,34 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
 
     const data = await res.json();
 
-    if (res.ok && data.token) {
-      // Store token for auth
-      localStorage.setItem("authToken", data.token);
-      status.textContent = "Account created! Logging in...";
-      status.className = "status-msg status-ok";
-      setTimeout(() => window.location.href = "/index.html", 1000);
-    } else {
-      status.textContent = data.error || "Oops! Looks like something went wrong..";
+    if (!res.ok) {
+      status.textContent = data.error || "Oops! Something went wrong during registration.";
       status.className = "status-msg status-error";
+      return;
     }
 
+    // ---- Auto-login after registration ----
+    const loginRes = await fetch(`${API_BASE}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usernameOrEmail: email, password, hcaptchaToken })
+    });
+
+    const loginData = await loginRes.json();
+    if (!loginRes.ok) {
+      status.textContent = loginData.error || "Account created, but login failed. Please try manually.";
+      status.className = "status-msg status-error";
+      return;
+    }
+
+    // ---- Store token and redirect ----
+    localStorage.setItem("authToken", loginData.token);
+    status.textContent = "Account created! Logging in...";
+    status.className = "status-msg status-ok";
+    setTimeout(() => window.location.href = "/index.html", 1000);
+
   } catch (err) {
-    status.textContent = "Oops! There's an issue here: " + err.message;
+    status.textContent = "Oops! An error occurred: " + err.message;
     status.className = "status-msg status-error";
   }
 });
