@@ -13,39 +13,43 @@
 </head>
 
 <body>
-   <header>
-  <div class="header-container">
-    <a href="/index.html">
-      <div class="logo-container">
-        <img src="/image/fullwhite.png" alt="HousingBase Logo" class="logo-default">
-        <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
-      </div>
-    </a>
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <header>
+        
+        <div class="header-container">
+            <a href="/index.html">
+                <div class="logo-container">
+                    <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
+                    <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
+                </div>
+            </a>
 
-    <nav class="nav-links">
-      <a href="/browser.html">HTSL Library</a>
-      <a href="/projects.html">Our Projects</a>
-      <a href="/housing.html">Browse Housing</a>
-      <a href="/create.html">Dashboard</a>
-    </nav>
+            <nav class="nav-links">
+                <a href="/browser.html">HTSL Library</a>
+                <a href="/projects.html">Our Projects</a>
+                <a href="/housing.html">Browse Housing</a>
+                <a href="/create.html">Dashboard</a>
+            </nav>
 
-    <div class="user-status">
-      <div id="logged-out" style="display:flex; align-items:center;">
-        <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
-      </div>
-      <div id="logged-in" style="display:none; align-items:center;">
-        <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
-        <span id="displayName" class="display-name"></span>
-      </div>
-    </div>
+            <div class="user-status">
+                <div id="logged-out" style="display:flex; align-items:center;">
+                    <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
+                    <div style="margin-left: 5px;"></div>
+                    <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
+                </div>
+                <div id="logged-in" style="display:none; align-items:center;">
+                    <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
+                    <span id="displayName" class="display-name"></span>
+                </div>
+            </div>
 
-    <div class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-</header>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
 
     <div id="announcement" style="display:none;"></div>
     <main>
@@ -58,60 +62,69 @@
         <section class="content">
             <section class="features">
                 <a href="/browser.html">
-                    <div class="notification-card">
-                        <h2>Browse the HTSL Library</h2>
-                        <p>View, download and use what users have created using HTSL.</p>
-                        <button class="blue-btn"><i class="fas fa-code"></i> Browse HTSL</button>
+                    <div class="notification-card htsl-card">
+                        <h2>Browse HTSL Library</h2>
+                        <p>Browse, download and upload HTSL code files.</p>
                     </div>
                 </a>
                 <a href="/housing.html">
-                    <div class="notification-card">
+                    <div class="notification-card housing-card">
                         <h2>Browse Hypixel Housing</h2>
-                        <p>Explore all active housings on Hypixel Housing through the web.</p>
-                        <button class="blue-btn"><i class="fas fa-house"></i> View active Housings</button>
+                        <p>Explore active housings all through the web.</p>
                     </div>
                 </a>
-                <div class="notification-card">
-                    <h2>View your Dashboard</h2>
-                    <p>Create, upload and manage your creations on HousingBase with the community.</p>
-                    <button class="blue-btn"><i class="fas fa-diagram-project"></i> Manage projects</button>
-                </div>
-                <div class="notification-card">
-                    <h2>External Links and Tools</h2>
-                    <p>Check out recommended Housing Tools, mods and resource packs provided by others.</p>
-                    <button class="blue-btn"><i class="fas fa-external-link-alt"></i> View external Links</button>
-                </div>
+
+
+                <a href="/create.html">
+                    <div class="notification-card dashboard-card">
+                        <h2>View your Dashboard</h2>
+                        <p>Create, upload, and manage your creations on HousingBase with the community.</p>
+                    </div>
+                </a>
+                <a href="/create.html">
+                    <div class="notification-card external-card">
+                        <h2>External Housing Tools</h2>
+                        <p>Explore recommended tools and mods for Hypixel Housing.</p>
+                    </div>
+                </a>
+
 
             </section>
             <div class="section-divider"></div>
             <h1 class="titleh1">Update History</h1>
 
             <section class="grid1">
-                                    <div class="update-card">
-                        <h2 class="title">Online Housing Browser for HousingBase
-                        </h2>
-                        <p class="description">Release of the Housing Browser</p>
-                        <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 24th 2025 - 3:16 PM</p>
-                        <div class="section-divider"></div>
-                        <a class="update-contents">
-                            The Housing Browser is now live on HousingBase! You can now explore all active housings on Hypixel Housing through the web. Simply head to the "Browse Housing" section to get started. Search, filter, and view housings with ease. We hope you enjoy this new feature as we continue to enhance your HousingBase experience!
-                            <div>
-                                <div></div>
-                            </div>
-                            <a href="/browser.html"><button class="blue-btn"><i class="fas fa-external-link-alt"></i> Open Housing Browser</button></a>
-                        </a>
-                    </div>
-                    <div class="update-card">
-                        <h2 class="title">Open Beta for HousingBase</h2>
-                        <p class="description">Initial open beta release for testing purposes</p>
-                        <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 10th 2025 - 7:21 PM</p>
-                        <div class="section-divider"></div>
-                        <a class="update-contents">
-                            You are now able to preview HousingBase and test features before its full release!
-                            This Includes browsing the HTSL Library, viewing active housings and accessing your dashboard.
-                            More features will be added in the coming weeks as we prepare for full release. Stay tuned!
-                        </a>
-                    </div>
+                <div class="update-card">
+                    <h2 class="title">Online Housing Browser for HousingBase
+                    </h2>
+                    <p class="description">Release of the Housing Browser</p>
+                    <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> |
+                        October 24th 2025 - 3:16 PM</p>
+                    <div class="section-divider"></div>
+                    <a class="update-contents">
+                        The Housing Browser is now live on HousingBase! You can now explore all active housings on
+                        Hypixel Housing through the web. Simply head to the "Browse Housing" section to get started.
+                        Search, filter, and view housings with ease. We hope you enjoy this new feature as we continue
+                        to enhance your HousingBase experience!
+                        <div>
+                            <div></div>
+                        </div>
+                        <a href="/browser.html"><button class="blue-btn"><i class="fas fa-external-link-alt"></i> Open
+                                Housing Browser</button></a>
+                    </a>
+                </div>
+                <div class="update-card">
+                    <h2 class="title">Open Beta for HousingBase</h2>
+                    <p class="description">Initial open beta release for testing purposes</p>
+                    <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> |
+                        October 10th 2025 - 7:21 PM</p>
+                    <div class="section-divider"></div>
+                    <a class="update-contents">
+                        You are now able to preview HousingBase and test features before its full release!
+                        This Includes browsing the HTSL Library, viewing active housings and accessing your dashboard.
+                        More features will be added in the coming weeks as we prepare for full release. Stay tuned!
+                    </a>
+                </div>
             </section>
         </section>
     </main>

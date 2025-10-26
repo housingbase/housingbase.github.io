@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+
 * {
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -37,6 +38,11 @@ body {
     background-color: #161616;
     color: #E5E7EB;
 }
+.header-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
 header {
     width: 100%;
@@ -70,20 +76,15 @@ header {
     transform: translateY(-50%);
     height: 100%;
     width: auto;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
-.logo-hover {
-    opacity: 0;
+.logo-container img {
+    transition: all 0.3s ease;
 }
-
-.logo-container:hover .logo-hover {
-    opacity: 1;
-}
-
-.logo-container:hover .logo-default {
-    opacity: 0;
+.logo-container:hover {
+    filter: brightness(150%);
 }
 
 .nav-links {
@@ -302,7 +303,7 @@ footer {
   background-color: #ffffff0c;
 }
 
-.social-links a.yt { /* fix */
+.social-links a.yt {
   padding-right: 1px;
 }
 
@@ -316,6 +317,7 @@ footer {
 .update-card {
   background-color: #1f1f1f;
   border: 1px solid #141414;
+  border-radius: 5px;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -370,6 +372,23 @@ footer {
   background-color: #005bb5;
 }
 
+#registerBtnHeader {
+  background-color: rgb(155, 68, 255);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s ease;
+}
+
+#registerBtnHeader:hover {
+  background-color: #7700c7;
+}
+
+
 .avatar-small {
   border-radius: 6px;
   cursor: pointer;
@@ -380,4 +399,162 @@ footer {
   font-weight: 600;
   color: #fff;
   cursor: pointer;
+}
+
+.housing-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;    
+  text-align: center;
+  padding: 0 1rem;
+}
+
+
+.housing-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/image/housingcard.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  z-index: 0;
+}
+
+
+.housing-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.housing-card:hover::before {
+  transform: scale(1.1);
+  opacity: 0.35;
+}
+.notification-card p {
+  font-size: 0.9rem;
+  margin-top: 8px;
+  color:#b3b3b3
+}
+
+
+.dashboard-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;    
+  text-align: center;
+}
+
+
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/image/dashboard.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  z-index: 0;
+}
+
+
+.dashboard-card > * {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+
+.dashboard-card:hover::before {
+  transform: scale(1.1);
+  opacity: 0.35;
+}
+
+.htsl-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;    
+  text-align: center;
+}
+
+
+.htsl-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/image/htsl.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  z-index: 0;
+}
+
+
+.htsl-card > * {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+
+.htsl-card:hover::before {
+  transform: scale(1.1);
+  opacity: 0.35;
+}
+
+.external-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;    
+  text-align: center;
+}
+
+
+.external-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/image/external.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  z-index: 0;
+}
+
+
+.external-card > * {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+
+.external-card:hover::before {
+  transform: scale(1.1);
+  opacity: 0.35;
 }
