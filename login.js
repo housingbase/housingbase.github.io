@@ -17,15 +17,15 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
       body: JSON.stringify({ usernameOrEmail, password, hcaptchaToken })
     });
     const data = await res.json();
-    if (!res.ok) return showError(data.error || "Invalid credentials.");
+    if (!res.ok) return showError(data.error || "Invalid Password or Email.");
 
     localStorage.setItem("authToken", data.token);
     status.style.color = "green";
-    status.textContent = "Login successful! Redirecting...";
+    status.textContent = "Signing in...";
     setTimeout(() => window.location.href = "/index.html", 1000);
 
   } catch (err) {
-    showError("Login failed. " + err.message);
+    showError("Something went wrong! " + err.message);
   }
 
   function showError(msg) {

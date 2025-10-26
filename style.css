@@ -378,7 +378,6 @@ footer {
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
-  
   cursor: pointer;
   font-size: 0.85rem;
   transition: background 0.15s ease;
@@ -557,4 +556,129 @@ footer {
 .external-card:hover::before {
   transform: scale(1.1);
   opacity: 0.35;
+}
+/* Login Page Styles - Wider Version */
+.auth-box {
+    background-color: #1f1f1f;
+    max-width: 500px; /* increased width */
+    width: 95%;       /* slightly wider on small screens */
+    margin: 4rem auto;
+    padding: 2.5rem;  /* more padding for spaciousness */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-box h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #E5E7EB;
+    text-align: center;
+}
+
+.auth-box input[type="text"],
+.auth-box input[type="email"],
+.auth-box input[type="password"] {
+    width: 310px;
+    padding: 14px 16px; /* slightly taller inputs */
+    margin-bottom: 1rem;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    color: #E5E7EB;
+    font-size: 1rem;
+}
+
+.auth-box input::placeholder {
+    color: #aaa;
+}
+
+.auth-box .h-captcha {
+    width: 100%;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-box button#loginBtn {
+    width: 310px;
+    padding: 14px;
+    background-color: var(--accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 1rem;
+}
+
+.auth-box button#loginBtn:hover {
+    background-color: #005bb5;
+}
+
+.auth-box button#registerBtn {
+    width: 310px;
+    padding: 14px;
+    background-color: var(--accent);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 1rem;
+}
+
+.auth-box button#registerBtn:hover {
+    background-color: #005bb5;
+}
+
+.auth-box .auth-footer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #bbb;
+    text-align: center;
+}
+
+.auth-box .auth-footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-box .auth-footer a:hover {
+    text-decoration: underline;
+}
+
+#status {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #ff7a7a;
+    text-align: center;
+}
+
+/* Make login box responsive on smaller screfnens */
+@media (max-width: 600px) {
+    .auth-box {
+        margin: 2rem 1rem;
+        padding: 2rem;
+    }
+    .auth-box h2 {
+        font-size: 1.8rem;
+    }
+    .auth-box input[type="text"],
+    .auth-box input[type="password"] {
+        font-size: 0.95rem;
+        padding: 12px 14px;
+    }
+    .auth-box button#loginBtn {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
 }
