@@ -3,9 +3,9 @@ const API_BASE = "https://bytebukkit-server.onrender.com";
 async function getMe() {
   try {
     const token = localStorage.getItem("authToken");
-const res = await fetch(`${API_BASE}/api/me`, {
-  headers: { Authorization: `Bearer ${token}` }
-});
+    const res = await fetch(`${API_BASE}/api/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
     if (!res.ok) return null;
     return await res.json();
@@ -63,17 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-const res = await fetch(`${API_BASE}/api/login`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ usernameOrEmail: email, password })
-});
-const data = await res.json();
-if (res.ok) {
-  localStorage.setItem("authToken", data.token);
-  renderAuth(data);
-  window.location.href = "/index.html";
-}
+        const res = await fetch(`${API_BASE}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usernameOrEmail: email, password })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem("authToken", data.token);
+          renderAuth(data);
+          window.location.href = "/index.html";
+        }
 
       } catch (err) {
         alert(err.message);
@@ -85,11 +85,11 @@ if (res.ok) {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
       const token = localStorage.getItem("authToken");
-await fetch(`${API_BASE}/api/logout`, {
-  method: "POST",
-  headers: { Authorization: `Bearer ${token}` }
-});
-localStorage.removeItem("authToken");
+      await fetch(`${API_BASE}/api/logout`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      localStorage.removeItem("authToken");
 
       renderAuth(null);
       if (window.location.pathname !== "/index.html") window.location.href = "/index.html";
@@ -109,9 +109,9 @@ async function loadAnnouncement() {
 
     if (data?.text) {
       box.style.display = "block";
-      box.style.backgroundColor = data.bg_color || "#444";
-      box.style.color = data.text_color || "#fff";
-      box.textContent = data.text;
+      box.style.backgroundColor = "#181818ff",
+        box.style.color = "#ffffff",
+        box.textContent = data.text;
     } else {
       box.style.display = "none";
     }
@@ -119,6 +119,24 @@ async function loadAnnouncement() {
     console.error("Failed to load announcement:", err);
   }
 }
+
+function renderFakeAnnouncement() {
+  const box = document.getElementById("announcement");
+  if (!box) return;
+
+
+  const fakeData = {
+    text: "Expecting downtime between 1:00PM EST and 9:00PM EST on October 26th for server maintenance.",
+    bg_color: "#181818ff",
+    text_color: "#ffffff"
+  };
+
+  box.style.display = "block";
+  box.style.backgroundColor = fakeData.bg_color;
+  box.style.color = fakeData.text_color;
+  box.textContent = fakeData.text;
+}
+
 
 
 function showDeleteModal(addonName, onConfirm) {
@@ -170,9 +188,9 @@ function closeDeleteModal() {
 
 async function loadAddons() {
   const token = localStorage.getItem("authToken");
-const res = await fetch(`${API_BASE}/api/addons`, {
-  headers: { Authorization: `Bearer ${token}` }
-});
+  const res = await fetch(`${API_BASE}/api/addons`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
 
   if (!res.ok) return;
   const addons = await res.json();
@@ -231,61 +249,61 @@ const res = await fetch(`${API_BASE}/api/addons`, {
     dlButton.className = "blue-btn";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
-if (me && (me.username === a.username || me.is_admin)) {
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "Delete";
-  delBtn.style.backgroundColor = "#c62828";
-delBtn.onclick = () => {
-  showDeleteModal(a.name, async () => {
-    const token = localStorage.getItem("authToken");
-    const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (delRes.status === 204) loadAddons();
-  });
-};
+    if (me && (me.username === a.username || me.is_admin)) {
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.style.backgroundColor = "#c62828";
+      delBtn.onclick = () => {
+        showDeleteModal(a.name, async () => {
+          const token = localStorage.getItem("authToken");
+          const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (delRes.status === 204) loadAddons();
+        });
+      };
 
-  btnContainer.appendChild(delBtn);
-}
+      btnContainer.appendChild(delBtn);
+    }
 
 
     card.appendChild(btnContainer);
-card.addEventListener("click", async e => {
-  if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
+    card.addEventListener("click", async e => {
+      if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
-  document.getElementById("modal-title").textContent = a.name;
-  document.getElementById("modal-desc").textContent = a.description || "No description provided.";
-  document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
+      document.getElementById("modal-title").textContent = a.name;
+      document.getElementById("modal-desc").textContent = a.description || "No description provided.";
+      document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
 
-  const overlay = document.getElementById("modal-overlay");
-  const box = document.getElementById("modal-box");
-  const modalBody = document.querySelector(".modal-body");
+      const overlay = document.getElementById("modal-overlay");
+      const box = document.getElementById("modal-box");
+      const modalBody = document.querySelector(".modal-body");
 
-  overlay.classList.add("show");
-  overlay.style.opacity = "1";
-  box.style.transform = "scale(1)";
+      overlay.classList.add("show");
+      overlay.style.opacity = "1";
+      box.style.transform = "scale(1)";
 
-  // 🧠 Clear old code block if it exists
-  const oldPre = modalBody.querySelector("pre");
-  if (oldPre) oldPre.remove();
 
-  // 🧩 Fetch file contents
-  try {
-    const res = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
-    if (!res.ok) throw new Error("Failed to load addon contents.");
-    const data = await res.json();
+      const oldPre = modalBody.querySelector("pre");
+      if (oldPre) oldPre.remove();
 
-    // Create <pre> element for code display
-    const pre = document.createElement("pre");
-    pre.textContent = data.content || "(empty file)";
 
-    // ✅ Safely append after the download button
-    modalBody.appendChild(pre);
-  } catch (err) {
-    console.error("Error fetching file contents:", err);
-  }
-});
+      try {
+        const res = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
+        if (!res.ok) throw new Error("Failed to load addon contents.");
+        const data = await res.json();
+
+
+        const pre = document.createElement("pre");
+        pre.textContent = data.content || "(empty file)";
+
+
+        modalBody.appendChild(pre);
+      } catch (err) {
+        console.error("Error fetching file contents:", err);
+      }
+    });
 
 
     container.appendChild(card);
@@ -352,11 +370,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const token = localStorage.getItem("authToken");
-const res = await fetch(`${API_BASE}/api/addons`, {
-  method: "POST",
-  headers: { Authorization: `Bearer ${token}` },
-  body: formData
-});
+      const res = await fetch(`${API_BASE}/api/addons`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData
+      });
 
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
@@ -374,10 +392,20 @@ const res = await fetch(`${API_BASE}/api/addons`, {
 });
 
 
+
+const hamburger = document.querySelector(".hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+hamburger.addEventListener("click", () => {
+  navLinks.classList.toggle("open");
+  hamburger.classList.toggle("active");
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
- await loadAnnouncement();
- const me = await getMe();
- renderAuth(me);
-if (document.getElementById("addon-list")) loadAddons();
+  // await loadAnnouncement();
+
+  const me = await getMe();
+  renderAuth(me);
+  if (document.getElementById("addon-list")) loadAddons();
 
 });

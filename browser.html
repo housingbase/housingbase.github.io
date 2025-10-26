@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/image/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <title>HTSL Library | HousingBase</title>
+</head>
+
+<body>
+  <header class="banner">
+    <img src="/image/header.png" alt="Header Banner" class="header-img">
+    <div class="overlay-bar">
+      <div class="nav-left">
+        <h1 class="logo">SpigotBase</h1>
+        <nav class="nav-links">
+          <a href="#">HTSL Browser</a><span class="divider"></span>
+          <a href="/projects.html">Projects</a><span class="divider"></span>
+          <a href="#">About</a><span class="divider"></span>
+          <a href="/housing.html">Housing Browser</a><span class="divider"></span>
+          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
+          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+<div id="logged-out" style="display:flex; align-items:center;">
+  <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+</div>
+
+<div id="logged-in" style="display:none; align-items:center;">
+  <a href="/create.html"><button id="headerCreateAddonBtn">Create Addon</button></a>
+  <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+  <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+</div>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>HTSL Browser</h2>
+    <h3>Uploaded HTSL Files</h3>
+    <div id="addon-list" class="card-grid"></div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>SpigotBase</b>. All Rights Reserved</p>
+      <p>&copy; SpigotBase is in no way affiliated or endorsed by Hypixel OR SpigotMC/Bukkit.</p>
+    </div>
+  </footer>
+<div id="modal-overlay">
+  <div id="modal-box">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <span id="modal-close">&times;</span>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <p id="modal-desc"></p>
+      <a id="modal-download" href="#" target="_blank">
+        <button class="blue-btn" style="margin-top:12px; font-size:1rem;">Download</button>
+      </a>
+      <h4>Code Contents:</h4>
+    </div>
+  </div>
+</div>
+<div id="del-confirm-overlay" class="del-modal-overlay">
+  <div id="del-confirm-box" class="del-modal-box">
+    <div class="del-modal-header">
+      <h3>Confirm Action?</h3>
+      <span id="del-confirm-close" class="del-modal-close">&times;</span>
+    </div>
+    <div class="del-modal-body">
+      <p id="del-confirm-desc">Are you sure you want to delete '<Addon Name>'?</p>
+      <div style="margin-top:12px; display:flex; gap:10px;">
+        <button id="del-confirm-yes" class="blue-btn">Confirm</button>
+        <button id="del-confirm-no" style="background:#c62828; color:#fff;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="/script.js"></script>
+</body>
+</html>

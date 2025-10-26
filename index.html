@@ -1,93 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>SpigotBase - HTSL Browser</title>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="icon" href="/image/favicon.png" type="image/png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/image/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <title>Home | HousingBase</title>
 </head>
 
 <body>
-  <div id="announcement" style="display:none;"></div>
-
-  <!-- Header banner -->
-  <header class="banner">
-    <img src="/image/header.png" alt="Header Banner" class="header-img">
-    <div class="overlay-bar">
-      <div class="nav-left">
-        <h1 class="logo">SpigotBase</h1>
-        <nav class="nav-links">
-          <a href="#">HTSL Browser</a><span class="divider"></span>
-          <a href="/projects.html">Projects</a><span class="divider"></span>
-          <a href="#">About</a><span class="divider"></span>
-          <a href="/housing.html">Housing Browser</a><span class="divider"></span>
-          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
-          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
-        </nav>
+   <header>
+  <div class="header-container">
+    <a href="/index.html">
+      <div class="logo-container">
+        <img src="/image/fullwhite.png" alt="HousingBase Logo" class="logo-default">
+        <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
       </div>
-      <div class="nav-right">
-<div id="logged-out" style="display:flex; align-items:center;">
-  <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
-</div>
+    </a>
 
-<div id="logged-in" style="display:none; align-items:center;">
-  <a href="/create.html"><button id="headerCreateAddonBtn">Create Addon</button></a>
-  <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
-  <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
-</div>
+    <nav class="nav-links">
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/projects.html">Our Projects</a>
+      <a href="/housing.html">Browse Housing</a>
+      <a href="/create.html">Dashboard</a>
+    </nav>
 
+    <div class="user-status">
+      <div id="logged-out" style="display:flex; align-items:center;">
+        <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
+        <span id="displayName" class="display-name"></span>
       </div>
     </div>
-  </header>
 
-  <main class="container">
-    <h2>HTSL Browser</h2>
-    <h3>Uploaded HTSL Files</h3>
-    <div id="addon-list" class="card-grid"></div>
-  </main>
-
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 <b>SpigotBase</b>. All Rights Reserved</p>
-      <p>&copy; SpigotBase is in no way affiliated or endorsed by Hypixel OR SpigotMC/Bukkit.</p>
-    </div>
-  </footer>
-<div id="modal-overlay">
-  <div id="modal-box">
-    <!-- Modal Header -->
-    <div class="modal-header">
-      <h3 id="modal-title"></h3>
-      <span id="modal-close">&times;</span>
-    </div>
-
-    <!-- Modal Body -->
-    <div class="modal-body">
-      <p id="modal-desc"></p>
-      <a id="modal-download" href="#" target="_blank">
-        <button class="blue-btn" style="margin-top:12px; font-size:1rem;">Download</button>
-      </a>
-      <h4>Code Contents:</h4>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
   </div>
-</div>
-<div id="del-confirm-overlay" class="del-modal-overlay">
-  <div id="del-confirm-box" class="del-modal-box">
-    <div class="del-modal-header">
-      <h3>Confirm Action?</h3>
-      <span id="del-confirm-close" class="del-modal-close">&times;</span>
-    </div>
-    <div class="del-modal-body">
-      <p id="del-confirm-desc">Are you sure you want to delete '<Addon Name>'?</p>
-      <div style="margin-top:12px; display:flex; gap:10px;">
-        <button id="del-confirm-yes" class="blue-btn">Confirm</button>
-        <button id="del-confirm-no" style="background:#c62828; color:#fff;">Cancel</button>
-      </div>
-    </div>
-  </div>
-</div>
+</header>
+
+    <div id="announcement" style="display:none;"></div>
+    <main>
+
+        <section class="hero">
+            <h1>Welcome to HousingBase</h1>
+            <p>The best place to browse, and explore Hypixel Housing.</p>
+        </section>
+
+        <section class="content">
+            <section class="features">
+                <a href="/browser.html">
+                    <div class="notification-card">
+                        <h2>Browse the HTSL Library</h2>
+                        <p>View, download and use what users have created using HTSL.</p>
+                        <button class="blue-btn"><i class="fas fa-code"></i> Browse HTSL</button>
+                    </div>
+                </a>
+                <a href="/housing.html">
+                    <div class="notification-card">
+                        <h2>Browse Hypixel Housing</h2>
+                        <p>Explore all active housings on Hypixel Housing through the web.</p>
+                        <button class="blue-btn"><i class="fas fa-house"></i> View active Housings</button>
+                    </div>
+                </a>
+                <div class="notification-card">
+                    <h2>View your Dashboard</h2>
+                    <p>Create, upload and manage your creations on HousingBase with the community.</p>
+                    <button class="blue-btn"><i class="fas fa-diagram-project"></i> Manage projects</button>
+                </div>
+                <div class="notification-card">
+                    <h2>External Links and Tools</h2>
+                    <p>Check out recommended Housing Tools, mods and resource packs provided by others.</p>
+                    <button class="blue-btn"><i class="fas fa-external-link-alt"></i> View external Links</button>
+                </div>
+
+            </section>
+            <div class="section-divider"></div>
+            <h1 class="titleh1">Update History</h1>
+
+            <section class="grid1">
+                                    <div class="update-card">
+                        <h2 class="title">Online Housing Browser for HousingBase
+                        </h2>
+                        <p class="description">Release of the Housing Browser</p>
+                        <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 24th 2025 - 3:16 PM</p>
+                        <div class="section-divider"></div>
+                        <a class="update-contents">
+                            The Housing Browser is now live on HousingBase! You can now explore all active housings on Hypixel Housing through the web. Simply head to the "Browse Housing" section to get started. Search, filter, and view housings with ease. We hope you enjoy this new feature as we continue to enhance your HousingBase experience!
+                            <div>
+                                <div></div>
+                            </div>
+                            <a href="/browser.html"><button class="blue-btn"><i class="fas fa-external-link-alt"></i> Open Housing Browser</button></a>
+                        </a>
+                    </div>
+                    <div class="update-card">
+                        <h2 class="title">Open Beta for HousingBase</h2>
+                        <p class="description">Initial open beta release for testing purposes</p>
+                        <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 10th 2025 - 7:21 PM</p>
+                        <div class="section-divider"></div>
+                        <a class="update-contents">
+                            You are now able to preview HousingBase and test features before its full release!
+                            This Includes browsing the HTSL Library, viewing active housings and accessing your dashboard.
+                            More features will be added in the coming weeks as we prepare for full release. Stay tuned!
+                        </a>
+                    </div>
+            </section>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a class="yt" href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
 
 
-  <script src="/script.js"></script>
+            <div class="section-divider"></div>
+            <p class="info"><a href="/index.html">About</a> <a href="/contact.html">Contact</a> <a
+                    href="/terms.html">Terms</a></p>
+            <a>
+                <p>-</p>
+            </a>
+            <p>&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
