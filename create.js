@@ -63,7 +63,7 @@
     box.style.transform = "scale(1)";
 
     document.getElementById("warn-continue").onclick = () => {
-      window.location.href = "/index.html";
+      window.location.href = "/browser.html";
     };
 
     return;
@@ -143,7 +143,7 @@
     const file = fileInput.files[0];
 
     if (!name || !file) {
-      showStatus("Name and .htsl file are required.", "error");
+      showStatus("Project name or file is missing.", "error");
       uploadBtn.disabled = false;
       return;
     }
@@ -165,7 +165,7 @@
 
       if (res.ok) {
         const data = await res.json();
-        showStatus(`Addon "${sanitize(data.name)}" uploaded successfully! Redirecting...`, "ok");
+        showStatus(`Redirecting...`, "ok");
         setTimeout(() => window.location.href = "/index.html", 1500);
       } else {
         const data = await res.json().catch(() => ({}));

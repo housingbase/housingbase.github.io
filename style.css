@@ -1132,6 +1132,7 @@ footer {
   margin-top: 8px;
   margin-bottom: 4px;
   border: 1px solid #2b2b2b;
+  color: #fff;
   background:rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   box-sizing: border-box;
@@ -1230,10 +1231,11 @@ footer {
 
 #upload-status {
   font-weight: bold;
+  color: #fff;
 }
 
 #drop-area {
-  border: 2px dashed #2081ff;
+  border: 2px dashed var(--accent);
   border-radius: 8px;
 background: #202020;
   padding: 40px;
