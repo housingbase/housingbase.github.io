@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Create - SpigotBase</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/image/favicon.png" type="image/png">
   <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
-  <style>
-    /* Character counter style */
-    .char-counter {
-      font-size: 0.85rem;
-      color: #555;
-      margin-top: 4px;
-      display: block;
-    }
-    .char-counter.full {
-      color: #8d1717; /* red when maxed out */
-    }
-
-    /* Input styling */
-    #addonName, #addonDesc {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 4px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-size: 0.95rem;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+  <title>Create | HousingBase</title>
 </head>
+
 <body>
   <div id="announcement" style="display:none;"></div>
 
   <!-- Header -->
-<header class="banner">
-    <img src="/image/header.png" alt="Header Banner" class="header-img">
-    <div class="overlay-bar">
-      <div class="nav-left">
-        <h1 class="logo">SpigotBase</h1>
-        <nav class="nav-links">
-          <a href="/index.html">HTSL Browser</a><span class="divider"></span>
-          <a href="/projects.html">Projects</a><span class="divider"></span>
-          <a href="#">About</a><span class="divider"></span>
-          <a href="/housing.html">Housing Browser</a><span class="divider"></span>
-          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
-          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
-        </nav>
-      </div>
-        <div class="nav-right">
-            <div id="logged-out" style="display:flex; align-items:center;">
-                <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
-            </div>
-            <div id="logged-in" style="display:none; align-items:center;">
-                <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
-                <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
-            </div>
+  <img src="/image/header.png" alt="Header Banner" class="header-img">
+  <header>
+
+    <div class="header-container">
+      <a href="/index.html">
+        <div class="logo-container">
+          <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
+          <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
         </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/browser.html">HTSL Library</a>
+        <a href="/projects.html">Our Projects</a>
+        <a href="/housing.html">Browse Housing</a>
+        <a href="/create.html">Dashboard</a>
+      </nav>
+
+      <div class="user-status">
+        <div id="logged-out" style="display:flex; align-items:center;">
+          <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
+          <div style="margin-left: 5px;"></div>
+          <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
+        </div>
+        <div id="logged-in" style="display:none; align-items:center;">
+          <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
+          <span id="displayName" class="display-name"></span>
+        </div>
+      </div>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-</header>
+  </header>
+
+  <div id="announcement" style="display:none;"></div>
+
 
   <main class="container">
     <h3>Upload a new HTSL File</h3>
@@ -71,44 +67,59 @@
       <div id="file-name" style="margin-bottom: 10px; color: #333;"></div>
 
       <label for="addonName">Project Name</label>
-      <input id="addonName" placeholder="Project name" maxlength="30" required>
+      <input class="InputNew" id="addonName" placeholder="Project name" maxlength="30" required>
       <span id="nameCounter" class="char-counter">0 / 30</span>
 
       <label for="addonDesc">Project Description</label>
-      <input id="addonDesc" placeholder="Description (optional)" maxlength="80">
+      <input class="InputNew" id="addonDesc" placeholder="Description (optional)" maxlength="80">
       <span id="descCounter" class="char-counter">0 / 80</span>
 
-      <button id="uploadBtn" class="upload-btn">Upload</button>
-      <a href="index.html"><button id="cancelBtn" class="red-btn">Cancel</button></a>
+      <button id="uploadBtn" class="blue-btn">Upload</button>
+      <a href="index.html"><button id="cancel-btn" class="del-btn">Cancel</button></a>
       <span id="upload-status" style="display:block; margin-top:10px;"></span>
 
-      
-      
+
+
     </section>
   </main>
 
   <footer>
     <div class="container">
-      <p>&copy; 2025 <b>SpigotBase</b>. All Rights Reserved</p>
-      <p>&copy; SpigotBase is in no way affiliated or endorsed by Hypixel OR SpigotMC/Bukkit.</p>
+      <div class="social-links">
+        <a class="yt" href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+
+
+      <div class="section-divider"></div>
+      <p class="info"><a href="/index.html">About</a> <a href="/contact.html">Contact</a> <a
+          href="/terms.html">Terms</a></p>
+      <a>
+        <p>-</p>
+      </a>
+      <p>&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
     </div>
   </footer>
-
-<div id="warn-overlay">
-  <div id="warn-box">
-    <div class="warn-header">
-      <h3>Warning!</h3>
-    </div>
-    <div class="warn-body">
-      <p>You must be verified and signed in to upload and distribute on the HTSL Browser.</p>
-      <button id="warn-continue" class="blue-btn" style="margin-top:12px; font-size:1rem;">Continue</button>
+  <div id="warn-overlay", style="display:none;"> <!-- temp solution for dev -->
+    <div id="warn-box">
+      <div class="warn-header">
+        <h3>Access Denied</h3>
+      </div>
+      <div class="warn-body">
+        <p>You must be verified and signed in to upload and distribute in the HTSL Library. Sign in <a class="user-link"  href="/login.html">here</a>, or <a class="user-link"  href="/register.html">create a new account</a>.</p>
+        <button id="warn-continue" class="blue-btn" style="margin-top:12px; font-size:1rem;">Continue</button>
+      </div>
     </div>
   </div>
-</div>
 
 
   <script src="/script.js"></script>
-<script src="/create.js"></script>
+  <script src="/create.js"></script>
 
 </body>
+
 </html>

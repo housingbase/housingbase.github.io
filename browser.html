@@ -1,121 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="/image/favicon.png" type="image/png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <title>HTSL Library | HousingBase</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/image/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+  <title>HTSL Library | HousingBase</title>
 </head>
 
 <body>
-      <img src="/image/header.png" alt="Header Banner" class="header-img">
-    <header>
-        
-        <div class="header-container">
-            <a href="/index.html">
-                <div class="logo-container">
-                    <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
-                    <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
-                </div>
-            </a>
+  <img src="/image/header.png" alt="Header Banner" class="header-img">
+  <header>
 
-            <nav class="nav-links">
-                <a href="/browser.html">HTSL Library</a>
-                <a href="/projects.html">Our Projects</a>
-                <a href="/housing.html">Browse Housing</a>
-                <a href="/create.html">Dashboard</a>
-            </nav>
-
-            <div class="user-status">
-                <div id="logged-out" style="display:flex; align-items:center;">
-                    <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
-                    <div style="margin-left: 5px;"></div>
-                    <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
-                </div>
-                <div id="logged-in" style="display:none; align-items:center;">
-                    <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
-                    <span id="displayName" class="display-name"></span>
-                </div>
-            </div>
-
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+    <div class="header-container">
+      <a href="/index.html">
+        <div class="logo-container">
+          <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
+          <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
         </div>
-    </header>
+      </a>
 
-    <div id="announcement" style="display:none;"></div>
+      <nav class="nav-links">
+        <a href="/browser.html">HTSL Library</a>
+        <a href="/projects.html">Our Projects</a>
+        <a href="/housing.html">Browse Housing</a>
+        <a href="/create.html">Dashboard</a>
+      </nav>
+
+      <div class="user-status">
+        <div id="logged-out" style="display:flex; align-items:center;">
+          <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
+          <div style="margin-left: 5px;"></div>
+          <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
+        </div>
+        <div id="logged-in" style="display:none; align-items:center;">
+          <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
+          <span id="displayName" class="display-name"></span>
+        </div>
+      </div>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <div id="announcement" style="display:none;"></div>
 
   <main class="container">
     <div class="light">
-    <h2>HTSL Library</h2>
-    <p>Discover and upload user created HTSL.</p>
-  <div class="section-divider"></div></div>
+      <h2>HTSL Library</h2>
+      <p>Discover and upload user created HTSL.</p>
+      <a href="/create.html"><button class="create-btn" style="margin-right: 15px; margin-top: 25px; padding: 10px 20px;">Upload HTSL</button></a>
+      <div class="section-divider"></div>
+    </div>
     <div id="addon-list" class="card-grid"></div>
   </main>
 
- <footer>
-        <div class="container">
-            <div class="social-links">
-                <a class="yt" href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
+  <footer>
+    <div class="container">
+      <div class="social-links">
+        <a class="yt" href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
 
 
-            <div class="section-divider"></div>
-            <p class="info"><a href="/index.html">About</a> <a href="/contact.html">Contact</a> <a
-                    href="/terms.html">Terms</a></p>
-            <a>
-                <p>-</p>
-            </a>
-            <p>&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
-        </div>
-    </footer>
-<div id="modal-overlay">
-  <div id="modal-box">
-    <!-- Modal Header -->
-    <div class="modal-header">
-      <h3 id="modal-title"></h3>
-      <span id="modal-close">&times;</span>
-    </div>
-
-    <!-- Modal Body -->
-    <div class="modal-body">
-      <p id="modal-desc"></p>
-      <a id="modal-download" href="#" target="_blank">
-        <button class="blue-btn" style="margin-top:12px; font-size:1rem;">Download</button>
+      <div class="section-divider"></div>
+      <p class="info"><a href="/index.html">About</a> <a href="/contact.html">Contact</a> <a
+          href="/terms.html">Terms</a></p>
+      <a>
+        <p>-</p>
       </a>
-      <h4>Code Contents:</h4>
+      <p>&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
     </div>
-  </div>
-</div>
-<div id="del-confirm-overlay" class="del-modal-overlay">
-  <div id="del-confirm-box" class="del-modal-box">
-    <div class="del-modal-header">
-      <h3>Confirm Action?</h3>
-      <span id="del-confirm-close" class="del-modal-close">&times;</span>
-    </div>
-    <div class="del-modal-body">
-      <p id="del-confirm-desc">Are you sure you want to delete '<Addon Name>'?</p>
-      <div style="margin-top:12px; display:flex; gap:10px;">
-        <button id="del-confirm-yes" class="blue-btn">Confirm</button>
-        <button id="del-confirm-no" class="del-btn">Cancel</button>
+  </footer>
+  <div id="modal-overlay">
+    <div id="modal-box">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <span id="modal-close">&times;</span>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <p id="modal-desc"></p>
+        <a id="modal-download" href="#" target="_blank">
+          <button class="blue-btn" style="margin-top:12px; font-size:1rem;">Download</button>
+        </a>
+        <h4>Code Contents:</h4>
       </div>
     </div>
   </div>
-</div>
+  <div id="del-confirm-overlay" class="del-modal-overlay">
+    <div id="del-confirm-box" class="del-modal-box">
+      <div class="del-modal-header">
+        <h3>Confirm Action?</h3>
+        <span id="del-confirm-close" class="del-modal-close">&times;</span>
+      </div>
+      <div class="del-modal-body">
+        <p id="del-confirm-desc">Are you sure you want to delete '<Addon Name>'?</p>
+        <div style="margin-top:12px; display:flex; gap:10px;">
+          <button id="del-confirm-yes" class="blue-btn">Confirm</button>
+          <button id="del-confirm-no" class="del-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <script src="/script.js"></script>
 </body>
+
 </html>
