@@ -112,7 +112,7 @@ async function loadDashboard() {
   renderAuth(me);
   await loadAnnouncement();
 
-  const list = document.getElementById("addon-list");
+  const list = document.getElementById("projects-dashboard");
   if (!list) return;
   list.innerHTML = "";
 
