@@ -244,20 +244,29 @@
             document.getElementById('sidebar').classList.toggle('open');
             document.querySelector('.hamburger').classList.toggle('active');
         });
-        const main = document.getElementById('dashboard-content');
-const params = new URLSearchParams(window.location.search);
-const page = params.get('page') || 'projects'; // default page
+document.addEventListener("DOMContentLoaded", async () => {
+    const main = document.getElementById('dashboard-content');
 
-switch(page) {
-    case 'analytics':
-        main.innerHTML = '<h1>Analytics Dashboard</h1>';
-        break;
-    case 'account':
-        main.innerHTML = '<h1>Account Settings</h1>';
-        break;
-    default:
-        main.innerHTML = '<h1>Projects Overview</h1><div id="projects-dashboard"></div>';
-}
+    // Dynamically inject the content
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page') || 'projects'; // default page
+
+    switch(page) {
+        case 'analytics':
+            main.innerHTML = '<h1>Analytics Dashboard</h1>';
+            break;
+        case 'account':
+            main.innerHTML = '<h1>Account Settings</h1>';
+            break;
+        default:
+            main.innerHTML = '<h1>Projects Overview</h1><div id="projects-dashboard"></div>';
+    }
+
+    // Now the div exists — call your dashboard loader
+    if (page === 'projects') {
+        await loadDashboard(); // from dashboard.js
+    }
+});
     </script>
 
   <div id="warn-overlay"> <!-- temp solution for dev -->
