@@ -1,11 +1,5 @@
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("page") !== "projects") return; // safe now
 
-  // -------------------- REST OF DASHBOARD.JS --------------------
-  // Your existing dashboard.js code goes here...
-
-
+// dashboard.js
 const API_BASE = "https://bytebukkit-server.onrender.com";
 
 // -------------------- AUTH --------------------
@@ -241,5 +235,4 @@ function showDeleteModal(addonName, onConfirm) {
 // -------------------- INIT --------------------
 (async function init() {
   await loadDashboard();
-})();
 })();
