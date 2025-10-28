@@ -1,8 +1,3 @@
-
-
-(function() {
-const API_BASE = "https://bytebukkit-server.onrender.com";
-
 // -------------------- AUTH --------------------
 async function getMe() {
   try {
@@ -232,5 +227,3 @@ function showDeleteModal(addonName, onConfirm) {
   overlay.onclick = e => { if (e.target.id === "del-confirm-overlay") closeDeleteModal(); };
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeDeleteModal(); });
 }
-
-})();
