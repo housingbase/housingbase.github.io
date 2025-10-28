@@ -233,9 +233,4 @@ function showDeleteModal(addonName, onConfirm) {
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeDeleteModal(); });
 }
 
-// -------------------- INIT --------------------
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadDashboard();
-});
-
 })();
