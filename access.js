@@ -56,6 +56,4 @@
         return; 
     }
 
-    
-    console.log("User is authenticated:", me);
 })();

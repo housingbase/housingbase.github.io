@@ -1,5 +1,6 @@
 
-// dashboard.js
+
+(function() {
 const API_BASE = "https://bytebukkit-server.onrender.com";
 
 // -------------------- AUTH --------------------
@@ -235,4 +236,5 @@ function showDeleteModal(addonName, onConfirm) {
 // -------------------- INIT --------------------
 (async function init() {
   await loadDashboard();
+})();
 })();
