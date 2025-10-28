@@ -1,10 +1,9 @@
-// -------------------- AUTH --------------------
+// -------------------- AUTH / USER --------------------
 async function getMe() {
   try {
     const token = localStorage.getItem("authToken");
-    if (!token) return null;
     const res = await fetch(`${API_BASE}/api/me`, {
-      headers: { "Authorization": `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` }
     });
     if (!res.ok) return null;
     return await res.json();
@@ -13,93 +12,113 @@ async function getMe() {
   }
 }
 
+function avatarURL(path) {
+  if (!path || path.length === 0) return `${API_BASE}/uploads/avatars/default.png`;
+  if (path.startsWith("http")) return path;
+  return `${API_BASE}/${path.replace(/^\/?/, "")}`;
+}
+
 function renderAuth(user) {
   const loggedOut = document.getElementById("logged-out");
   const loggedIn = document.getElementById("logged-in");
-  if (!loggedOut || !loggedIn) return;
+  const createBtn = document.getElementById("createAddonBtn");
 
   if (user) {
-    loggedOut.style.display = "none";
-    loggedIn.style.display = "inline-flex";
+    if (loggedOut) loggedOut.style.display = "none";
+    if (loggedIn) loggedIn.style.display = "inline-flex";
+    if (createBtn) createBtn.style.display = "block";
 
-    const avatarSmall = document.getElementById("avatarSmall");
-    if (avatarSmall) {
-      avatarSmall.src = user.avatar || "/uploads/avatars/default.png";
-      avatarSmall.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
+    const avatar = document.getElementById("avatarSmall");
+    if (avatar) {
+      avatar.src = avatarURL(user.avatar);
+      avatar.style.cursor = "pointer";
+      avatar.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
 
     const displayName = document.getElementById("displayName");
     if (displayName) {
       displayName.textContent = user.displayName || user.username;
+      displayName.style.cursor = "pointer";
       displayName.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
   } else {
-    loggedOut.style.display = "inline-flex";
-    loggedIn.style.display = "none";
+    if (loggedOut) loggedOut.style.display = "inline-flex";
+    if (loggedIn) loggedIn.style.display = "none";
+    if (createBtn) createBtn.style.display = "none";
   }
 }
 
-// -------------------- ANNOUNCEMENT --------------------
+// -------------------- ANNOUNCEMENTS --------------------
 async function loadAnnouncement() {
-  const box = document.getElementById("announcement");
-  if (!box) return;
+  try {
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${API_BASE}/api/announcement`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const box = document.getElementById("announcement");
+    if (!box) return;
 
-  const res = await fetch(`${API_BASE}/api/announcement`, {
-    headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
-  });
-  if (!res.ok) return;
-
-  const data = await res.json();
-  if (data?.text) {
-    box.style.display = "block";
-    box.style.background = data.bg_color || "#fff3cd";
-    box.style.color = data.text_color || "#000";
-    box.style.padding = "10px";
-    box.style.textAlign = "center";
-    box.textContent = data.text;
-  } else {
-    box.style.display = "none";
+    if (data?.text) {
+      box.style.display = "block";
+      box.style.backgroundColor = data.bg_color || "#181818ff";
+      box.style.color = data.text_color || "#ffffff";
+      box.textContent = data.text;
+    } else {
+      box.style.display = "none";
+    }
+  } catch (err) {
+    console.error("Failed to load announcement:", err);
   }
 }
 
-// -------------------- MODALS --------------------
-function showModal(message, overlayId, boxId, btnId) {
-  const overlay = document.getElementById(overlayId);
-  const box = document.getElementById(boxId);
-  const msg = document.getElementById(btnId + "-message");
-  const btn = document.getElementById(btnId + "-continue");
+// -------------------- DELETE MODAL --------------------
+function showDeleteModal(addonName, onConfirm) {
+  const descEl = document.getElementById("del-confirm-desc");
+  const overlay = document.getElementById("del-confirm-overlay");
+  const box = document.getElementById("del-confirm-box");
 
-  if (!overlay || !box || !msg || !btn) return;
-  msg.textContent = message;
+  if (!descEl || !overlay || !box) return;
+
+  descEl.textContent = `Are you sure you want to delete '${addonName}'?`;
   overlay.classList.add("show");
   overlay.style.opacity = "1";
   box.style.transform = "scale(1)";
 
-  btn.onclick = () => {
-    overlay.style.opacity = "0";
-    box.style.transform = "scale(0.5)";
-    const handler = (e) => {
-      if (e.propertyName === "opacity") {
-        overlay.classList.remove("show");
-        overlay.style.opacity = "";
-        box.style.transform = "";
-        overlay.removeEventListener("transitionend", handler);
-      }
-    };
-    overlay.addEventListener("transitionend", handler);
+  const yesBtn = document.getElementById("del-confirm-yes");
+  const noBtn = document.getElementById("del-confirm-no");
+  const closeBtn = document.getElementById("del-confirm-close");
+
+  yesBtn.onclick = () => { closeDeleteModal(); onConfirm(); };
+  noBtn.onclick = closeDeleteModal;
+  closeBtn.onclick = closeDeleteModal;
+
+  overlay.onclick = e => { if (e.target.id === "del-confirm-overlay") closeDeleteModal(); };
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDeleteModal(); });
+}
+
+function closeDeleteModal() {
+  const overlay = document.getElementById("del-confirm-overlay");
+  const box = document.getElementById("del-confirm-box");
+  if (!overlay || !box) return;
+
+  overlay.style.opacity = "0";
+  box.style.transform = "scale(0.5)";
+
+  const handler = function(e) {
+    if (e.propertyName === "opacity") {
+      overlay.classList.remove("show");
+      overlay.style.opacity = "";
+      box.style.transform = "";
+      overlay.removeEventListener("transitionend", handler);
+    }
   };
+
+  overlay.addEventListener("transitionend", handler);
 }
 
-function showWarnModal(message) { showModal(message, "warn-overlay", "warn-box", "warn"); }
-function showSuccessModal(message) { showModal(message, "success-overlay", "success-box", "success"); }
-
-// -------------------- DASHBOARD CONTENT --------------------
-function avatarURL(path) {
-  if (!path) return `${API_BASE}/uploads/avatars/default.png`;
-  if (path.startsWith("http")) return path;
-  return `${API_BASE}/${path.replace(/^\/?/, "")}`;
-}
-
+// -------------------- DASHBOARD / ADDONS --------------------
 async function loadDashboard() {
   const me = await getMe();
   if (!me) return window.location.href = "/login.html";
@@ -107,24 +126,36 @@ async function loadDashboard() {
   renderAuth(me);
   await loadAnnouncement();
 
-  const list = document.getElementById("projects-dashboard");
-  if (!list) return;
-  list.innerHTML = "";
+  const container = document.getElementById("projects-dashboard");
+  if (!container) return;
+  container.innerHTML = "";
 
-  (me.addons || []).forEach(addon => {
+  const token = localStorage.getItem("authToken");
+  const res = await fetch(`${API_BASE}/api/addons`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) return;
+
+  const addons = await res.json();
+  const myAddons = addons.filter(a => a.username === me.username);
+
+  myAddons.forEach(a => {
     const card = document.createElement("div");
     card.className = "addon-card";
 
+    // Title
     const title = document.createElement("h4");
-    title.textContent = addon.name;
+    title.textContent = a.name;
     card.appendChild(title);
 
-    if (addon.description) {
+    // Description
+    if (a.description) {
       const desc = document.createElement("p");
-      desc.textContent = addon.description;
+      desc.textContent = a.description;
       card.appendChild(desc);
     }
 
+    // Meta
     const meta = document.createElement("p");
     meta.className = "meta";
 
@@ -141,104 +172,109 @@ async function loadDashboard() {
     userLink.textContent = "@" + (me.displayName || me.username);
     userLink.className = "user-link";
 
+    const dateSpan = document.createElement("span");
+    dateSpan.style.marginLeft = "8px";
+    dateSpan.textContent = new Date(a.created_at).toLocaleString();
+
     meta.appendChild(avatarImg);
     meta.appendChild(userLink);
+    meta.appendChild(dateSpan);
     card.appendChild(meta);
 
+    // Buttons
     const btnContainer = document.createElement("div");
     btnContainer.style.display = "flex";
     btnContainer.style.gap = "8px";
 
+    // Download
     const downloadBtn = document.createElement("a");
-    downloadBtn.href = `${API_BASE}/api/addons/${addon._id}/download`;
+    downloadBtn.href = `${API_BASE}/api/addons/${a.id}/download`;
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
     dlButton.className = "blue-btn";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
 
-    const canDelete = true; // always user's own addons
-    if (canDelete) {
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "Delete";
-      delBtn.style.backgroundColor = "#c62828";
-      delBtn.onclick = () => {
-        showDeleteModal(addon.name, async () => {
-          const r = await fetch(`${API_BASE}/api/addons/${addon._id}`, {
-            method: "DELETE",
-            headers: { "Authorization": `Bearer ${localStorage.getItem("authToken")}` }
-          });
-          if (r.status === 204) loadDashboard();
-          else showWarnModal("Failed to delete this addon.");
-        });
-      };
-      btnContainer.appendChild(delBtn);
-    }
+    // Delete
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.className = "del-btn";
+    delBtn.onclick = () => showDeleteModal(a.name, async () => {
+      const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (delRes.status === 204) loadDashboard();
+    });
+    btnContainer.appendChild(delBtn);
 
     card.appendChild(btnContainer);
 
-    card.addEventListener("click", e => {
+    // Modal
+    card.addEventListener("click", async e => {
       if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
       const overlay = document.getElementById("modal-overlay");
       const box = document.getElementById("modal-box");
-      document.getElementById("modal-title").textContent = addon.name;
-      document.getElementById("modal-desc").textContent = addon.description || "No description provided.";
-      document.getElementById("modal-download").href = `${API_BASE}/api/addons/${addon._id}/download`;
+      const modalBody = document.querySelector(".modal-body");
+      const modalTitle = document.getElementById("modal-title");
+      const modalDesc = document.getElementById("modal-desc");
+      const modalDownload = document.getElementById("modal-download");
+
+      if (!overlay || !box || !modalBody || !modalTitle || !modalDesc || !modalDownload) return;
+
+      modalTitle.textContent = a.name;
+      modalDesc.textContent = a.description || "No description provided.";
+      modalDownload.href = `${API_BASE}/api/addons/${a.id}/download`;
+      modalDownload.style.display = "inline-block";
 
       overlay.classList.add("show");
       overlay.style.opacity = "1";
       box.style.transform = "scale(1)";
+
+      const oldPre = modalBody.querySelector("pre");
+      if (oldPre) oldPre.remove();
+
+      try {
+        const res = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
+        const data = await res.json();
+        const pre = document.createElement("pre");
+        pre.textContent = data.content || "(empty file)";
+        modalBody.appendChild(pre);
+      } catch (err) {
+        console.error("Failed to load addon content:", err);
+      }
     });
 
-    list.appendChild(card);
+    container.appendChild(card);
   });
+
+  // Modal close logic
+  const modalClose = document.getElementById("modal-close");
+  const modalOverlay = document.getElementById("modal-overlay");
+  const modalBox = document.getElementById("modal-box");
+
+  function closeModal() {
+    if (!modalOverlay || !modalBox) return;
+    modalOverlay.style.opacity = "0";
+    modalBox.style.transform = "scale(0.5)";
+
+    const handler = function(e) {
+      if (e.propertyName === "opacity") {
+        modalOverlay.classList.remove("show");
+        modalOverlay.style.opacity = "";
+        modalBox.style.transform = "";
+        modalOverlay.removeEventListener("transitionend", handler);
+      }
+    };
+
+    modalOverlay.addEventListener("transitionend", handler);
+  }
+
+  if (modalClose) modalClose.onclick = closeModal;
+  if (modalOverlay) modalOverlay.onclick = e => { if (e.target.id === "modal-overlay") closeModal(); };
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 }
 
-// -------------------- DELETE MODAL --------------------
-function closeDeleteModal() {
-  const overlay = document.getElementById("del-confirm-overlay");
-  const box = document.getElementById("del-confirm-box");
-  overlay.style.opacity = "0";
-  box.style.transform = "scale(0.5)";
-  overlay.addEventListener("transitionend", function handler(e) {
-    if (e.propertyName === "opacity") {
-      overlay.classList.remove("show");
-      overlay.style.opacity = "";
-      box.style.transform = "";
-      overlay.removeEventListener("transitionend", handler);
-    }
-  });
-}
-
-function showDeleteModal(addonName, onConfirm) {
-  document.getElementById("del-confirm-desc").textContent =
-    `Are you sure you want to delete '${addonName}'?`;
-
-  const overlay = document.getElementById("del-confirm-overlay");
-  const box = document.getElementById("del-confirm-box");
-  overlay.classList.add("show");
-  overlay.style.opacity = "1";
-  box.style.transform = "scale(1)";
-
-  document.getElementById("del-confirm-yes").onclick = () => { closeDeleteModal(); onConfirm(); };
-  document.getElementById("del-confirm-no").onclick = closeDeleteModal;
-  document.getElementById("del-confirm-close").onclick = closeDeleteModal;
-  overlay.onclick = e => { if (e.target.id === "del-confirm-overlay") closeDeleteModal(); };
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDeleteModal(); });
-}
-
-function loadFakeDashboard() {
-  const list = document.getElementById("projects-dashboard");
-  if (!list) return;
-
-  list.innerHTML = `
-    <h2>Fake Dashboard Loaded</h2>
-    <p>This is a test addon card.</p>
-  `;
-}
-
-// Call it after the page loads
-document.addEventListener("DOMContentLoaded", () => {
-  loadFakeDashboard();
-});
+// -------------------- INITIALIZE --------------------
+document.addEventListener("DOMContentLoaded", loadDashboard);
