@@ -227,3 +227,18 @@ function showDeleteModal(addonName, onConfirm) {
   overlay.onclick = e => { if (e.target.id === "del-confirm-overlay") closeDeleteModal(); };
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeDeleteModal(); });
 }
+
+function loadFakeDashboard() {
+  const list = document.getElementById("projects-dashboard");
+  if (!list) return;
+
+  list.innerHTML = `
+    <h2>Fake Dashboard Loaded</h2>
+    <p>This is a test addon card.</p>
+  `;
+}
+
+// Call it after the page loads
+document.addEventListener("DOMContentLoaded", () => {
+  loadFakeDashboard();
+});
