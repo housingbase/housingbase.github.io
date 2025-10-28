@@ -4,7 +4,7 @@
 
   // -------------------- REST OF DASHBOARD.JS --------------------
   // Your existing dashboard.js code goes here...
-})();
+
 
 const API_BASE = "https://bytebukkit-server.onrender.com";
 
@@ -241,4 +241,5 @@ function showDeleteModal(addonName, onConfirm) {
 // -------------------- INIT --------------------
 (async function init() {
   await loadDashboard();
+})();
 })();
