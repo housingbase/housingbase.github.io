@@ -78,17 +78,14 @@ header {
   transform: translateY(-50%);
   height: 100%;
   width: auto;
-  transition: all 0.3s ease;
+  transition: filter 0.3s ease;
   cursor: pointer;
 }
 
-.logo-container img {
-  transition: all 0.3s ease;
+.logo-container img:hover {
+  filter: brightness(1.5);
 }
 
-.logo-container:hover {
-  filter: brightness(150%);
-}
 
 .nav-links {
   display: flex;

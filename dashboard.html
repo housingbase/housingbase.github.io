@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/image/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <title>HousingBase Dashboard</title>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 45px;
+            left: 0;
+            width: 220px;
+            height: calc(100vh - 45px);
+            background: #141414;
+            border-right: 1px solid #3d3d3d;
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0;
+            transition: transform 0.3s ease;
+            z-index: 999;
+        }
+
+        .sidebar a {
+            color: #E5E7EB;
+            text-decoration: none;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+            margin-right: 15px;
+            border-radius: 3px;
+            height: 30px;
+            width: auto;
+            padding-inline: 10px;
+            gap: 15px;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background: #20569448;
+        }
+
+        .sidebar .sidebar-header {
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            font-family: monospace;
+            letter-spacing: 1px;
+            padding: 0 15px;
+            color: #949494;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .sidebar-h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-family: monospace;
+            letter-spacing: 1px;
+            padding: 0 20px;
+            color: #6b6b6b;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        body {
+            background-color: #0c0c0c;
+            margin: 0;
+        }
+
+        .page-container {
+            display: flex;
+        }
+
+        main {
+            margin-left: 230px;
+            width: calc(100% - 230px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            main {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        header {
+            display: flex;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 45px;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            width: 220px;
+            /* matches sidebar */
+            background-color: #111111;
+            border-right: 1px solid #3d3d3d;
+            border-bottom: 1px solid #3d3d3d;
+            padding-left: 16px;
+            box-sizing: border-box;
+        }
+
+        .header-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background-color: #0c0c0c;
+            padding-right: 1rem;
+            box-sizing: border-box;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        .logo-container {
+            position: relative;
+            height: 23px;
+            width: auto;
+        }
+
+        .logo-container img {
+            height: 100%;
+            width: auto;
+            transition: filter 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo-container img:hover {
+            filter: brightness(1.5);
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar-small {
+            border-radius: 2px;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: background 0.3s ease;
+            padding: 3px;
+        }
+
+        .avatar-small:hover {
+            background: #6e6e6e48;
+        }
+
+        .display-name {
+            margin-right: 10px;
+            font-weight: lighter;
+            color: #aaaaaa;
+            cursor: pointer;
+            font-family: monospace, sans-serif;
+        }
+
+        .divider {
+            width: 1px;
+            height: 25px;
+            background-color: #3d3d3d;
+            margin-right: 8px;
+        }
+
+        .btn {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.15s ease;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <div class="header-left">
+            <a href="/index.html">
+                <div class="logo-container">
+                    <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
+                    <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
+                </div>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="controls">
+                <a href="/browser.html"><button class="btn">test</button></a>
+            </div>
+            <div class="user-status">
+                <div id="logged-out" style="display:flex; align-items:center;">
+                    <div class="divider"></div>
+                    <img src="/uploads/avatars/default.png" width="25" height="25" alt="Avatar" class="avatar-small">
+                    <span id="displayName" class="display-name">spigotbase</span>
+                </div>
+            </div>
+
+            <div class="hamburger" id="toggleSidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">Dashboard</div>
+            <div class="sidebar-h4">DEVELOPMENT</div>
+            <a href="?page=projects"><i class="fa-solid fa-house"></i> Projects</a>
+            <a href="?page=analytics"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+            <div class="sidebar-h4">PERSONAL</div>
+            <a href="#"><i class="fa-solid fa-users"></i> Account</a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        </nav>
+
+        <main id="dashboard-content">
+            <h1>yo</h1>
+        </main>
+    </div>
+ <!--too lazy to make ANOTHER js file lmfao-->
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.querySelector('.hamburger').classList.toggle('active');
+        });
+        const main = document.getElementById('dashboard-content');
+const params = new URLSearchParams(window.location.search);
+const page = params.get('page') || 'projects'; // default page
+
+switch(page) {
+    case 'analytics':
+        main.innerHTML = '<h1>Analytics Dashboard</h1>';
+        break;
+    case 'account':
+        main.innerHTML = '<h1>Account Settings</h1>';
+        break;
+    default:
+        main.innerHTML = '<h1>Projects Overview</h1>';
+}
+    </script>
+
+    <script src="access.js"></script>
+    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

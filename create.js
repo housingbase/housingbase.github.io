@@ -1,4 +1,4 @@
-(async function() {
+(async function () {
   const API_BASE = "https://bytebukkit-server.onrender.com";
 
   // ----------------------- HELPERS -----------------------
@@ -157,8 +157,8 @@
       const token = localStorage.getItem("authToken");
       const headers = token ? { "Authorization": `Bearer ${token}` } : {};
 
-      const res = await fetch(`${API_BASE}/api/addons`, { 
-        method: "POST", 
+      const res = await fetch(`${API_BASE}/api/addons`, {
+        method: "POST",
         body: formData,
         headers
       });
