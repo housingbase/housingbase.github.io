@@ -234,7 +234,8 @@ function showDeleteModal(addonName, onConfirm) {
 }
 
 // -------------------- INIT --------------------
-(async function init() {
+document.addEventListener("DOMContentLoaded", async () => {
   await loadDashboard();
-})();
+});
+
 })();
