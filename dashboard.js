@@ -187,13 +187,13 @@ async function loadDashboard() {
     btnContainer.style.gap = "8px";
 
     // Download
-    const downloadBtn = document.createElement("a");
-    downloadBtn.href = `${API_BASE}/api/addons/${a.id}/download`;
+    const manageBtn = document.createElement("a");
+    manageBtn.href = `#edit=${a.name}`;
     const dlButton = document.createElement("button");
-    dlButton.textContent = "Download";
-    dlButton.className = "blue-btn";
-    downloadBtn.appendChild(dlButton);
-    btnContainer.appendChild(downloadBtn);
+    dlButton.textContent = "Edit";
+    dlButton.className = "edit-btn";
+    manageBtn.appendChild(dlButton);
+    btnContainer.appendChild(manageBtn);
 
     // Delete
     const delBtn = document.createElement("button");
@@ -276,5 +276,136 @@ async function loadDashboard() {
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
 }
 
-// -------------------- INITIALIZE --------------------
-document.addEventListener("DOMContentLoaded", loadDashboard);
+function renderMockAddon() {
+  const container = document.getElementById("projects-dashboard");
+  if (!container) return;
+
+  // Single fixed mock addon
+  const mockAddon = {
+    id: "mock-1",
+    name: "Example Addon",
+    description: "This is a demo addon.", // one-line description
+    username: "admin",
+    displayName: "Admin",
+    avatar: "/uploads/avatars/default.png",
+    created_at: new Date().toISOString(),
+    content: "print('Hello from ByteBukkit!')\n# Example script\nprint('Addon loaded')" // multi-line
+  };
+
+  // Build card
+  const card = document.createElement("div");
+  card.className = "addon-card";
+
+  const title = document.createElement("h4");
+  title.textContent = mockAddon.name;
+  card.appendChild(title);
+
+  const desc = document.createElement("p");
+  desc.textContent = mockAddon.description;
+  card.appendChild(desc);
+
+  const meta = document.createElement("p");
+  meta.className = "meta";
+
+  const avatarImg = document.createElement("img");
+  avatarImg.src = avatarURL(mockAddon.avatar);
+  avatarImg.width = 24;
+  avatarImg.height = 24;
+  avatarImg.alt = "Avatar";
+  avatarImg.style.borderRadius = "4px";
+  avatarImg.style.marginRight = "6px";
+
+  const userLink = document.createElement("a");
+  userLink.href = `/profile.html?user=${mockAddon.username}`;
+  userLink.textContent = "@" + mockAddon.displayName;
+  userLink.className = "user-link";
+
+  const dateSpan = document.createElement("span");
+  dateSpan.style.marginLeft = "8px";
+  dateSpan.textContent = new Date(mockAddon.created_at).toLocaleString();
+
+  meta.appendChild(avatarImg);
+  meta.appendChild(userLink);
+  meta.appendChild(dateSpan);
+  card.appendChild(meta);
+
+  // Buttons
+  const btnContainer = document.createElement("div");
+  btnContainer.style.display = "flex";
+  btnContainer.style.gap = "8px";
+
+  const manageBtn = document.createElement("a");
+ manageBtn.href = `#edit=${mockAddon.name}`;
+  const dlButton = document.createElement("button");
+  dlButton.textContent = "Edit";
+  dlButton.className = "edit-btn";
+  manageBtn.appendChild(dlButton);
+  btnContainer.appendChild(manageBtn);
+
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "Delete";
+  delBtn.className = "del-btn";
+  delBtn.onclick = () => {
+    showDeleteModal(mockAddon.name, () => {
+      alert(`Addon "${mockAddon.name}" deleted!`);
+      card.remove();
+    });
+  };
+  btnContainer.appendChild(delBtn);
+
+  card.appendChild(btnContainer);
+
+  // Card click opens modal
+  card.addEventListener("click", e => {
+    if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
+
+    document.getElementById("modal-title").textContent = mockAddon.name;
+    document.getElementById("modal-desc").textContent = mockAddon.description;
+    const modalDownload = document.getElementById("modal-download");
+    modalDownload.href = "#";
+    modalDownload.style.display = "inline-block";
+
+    const overlay = document.getElementById("modal-overlay");
+    const box = document.getElementById("modal-box");
+    const modalBody = document.querySelector(".modal-body");
+
+    overlay.classList.add("show");
+    overlay.style.opacity = "1";
+    box.style.transform = "scale(1)";
+
+    const oldPre = modalBody.querySelector("pre");
+    if (oldPre) oldPre.remove();
+
+    const pre = document.createElement("pre");
+    pre.textContent = mockAddon.content;
+    modalBody.appendChild(pre);
+  });
+
+  container.appendChild(card);
+
+  // Modal close logic
+  const modalClose = document.getElementById("modal-close");
+  const modalOverlay = document.getElementById("modal-overlay");
+  const modalBox = document.getElementById("modal-box");
+
+  function closeModal() {
+    modalOverlay.style.opacity = "0";
+    modalBox.style.transform = "scale(0.5)";
+    modalOverlay.addEventListener("transitionend", function handler(e) {
+      if (e.propertyName === "opacity") {
+        modalOverlay.classList.remove("show");
+        modalOverlay.style.opacity = "";
+        modalBox.style.transform = "";
+        modalOverlay.removeEventListener("transitionend", handler);
+      }
+    });
+  }
+
+  if (modalClose) modalClose.onclick = closeModal;
+  if (modalOverlay) modalOverlay.onclick = e => {
+    if (e.target.id === "modal-overlay") closeModal();
+  };
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+}
