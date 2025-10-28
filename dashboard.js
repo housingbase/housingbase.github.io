@@ -1,14 +1,11 @@
-// Only run this script if we're on ?page=projects
-const params = new URLSearchParams(window.location.search);
-if (params.get("page") !== "projects") {
-  // Not the projects page, exit early
-  return;
-}
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("page") !== "projects") return; // safe now
 
-// -------------------- REST OF DASHBOARD.JS --------------------
-// Your existing dashboard.js code goes here...
+  // -------------------- REST OF DASHBOARD.JS --------------------
+  // Your existing dashboard.js code goes here...
+})();
 
-// dashboard.js
 const API_BASE = "https://bytebukkit-server.onrender.com";
 
 // -------------------- AUTH --------------------
