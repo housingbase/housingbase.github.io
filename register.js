@@ -1,5 +1,3 @@
-const API_BASE = "https://bytebukkit-server.onrender.com";
-
 document.addEventListener("DOMContentLoaded", () => {
   const registerBtn = document.getElementById("registerBtn");
   const status = document.getElementById("status");
