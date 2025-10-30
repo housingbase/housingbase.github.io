@@ -10,12 +10,125 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     <title>Home | HousingBase</title>
+    <style>
+        /* ==== GLOBAL PAGE FADE ==== */
+        body {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        body.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==== HEADER: Fade in + slide down ==== */
+        header {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .loaded header {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.1s;
+        }
+
+        /* ==== HERO SECTION ==== */
+        .hero {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .loaded .hero {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.3s;
+        }
+
+        /* ==== FEATURE CARDS ==== */
+        .features a {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .loaded .features a:nth-child(1) {
+            transition-delay: 0.4s;
+        }
+
+        .loaded .features a:nth-child(2) {
+            transition-delay: 0.5s;
+        }
+
+        .loaded .features a:nth-child(3) {
+            transition-delay: 0.6s;
+        }
+
+        .loaded .features a:nth-child(4) {
+            transition-delay: 0.7s;
+        }
+
+        .loaded .features a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==== UPDATE CARDS ==== */
+        .update-card {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .loaded .update-card:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.9s;
+        }
+
+        .loaded .update-card:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1.1s;
+        }
+
+        /* ==== FOOTER ==== */
+        footer {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .loaded footer {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 1.3s;
+        }
+
+        .hero h1,
+        .hero p {
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .loaded .hero h1,
+        .loaded .hero p {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.4s;
+        }
+    </style>
 </head>
 
 <body>
     <img src="/image/header.png" alt="Header Banner" class="header-img">
     <header>
-        
+
         <div class="header-container">
             <a href="/index.html">
                 <div class="logo-container">
@@ -152,13 +265,13 @@
 
     <script src="script.js"></script>
     <script>
-window.addEventListener("load", () => {
-  // Wait a short moment for everything to settle, then trigger animation
-  setTimeout(() => {
-    document.body.classList.add("loaded");
-  }, 100);
-});
-</script>
+        window.addEventListener("load", () => {
+            // Wait a short moment for everything to settle, then trigger animation
+            setTimeout(() => {
+                document.body.classList.add("loaded");
+            }, 100);
+        });
+    </script>
 
 </body>
 
