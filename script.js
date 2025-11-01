@@ -668,7 +668,8 @@ async function loadAddonsFake() {
 
 // Use this in place of loadAddons for local testing
 document.addEventListener("DOMContentLoaded", async () => {
+  await loadAnnouncement();
   const me = await getMe();
   renderAuth(me);
-  if (document.getElementById("addon-list")) loadAddonsFake();
+  if (document.getElementById("addon-list")) loadAddons();
 });
