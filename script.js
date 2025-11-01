@@ -499,11 +499,176 @@ function renderFakeAddon() {
   });
 }
 
+// Fake addons for local testing
+const FAKE_ADDONS = [
+  {
+    id: "fake1",
+    name: "Example Addon 1",
+    description: "This is a preview of addon 1.",
+    username: "demoUser",
+    displayName: "Demo User",
+    avatar: "/uploads/avatars/default.png",
+    created_at: new Date().toISOString(),
+    content: "print('Hello, ByteBukkit!')\n# This is fake addon 1 content"
+  },
+  {
+    id: "fake2",
+    name: "Example Addon 2",
+    description: "This is a preview of addon 2.",
+    username: "demoUser",
+    displayName: "Demo User",
+    avatar: "/uploads/avatars/default.png",
+    created_at: new Date().toISOString(),
+    content: "print('Addon 2 content')\n# More fake content here"
+  }
+];
 
+// Override fetch for /api/addons locally
+async function fetchAddonsLocal() {
+  // Simulate network delay
+  await new Promise(res => setTimeout(res, 200));
+  return FAKE_ADDONS.map(a => ({ ...a }));
+}
+
+async function loadAddonsFake() {
+  const me = await getMe(); // Use your existing getMe function
+  const container = document.getElementById("addon-list");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const addons = await fetchAddonsLocal();
+
+  addons.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "addon-card";
+
+    // Title
+    const title = document.createElement("h4");
+    title.textContent = a.name;
+    card.appendChild(title);
+
+    // Description
+    if (a.description) {
+      const desc = document.createElement("p");
+      desc.textContent = a.description;
+      card.appendChild(desc);
+    }
+
+    // Meta info
+    const meta = document.createElement("p");
+    meta.className = "meta";
+    const avatarImg = document.createElement("img");
+    avatarImg.src = avatarURL(a.avatar);
+    avatarImg.width = 24;
+    avatarImg.height = 24;
+    avatarImg.alt = "Avatar";
+    avatarImg.style.borderRadius = "4px";
+    avatarImg.style.marginRight = "6px";
+
+    const userLink = document.createElement("a");
+    userLink.href = `/profile.html?user=${a.username}`;
+    userLink.textContent = "@" + (a.displayName || a.username);
+
+    const dateSpan = document.createElement("span");
+    dateSpan.style.marginLeft = "8px";
+    dateSpan.textContent = new Date(a.created_at).toLocaleString();
+
+    meta.appendChild(avatarImg);
+    meta.appendChild(userLink);
+    meta.appendChild(dateSpan);
+    card.appendChild(meta);
+
+    // Buttons
+    const btnContainer = document.createElement("div");
+    btnContainer.style.display = "flex";
+    btnContainer.style.gap = "8px";
+
+    // Fake download button
+    const downloadBtn = document.createElement("a");
+    downloadBtn.href = "#";
+    const dlButton = document.createElement("button");
+    dlButton.textContent = "Download";
+    dlButton.className = "blue-btn";
+    downloadBtn.appendChild(dlButton);
+    btnContainer.appendChild(downloadBtn);
+
+    // Delete button
+    if (me && (me.username === a.username || me.is_admin)) {
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.className = "del-btn";
+      delBtn.onclick = () => {
+        showDeleteModal(a.name, () => {
+          alert(`Fake addon "${a.name}" deleted!`);
+          card.remove();
+        });
+      };
+      btnContainer.appendChild(delBtn);
+    }
+
+    card.appendChild(btnContainer);
+
+    // Card click opens modal
+    card.addEventListener("click", e => {
+      if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
+
+      document.getElementById("modal-title").textContent = a.name;
+      document.getElementById("modal-desc").textContent = a.description || "No description provided.";
+      const modalDownload = document.getElementById("modal-download");
+      modalDownload.href = "#";
+      modalDownload.style.display = "inline-block";
+
+      const overlay = document.getElementById("modal-overlay");
+      const box = document.getElementById("modal-box");
+      const modalBody = document.querySelector(".modal-body");
+
+      overlay.classList.add("show");
+      overlay.style.opacity = "1";
+      box.style.transform = "scale(1)";
+
+      const oldPre = modalBody.querySelector("pre");
+      if (oldPre) oldPre.remove();
+
+      const pre = document.createElement("pre");
+      pre.textContent = a.content;
+      modalBody.appendChild(pre);
+    });
+
+    container.appendChild(card);
+  });
+
+  // Modal close logic
+  const modalClose = document.getElementById("modal-close");
+  const modalOverlay = document.getElementById("modal-overlay");
+  const modalBox = document.getElementById("modal-box");
+
+  function closeModal() {
+    modalOverlay.style.opacity = "0";
+    modalBox.style.transform = "scale(0.5)";
+    modalOverlay.addEventListener("transitionend", function handler(e) {
+      if (e.propertyName === "opacity") {
+        modalOverlay.classList.remove("show");
+        modalOverlay.style.opacity = "";
+        modalBox.style.transform = "";
+        modalOverlay.removeEventListener("transitionend", handler);
+      }
+    });
+  }
+
+  if (modalClose) modalClose.onclick = closeModal;
+  if (modalOverlay) {
+    modalOverlay.onclick = e => {
+      if (e.target.id === "modal-overlay") closeModal();
+    };
+  }
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+}
+
+// Use this in place of loadAddons for local testing
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadAnnouncement();
-
   const me = await getMe();
   renderAuth(me);
-  if (document.getElementById("addon-list")) loadAddons();
+  if (document.getElementById("addon-list")) loadAddonsFake();
 });
