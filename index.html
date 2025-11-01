@@ -294,11 +294,156 @@ async function startRealAddonTicker(speed = 2) {
   } catch (err) {
     console.error("Addon ticker error:", err);
   }
+
+  
 }
+
 
 // Init
 document.addEventListener("DOMContentLoaded", () => {
   startRealAddonTicker(2);
+
+  const API_BASE = "https://bytebukkit-server.onrender.com";
+
+// Helper for avatar URLs
+function avatarURL(path) {
+  if (!path || path.length === 0) return `${API_BASE}/uploads/avatars/default.png`;
+  if (path.startsWith("http")) return path;
+  return `${API_BASE}/${path.replace(/^\/?/, "")}`;
+}
+
+async function startRealAddonTicker(speed = 2) {
+  const ticker = document.getElementById("addonTicker");
+  if (!ticker) return;
+
+  try {
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${API_BASE}/api/addons`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Failed to fetch addons");
+    const addons = await res.json();
+
+    if (!addons.length) return;
+
+    ticker.innerHTML = "";
+
+    const createItem = a => {
+      const item = document.createElement("div");
+      item.className = "addon-ticker-item";
+
+      const avatar = document.createElement("img");
+      avatar.src = avatarURL(a.avatar);
+      item.appendChild(avatar);
+
+      const name = document.createElement("div");
+      name.className = "addon-name";
+      name.textContent = a.name.length > 15 ? a.name.slice(0, 15) + "…" : a.name;
+      item.appendChild(name);
+
+      const desc = document.createElement("div");
+      desc.className = "addon-desc";
+      desc.textContent = a.description || "";
+      item.appendChild(desc);
+
+      // Click handler to open modal
+      item.addEventListener("click", async () => {
+        document.getElementById("modal-title").textContent = a.name;
+        document.getElementById("modal-desc").textContent = a.description || "No description provided.";
+        const modalDownload = document.getElementById("modal-download");
+        modalDownload.href = `${API_BASE}/api/addons/${a.id}/download`;
+        modalDownload.style.display = "inline-block";
+
+        const overlay = document.getElementById("modal-overlay");
+        const box = document.getElementById("modal-box");
+        const modalBody = document.querySelector(".modal-body");
+
+        overlay.classList.add("show");
+        overlay.style.opacity = "1";
+        box.style.transform = "scale(1)";
+
+        const oldPre = modalBody.querySelector("pre");
+        if (oldPre) oldPre.remove();
+
+        try {
+          const contentRes = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
+          const data = contentRes.ok ? await contentRes.json() : { content: "(failed to load)" };
+          const pre = document.createElement("pre");
+          pre.textContent = data.content || "(empty file)";
+          modalBody.appendChild(pre);
+        } catch {
+          const pre = document.createElement("pre");
+          pre.textContent = "(failed to load content)";
+          modalBody.appendChild(pre);
+        }
+      });
+
+      return item;
+    };
+
+    // Add initial items
+    addons.forEach(a => ticker.appendChild(createItem(a)));
+
+    // Duplicate for smooth looping
+    while (ticker.scrollWidth < ticker.clientWidth * 2) {
+      addons.forEach(a => ticker.appendChild(createItem(a)));
+    }
+
+    let offset = 0;
+    let paused = false;
+
+    ticker.addEventListener("mouseenter", () => paused = true);
+    ticker.addEventListener("mouseleave", () => paused = false);
+
+    function animate() {
+      if (!paused) {
+        offset -= speed;
+        if (Math.abs(offset) >= ticker.scrollWidth / 2) offset = 0;
+        ticker.style.transform = `translateX(${offset}px)`;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+  } catch (err) {
+    console.error("Addon ticker error:", err);
+  }
+
+  
+}
+// Modal close logic (outside of startRealAddonTicker)
+const modalClose = document.getElementById("modal-close");
+const modalOverlay = document.getElementById("modal-overlay");
+const modalBox = document.getElementById("modal-box");
+
+function closeModal() {
+  modalOverlay.style.opacity = "0";
+  modalBox.style.transform = "scale(0.5)";
+  modalOverlay.addEventListener("transitionend", function handler(e) {
+    if (e.propertyName === "opacity") {
+      modalOverlay.classList.remove("show");
+      modalOverlay.style.opacity = "";
+      modalBox.style.transform = "";
+      modalOverlay.removeEventListener("transitionend", handler);
+    }
+  });
+}
+
+modalClose?.addEventListener("click", closeModal);
+modalOverlay?.addEventListener("click", e => {
+  if (e.target === modalOverlay) closeModal();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
+
+
+// Init
+document.addEventListener("DOMContentLoaded", () => {
+  startRealAddonTicker(2);
+});
+
 });
 
 </script>

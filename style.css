@@ -579,6 +579,7 @@ h1 {
   text-align: center;
   font-size: 13px;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .addon-ticker-item img {
