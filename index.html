@@ -247,10 +247,11 @@ async function startRealAddonTicker(speed = 2) {
     };
 
     // Fill once
-    addons.forEach((a) => ticker.appendChild(createItem(a)));
-
-    // Duplicate immediately to fill the space and ensure continuous loop
-    addons.forEach((a) => ticker.appendChild(createItem(a)));
+// Fill ticker and duplicate until it's at least 2x viewport width
+addons.forEach(a => ticker.appendChild(createItem(a)));
+while (ticker.scrollWidth < ticker.clientWidth * 2) {
+  addons.forEach(a => ticker.appendChild(createItem(a)));
+}
 
     let offset = 0;
     let paused = false;
