@@ -246,7 +246,7 @@ async function loadAddons() {
     downloadBtn.href = `${API_BASE}/api/addons/${a.id}/download`;
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
-    dlButton.className = "blue-btn";
+    dlButton.className = "primary-btn";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
     if (me && (me.username === a.username || me.is_admin)) {
@@ -423,7 +423,7 @@ function renderFakeAddon() {
     downloadBtn.href = "#"; // fake download
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
-    dlButton.className = "blue-btn";
+    dlButton.className = "primary-btn";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
 
@@ -449,8 +449,6 @@ function renderFakeAddon() {
       document.getElementById("modal-desc").textContent = a.description || "No description provided.";
       const modalDownload = document.getElementById("modal-download");
       modalDownload.href = "#";
-      modalDownload.style.display = "inline-block";
-
       const overlay = document.getElementById("modal-overlay");
       const box = document.getElementById("modal-box");
       const modalBody = document.querySelector(".modal-body");
@@ -588,7 +586,7 @@ async function loadAddonsFake() {
     downloadBtn.href = "#";
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
-    dlButton.className = "blue-btn";
+    dlButton.className = "primary-btn";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
 
@@ -616,7 +614,6 @@ async function loadAddonsFake() {
       document.getElementById("modal-desc").textContent = a.description || "No description provided.";
       const modalDownload = document.getElementById("modal-download");
       modalDownload.href = "#";
-      modalDownload.style.display = "inline-block";
 
       const overlay = document.getElementById("modal-overlay");
       const box = document.getElementById("modal-box");
@@ -668,8 +665,8 @@ async function loadAddonsFake() {
 
 // Use this in place of loadAddons for local testing
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadAnnouncement();
+//  await loadAnnouncement();
   const me = await getMe();
   renderAuth(me);
-  if (document.getElementById("addon-list")) loadAddons();
+  if (document.getElementById("addon-list")) loadAddonsFake();
 });

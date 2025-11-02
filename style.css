@@ -271,6 +271,10 @@ h1 {
   background: #1d4ed8;
   transform: translateY(-2px);
 }
+.blue-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
 
 .secondary-btn {
   background: transparent;
@@ -350,9 +354,13 @@ h1 {
 
 @media (max-width: 1024px) {
   .hero {
-    padding: 4rem 3rem;
+    padding: 4rem 0rem;
     grid-template-columns: 1fr;
     text-align: center;
+  }
+
+  .description {
+    margin-bottom: 30px;
   }
 
   .hero-image {
@@ -417,9 +425,18 @@ h1 {
   user-select: none;
 }
 
-@media (max-width: 940px) {
+@media (max-width: 980px) {
   .hamburger {
     display: flex;
+  }
+  .feature-tags {
+    display: none;
+  }
+    .subtitle {
+    display: none;
+  }
+  #typewriter {
+    display: none;
   }
 
   .nav-links {
@@ -571,15 +588,24 @@ h1 {
   min-width: 180px;
   max-width: 180px;
   padding: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(34, 34, 34, 0.15);
   border-radius: 8px;
   backdrop-filter: blur(8px); /* stronger blur */
-  background: rgba(255, 255, 255, 0.08); /* very transparent */
+  background: rgba(0, 0, 0, 0.08); /* very transparent */
   color: #fff;
   text-align: center;
   font-size: 13px;
   flex-shrink: 0;
   cursor: pointer;
+  transition: all 0.2s ease;
+  
+}
+
+.addon-ticker-item:hover {
+  transform: translateY(-1px) scale(1.01);
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  color: #fff;
 }
 
 .addon-ticker-item img {
@@ -675,8 +701,7 @@ h1 {
   transition: background-color 0.2s ease;
   background-color: #00000000;
   border-radius: 100%;
-  padding: 4px 9px;
-  margin-bottom: 8px;
+  padding: 4px 16px;
 }
 
 .del-modal-close:hover {
@@ -729,6 +754,21 @@ h1 {
 #del-confirm.blue-btn {
   margin-bottom: 12px;
   padding: 8px 30px;
+    padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  z-index: 2;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  user-select: none;
+    background: #2564eb;
+  color: white;
+  border: none;
+  position: relative;
+  z-index: 1;
 }
 
 #del-confirm .del-btn {
@@ -870,8 +910,7 @@ h1 {
   transition: background-color 0.2s ease;
   background-color: #00000000;
   border-radius: 100%;
-  padding: 4px 9px;
-  margin-bottom: 8px;
+  padding: 4px 16px;
 }
 
 #modal-close:hover {
@@ -888,6 +927,21 @@ h1 {
 #modal-box .blue-btn {
   margin-bottom: 12px;
   padding: 8px 30px;
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  z-index: 2;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  user-select: none;
+    background: #2564eb;
+  color: white;
+  border: none;
+  position: relative;
+  z-index: 1;
 }
 
 #modal-box .del-btn {
