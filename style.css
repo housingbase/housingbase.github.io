@@ -968,3 +968,20 @@ h1 {
   margin-top: 20px;
   line-height: 1.4;
 }
+.center {
+  justify-self: center;
+  margin-bottom: 10px;
+}
+.center .txte {
+  font-size: 20px;
+  font-weight: lighter;
+}
+#avatarSmall {
+  background-color: #00000000;
+  padding: 3px;
+  transition: all 0.3s ease;
+}
+#avatarSmall:hover {
+  background-color: #252525af;
+  padding: 3px;
+}

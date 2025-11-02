@@ -72,11 +72,18 @@
     </div>
     <nav class="nav-links">
       <a href="/housing.html">Housing Browser</a>
-      <a href="/fcm.html">FCM</a>
+      <a href="/news.html">News</a>
       <a href="/browser.html">HTSL Library</a>
       <a href="/dashboard.html">Dashboard</a>
       <a href="/projects.html">Projects</a>
-      <button class="nav-btn">Sign In</button>
+      
+      <div id="logged-in" style="display:flex; align-items:center;">
+        <button href="login.html" class="nav-btn">Sign In</button>
+      </div>
+      <div id="logged-out" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
     </nav>
   </header>
 
@@ -109,11 +116,18 @@
   <section class="promo">
     <h2>Upload and share <span class="highlight">HTSL.</span></h2>
     <h3>Distribute, upload and share your creations with our custom <a href="browser.html">HTSL Library</a>.</h3>
-    wip <span class="highlighttxt">by spigotbase</span>
-  </section>
 
+  </section>
+  <div class="center">
+    <txt class="txte">Browse <span class="highlighttxt">HTSL creations</span> uploaded by our users.</txt>
+  </div>
   <section class="addon-ticker-section">
     <div class="addon-ticker" id="addonTicker"></div>
+  </section>
+  <section class="promo">
+    <h2>Browse <span class="highlight">Hypixel Housing.</span></h2>
+    <h3>Discover active housings on hypixel with our <a href="browser.html">Housing Browser</a>.</h3>
+
   </section>
 
   <div class="section2"></div>
@@ -149,7 +163,8 @@
       </div>
       <div class="modal-body">
         <p id="modal-desc"></p>
-        <a id="modal-download" style="text-decoration: none; margin-top: 10px; margin-bottom: 10px;" class="primary-btn">Download File
+        <a id="modal-download" style="text-decoration: none; margin-top: 10px; margin-bottom: 10px;"
+          class="primary-btn">Download File
         </a>
         <h4>Code Contents:</h4>
       </div>
@@ -180,106 +195,106 @@
       if (path.startsWith("http")) return path;
       return `${API_BASE}/${path.replace(/^\/?/, "")}`;
     }
-async function startRealAddonTicker(speed = 2) {
-  const ticker = document.getElementById("addonTicker");
-  if (!ticker) return;
+    async function startRealAddonTicker(speed = 2) {
+      const ticker = document.getElementById("addonTicker");
+      if (!ticker) return;
 
-  try {
-    const token = localStorage.getItem("authToken");
-    const res = await fetch(`${API_BASE}/api/addons`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!res.ok) throw new Error("Failed to fetch addons");
-    const addons = await res.json();
-    if (!addons.length) return;
+      try {
+        const token = localStorage.getItem("authToken");
+        const res = await fetch(`${API_BASE}/api/addons`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Failed to fetch addons");
+        const addons = await res.json();
+        if (!addons.length) return;
 
-    ticker.innerHTML = "";
+        ticker.innerHTML = "";
 
-    const createItem = (a) => {
-      const item = document.createElement("div");
-      item.className = "addon-ticker-item";
+        const createItem = (a) => {
+          const item = document.createElement("div");
+          item.className = "addon-ticker-item";
 
-      const avatar = document.createElement("img");
-      avatar.src = avatarURL(a.avatar);
-      item.appendChild(avatar);
+          const avatar = document.createElement("img");
+          avatar.src = avatarURL(a.avatar);
+          item.appendChild(avatar);
 
-      const name = document.createElement("div");
-      name.className = "addon-name";
-      name.textContent = a.name.length > 15 ? a.name.slice(0, 15) + "…" : a.name;
-      item.appendChild(name);
+          const name = document.createElement("div");
+          name.className = "addon-name";
+          name.textContent = a.name.length > 15 ? a.name.slice(0, 15) + "…" : a.name;
+          item.appendChild(name);
 
-      const desc = document.createElement("div");
-      desc.className = "addon-desc";
-      desc.textContent = a.description 
-    ? (a.description.length > 15 ? a.description.slice(0, 15) + "…" : a.description)
-    : "";
+          const desc = document.createElement("div");
+          desc.className = "addon-desc";
+          desc.textContent = a.description
+            ? (a.description.length > 15 ? a.description.slice(0, 15) + "…" : a.description)
+            : "";
 
-      item.appendChild(desc);
+          item.appendChild(desc);
 
-      item.addEventListener("click", async () => {
-        document.getElementById("modal-title").textContent = a.name;
-        document.getElementById("modal-desc").textContent =
-          a.description || "No description provided.";
-        const modalDownload = document.getElementById("modal-download");
-        modalDownload.href = `${API_BASE}/api/addons/${a.id}/download`;
-        modalDownload.style.display = "inline-block";
+          item.addEventListener("click", async () => {
+            document.getElementById("modal-title").textContent = a.name;
+            document.getElementById("modal-desc").textContent =
+              a.description || "No description provided.";
+            const modalDownload = document.getElementById("modal-download");
+            modalDownload.href = `${API_BASE}/api/addons/${a.id}/download`;
+            modalDownload.style.display = "inline-block";
 
-        const overlay = document.getElementById("modal-overlay");
-        const box = document.getElementById("modal-box");
-        const modalBody = document.querySelector(".modal-body");
+            const overlay = document.getElementById("modal-overlay");
+            const box = document.getElementById("modal-box");
+            const modalBody = document.querySelector(".modal-body");
 
-        overlay.classList.add("show");
-        overlay.style.opacity = "1";
-        box.style.transform = "scale(1)";
+            overlay.classList.add("show");
+            overlay.style.opacity = "1";
+            box.style.transform = "scale(1)";
 
-        const oldPre = modalBody.querySelector("pre");
-        if (oldPre) oldPre.remove();
+            const oldPre = modalBody.querySelector("pre");
+            if (oldPre) oldPre.remove();
 
-        try {
-          const contentRes = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
-          const data = contentRes.ok ? await contentRes.json() : { content: "(failed to load)" };
-          const pre = document.createElement("pre");
-          pre.textContent = data.content || "(empty file)";
-          modalBody.appendChild(pre);
-        } catch {
-          const pre = document.createElement("pre");
-          pre.textContent = "(failed to load content)";
-          modalBody.appendChild(pre);
+            try {
+              const contentRes = await fetch(`${API_BASE}/api/addons/${a.id}/contents`);
+              const data = contentRes.ok ? await contentRes.json() : { content: "(failed to load)" };
+              const pre = document.createElement("pre");
+              pre.textContent = data.content || "(empty file)";
+              modalBody.appendChild(pre);
+            } catch {
+              const pre = document.createElement("pre");
+              pre.textContent = "(failed to load content)";
+              modalBody.appendChild(pre);
+            }
+          });
+
+          return item;
+        };
+
+        // Fill once
+        // Fill ticker and duplicate until it's at least 2x viewport width
+        addons.forEach(a => ticker.appendChild(createItem(a)));
+        while (ticker.scrollWidth < ticker.clientWidth * 2) {
+          addons.forEach(a => ticker.appendChild(createItem(a)));
         }
-      });
 
-      return item;
-    };
+        let offset = 0;
+        let paused = false;
 
-    // Fill once
-// Fill ticker and duplicate until it's at least 2x viewport width
-addons.forEach(a => ticker.appendChild(createItem(a)));
-while (ticker.scrollWidth < ticker.clientWidth * 2) {
-  addons.forEach(a => ticker.appendChild(createItem(a)));
-}
+        ticker.addEventListener("mouseenter", () => (paused = true));
+        ticker.addEventListener("mouseleave", () => (paused = false));
 
-    let offset = 0;
-    let paused = false;
-
-    ticker.addEventListener("mouseenter", () => (paused = true));
-    ticker.addEventListener("mouseleave", () => (paused = false));
-
-    function animate() {
-      if (!paused) {
-        offset -= speed;
-        if (Math.abs(offset) >= ticker.scrollWidth / 2) {
-          offset = 0;
+        function animate() {
+          if (!paused) {
+            offset -= speed;
+            if (Math.abs(offset) >= ticker.scrollWidth / 2) {
+              offset = 0;
+            }
+            ticker.style.transform = `translateX(${offset}px)`;
+          }
+          requestAnimationFrame(animate);
         }
-        ticker.style.transform = `translateX(${offset}px)`;
+
+        animate();
+      } catch (err) {
+        console.error("Addon ticker error:", err);
       }
-      requestAnimationFrame(animate);
     }
-
-    animate();
-  } catch (err) {
-    console.error("Addon ticker error:", err);
-  }
-}
 
 
     // Modal close logic
@@ -384,5 +399,7 @@ while (ticker.scrollWidth < ticker.clientWidth * 2) {
       typeLoop();
     });
   </script>
+  <script src="script.js"></script>
 </body>
+
 </html>
