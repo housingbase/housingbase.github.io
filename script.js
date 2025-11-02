@@ -19,16 +19,13 @@ function avatarURL(path) {
   if (path.startsWith("http")) return path;
   return `${API_BASE}/${path.replace(/^\/?/, "")}`;
 }
-
 function renderAuth(user) {
   const loggedOut = document.getElementById("logged-out");
   const loggedIn = document.getElementById("logged-in");
-  const createBtn = document.getElementById("createAddonBtn");
 
   if (user) {
     if (loggedOut) loggedOut.style.display = "none";
     if (loggedIn) loggedIn.style.display = "inline-flex";
-    if (createBtn) createBtn.style.display = "block";
 
     const avatar = document.getElementById("avatarSmall");
     if (avatar) {
@@ -44,11 +41,11 @@ function renderAuth(user) {
       displayName.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
   } else {
-    if (loggedOut) loggedOut.style.display = "inline-flex";
+    if (loggedOut) loggedOut.style.display = "flex";
     if (loggedIn) loggedIn.style.display = "none";
-    if (createBtn) createBtn.style.display = "none";
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("loginBtn");
@@ -665,8 +662,8 @@ async function loadAddonsFake() {
 
 // Use this in place of loadAddons for local testing
 document.addEventListener("DOMContentLoaded", async () => {
-//  await loadAnnouncement();
+  await loadAnnouncement();
   const me = await getMe();
   renderAuth(me);
-  if (document.getElementById("addon-list")) loadAddonsFake();
+  if (document.getElementById("addon-list")) loadAddons();
 });
