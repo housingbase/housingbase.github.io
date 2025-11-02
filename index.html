@@ -149,7 +149,8 @@
       </div>
       <div class="modal-body">
         <p id="modal-desc"></p>
-        <a id="modal-download" class="primary-btn">Download</a>
+        <a id="modal-download" style="text-decoration: none; margin-top: 10px; margin-bottom: 10px;" class="primary-btn">Download File
+        </a>
         <h4>Code Contents:</h4>
       </div>
     </div>
@@ -209,7 +210,10 @@ async function startRealAddonTicker(speed = 2) {
 
       const desc = document.createElement("div");
       desc.className = "addon-desc";
-      desc.textContent = a.description || "";
+      desc.textContent = a.description 
+    ? (a.description.length > 15 ? a.description.slice(0, 15) + "…" : a.description)
+    : "";
+
       item.appendChild(desc);
 
       item.addEventListener("click", async () => {
