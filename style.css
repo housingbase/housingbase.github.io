@@ -1,4 +1,9 @@
-*,
+@import url('https://fonts.cdnfonts.com/css/monocraft');
+@font-face {
+  font-family: "Monocraft";
+  src: url("fonts/Monocraft.ttf") format("truetype");
+}*
+,
 *::before,
 *::after {
   margin: 0;
@@ -222,11 +227,12 @@ h1 {
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  cursor:default;
+  cursor: default;
   user-select: none;
 }
 
 .feature-tags span:hover {
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
   transform: translateY(-1px) scale(1.01);
   border: 1px solid #2564eb;
   background: rgba(37, 99, 235, 0.15);
@@ -249,7 +255,7 @@ h1 {
 
 .index-buttons2 {
   display: flex;
-  gap: 0.5rem; /* space between buttons */
+  gap: 0.5rem;
   margin-bottom: 20px;
 }
 
@@ -271,6 +277,7 @@ h1 {
   background: #1d4ed8;
   transform: translateY(-2px);
 }
+
 .blue-btn:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
@@ -329,6 +336,7 @@ h1 {
   font-weight: 400;
   line-height: 1.2;
 }
+
 .promo h3 {
   color: rgb(204, 204, 204);
   font-size: 1.3rem;
@@ -339,12 +347,12 @@ h1 {
 
 .promo a {
   text-decoration: none;
-  color:rgb(33, 85, 182);
+  color: rgb(33, 85, 182);
   transition: color 0.2s ease;
 }
 
 .promo a:hover {
-  color:rgb(60, 116, 221);
+  color: rgb(60, 116, 221);
 }
 
 .promo .highlight {
@@ -429,12 +437,15 @@ h1 {
   .hamburger {
     display: flex;
   }
+
   .feature-tags {
     display: none;
   }
-    .subtitle {
+
+  .subtitle {
     display: none;
   }
+
   #typewriter {
     display: none;
   }
@@ -530,6 +541,7 @@ h1 {
   font-size: 0.9rem;
   color: #aaa;
 }
+
 .section-content {
   display: flex;
   justify-content: center;
@@ -541,11 +553,13 @@ h1 {
   font-size: 1.7rem;
   font-weight: bold;
 }
+
 .section2 {
   display: flex;
   justify-content: center;
   z-index: 3;
 }
+
 .addon-ticker-section {
   position: relative;
   overflow: hidden;
@@ -553,15 +567,15 @@ h1 {
   border-top: 3px solid rgba(0, 0, 0, 0.288);
   border-bottom: 3px solid rgba(0, 0, 0, 0.288);
 
-  /* Background image */
+
   background-image: url('/image/external.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  /* Overlay */
-  background-color: rgb(20, 20, 20); /* adjust alpha 0–1 */
-  background-blend-mode: overlay; /* blend overlay with image */
+
+  background-color: rgb(20, 20, 20);
+  background-blend-mode: overlay;
   backdrop-filter: blur(6px);
   z-index: 3;
 }
@@ -574,7 +588,7 @@ h1 {
 }
 
 .addon-ticker {
-  
+
   display: flex;
   gap: 20px;
   white-space: nowrap;
@@ -590,21 +604,23 @@ h1 {
   padding: 10px;
   border: 1px solid rgba(34, 34, 34, 0.15);
   border-radius: 8px;
-  backdrop-filter: blur(8px); /* stronger blur */
-  background: rgba(0, 0, 0, 0.08); /* very transparent */
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.08);
   color: #fff;
   text-align: center;
   font-size: 13px;
   flex-shrink: 0;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
+
 }
 
 .addon-ticker-item:hover {
   transform: translateY(-1px) scale(1.01);
   border: 1px solid #2564eb;
   background: rgba(37, 99, 235, 0.15);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
   color: #fff;
 }
 
@@ -662,9 +678,9 @@ h1 {
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
- 
+
   overflow-y: auto;
- 
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: scale(0.95);
   transition: transform 0.2s ease;
@@ -754,7 +770,7 @@ h1 {
 #del-confirm.blue-btn {
   margin-bottom: 12px;
   padding: 8px 30px;
-    padding: 0.8rem 1.4rem;
+  padding: 0.8rem 1.4rem;
   border-radius: 6px;
   font-weight: 600;
   font-size: 15px;
@@ -764,7 +780,7 @@ h1 {
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   user-select: none;
-    background: #2564eb;
+  background: #2564eb;
   color: white;
   border: none;
   position: relative;
@@ -804,9 +820,9 @@ h1 {
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
- 
+
   overflow-y: auto;
- 
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: scale(0.95);
   transition: transform 0.2s ease;
@@ -873,9 +889,9 @@ h1 {
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
- 
+
   overflow-y: auto;
- 
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transform: scale(0.95);
   transition: transform 0.2s ease;
@@ -937,7 +953,7 @@ h1 {
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   user-select: none;
-    background: #2564eb;
+  background: #2564eb;
   color: white;
   border: none;
   position: relative;
@@ -960,28 +976,585 @@ h1 {
   padding: 10px;
   border-radius: 6px;
   max-height: 100px;
- 
+
   overflow-y: auto;
- 
+
   font-family: monospace;
   white-space: pre-wrap;
   margin-top: 20px;
   line-height: 1.4;
 }
+
 .center {
   justify-self: center;
   margin-bottom: 10px;
 }
+
 .center .txte {
   font-size: 20px;
   font-weight: lighter;
 }
+
 #avatarSmall {
   background-color: #00000000;
   padding: 3px;
   transition: all 0.3s ease;
 }
+
 #avatarSmall:hover {
   background-color: #252525af;
   padding: 3px;
+}
+
+#houseOutput {
+  font-family: 'Monocraft', sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  place-items: center;
+  margin: auto;
+  max-width: 1500px;
+  z-index: 3;
+}
+
+#activeOutput {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  place-items: center;
+  margin: auto;
+  max-width: 1500px;
+  z-index: 3;
+  border-radius: 8px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #1f1f1f;
+  background-blend-mode: overlay;
+  border: rgba(20, 20, 20, 0.418) 5px solid;
+
+
+  background-image: url('image/dirt.png');
+  background-repeat: repeat;
+  background-size: auto;
+  background-position: top left;
+  background-size: 64px 64px;
+
+}
+
+
+
+
+#houseOutput,
+#activeOutput {
+  position: relative;
+  z-index: 3;
+}
+
+.coloredname {
+  text-shadow: 2px 2px 2px black;
+  will-change: filter;
+  transition: all 0.2s ease-in-out;
+  font-family: "Monocraft", monospace;
+}
+
+.coloredname:hover {
+  filter: brightness(120%);
+  transform: scale(1.03);
+}
+
+.individualcoloredname {
+  text-shadow: 2px 2px 2px black;
+  transition: all 0.2s ease-in-out;
+  font-family: "Monocraft", monospace;
+}
+
+.rankedname {
+  text-shadow: 2px 2px 2px black;
+  font-family: "Monocraft", sans-serif !important;
+}
+.rankedname h2 {
+  font-family: "Monocraft", sans-serif !important;
+}
+
+.playertext {
+  font-weight: bold;
+  color: rgb(93, 150, 236);
+  text-shadow: 2px 2px 2px black;
+  font-family: "Monocraft", monospace;
+}
+
+.cookietext {
+  font-weight: bold;
+  color: #e67834;
+  text-shadow: 2px 2px 2px black;
+  font-family: "Monocraft", monospace;
+}
+
+.nodata {
+  text-align: center;
+  color: rgb(255, 26, 26);
+  cursor: default;
+  text-shadow: 2px 2px 2px black;
+  font-family: "Monocraft", monospace;
+}
+
+.houseinfo {
+  background: rgba(30, 30, 30, 0.151);
+  cursor: pointer;
+  font-family: 'Monocraft', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  width: 300px;
+
+  height: 100px;
+
+  margin-bottom: 20px;
+
+  margin-right: 20px;
+
+  text-align: center;
+
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-family: "Monocraft";
+}
+
+.houseinfo:hover {
+
+  transform: translateY(-1px) scale(1.01);
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+  color: #fff;
+
+}
+
+.houseinfo p {
+  text-align: center;
+  margin-bottom: 0.05em;
+  margin-top: 0.05em;
+}
+
+.individualhouseinfo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  border-radius: 5px;
+  width: 1080px;
+
+  height: 440px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 20px;
+  margin-right: 20px;
+  font-family: "Monocraft";
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#playerOutput {
+  border-radius: 12px;
+  font-family: 'Monocraft', sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  place-items: center;
+  margin: auto;
+  max-width: 1300px;
+  font-family: "Monocraft";
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 3;
+  position: relative;
+  padding: 30px;
+}
+
+.individualhouseinfo p {
+  text-align: left;
+  margin-bottom: 0.05em;
+  margin-top: 0.05em;
+  font-size: x-large;
+  font-family: "Monocraft";
+}
+
+@font-face {
+  font-family: 'Monocraft';
+  src: url('Monocraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.housecontainer {
+  background: rgba(30, 30, 30, 0.151);
+  cursor: pointer;
+  font-family: 'Monocraft', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  width: 320px;
+
+  height: 180px;
+
+  margin-bottom: 20px;
+
+  margin-right: 20px;
+
+  text-align: center;
+
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-family: "Monocraft";
+}
+
+.housecontainer:hover {
+  transform: translateY(-1px) scale(1.01);
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+  color: #fff;
+}
+
+
+.housecontainer img.headimg {
+  width: 32px;
+
+  height: 32px;
+  margin-bottom: 8px;
+}
+
+.housecontainer .coloredname {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  font-family: "Monocraft";
+}
+
+.housecontainer .playertext,
+.housecontainer .cookietext,
+.housecontainer .small {
+  font-family: "Monocraft";
+  font-size: 0.85rem;
+  margin: 2px 0;
+}
+
+
+.housecontainer .clickable-copy {
+  font-family: "Monocraft";
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+#forced {
+  font-family: "Monocraft";
+}
+#forced span {
+  font-family: "Monocraft";
+}
+
+.housecontainer p {
+  text-align: center;
+  margin-bottom: 0.05em;
+  margin-top: 0.05em;
+  font-family: "monocraft";
+}
+
+.small {
+
+  position: absolute;
+  font-size: 10px;
+  right: 5px;
+  bottom: 5px;
+  text-align: right;
+  line-height: 20px;
+  font-weight: bold;
+}
+
+.individualsmall {
+  position: absolute;
+  font-size: 10px;
+  right: 5px;
+  bottom: 5px;
+  text-align: right;
+  line-height: 30px;
+}
+
+.headimg {
+  margin-top: 7px;
+  width: 35px;
+  height: 35px;
+  transition: all 0.2s ease-in-out;
+}
+
+.headimg:hover {
+  filter: brightness(120%);
+}
+
+.househeadimg {
+  width: 70px;
+  height: 70px;
+  transition: all 0.2s ease-in-out;
+}
+
+.househeadimg:hover {
+  filter: brightness(120%);
+}
+
+.individualheadimg {
+  transition: all 0.2s ease-in-out;
+}
+
+.individualheadimg:hover {
+  filter: brightness(120%);
+}
+
+.nodecoration {
+  text-decoration: none;
+}
+
+.clickable-copy {
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.clickable-copy:hover {
+  filter: invert(20%);
+  transform: scale(1.03);
+}
+
+.clickable-copy i {
+  position: relative;
+  top: -5px;
+  margin-top: 9px;
+  margin-left: 5px;
+}
+
+.timetext {
+  position: fixed;
+  top: 20005px;
+  right: 20px;
+  width: 10%;
+  text-align: center;
+  z-index: 99999;
+  text-shadow: 0 0 15px white;
+  display: none;
+}
+
+.timetext .nocursor {
+  display: none;
+}
+
+.coloredname span {
+  font-family: 'Monocraft';
+}
+
+#notification-area {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100000;
+}
+
+.notification {
+  opacity: 0;
+  backdrop-filter: blur(12px);
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  color: #fff;
+  transition: all 0.3s ease;
+  color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+
+}
+
+.notification.fade-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.fade-out {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.search-sort-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 700px;
+  flex-wrap: wrap;
+}
+
+
+#houseSearch {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.35);
+  color: #fff;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+#houseSearch::placeholder {
+  color: #bbb;
+  opacity: 0.8;
+}
+
+#houseSearch:hover,
+#houseSearch:focus {
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+  color: #fff;
+}
+
+
+#sortOptions {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.35);
+  color: #fff;
+  font-size: 1rem;
+  font-family: "Monocraft", sans-serif;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#sortOptions:hover,
+#sortOptions:focus {
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+}
+
+
+@media (max-width: 600px) {
+  .search-sort-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+#sortOptions option {
+  background-color: #1a1a1a;
+  color: #fff;
+  font-family: "Monocraft", sans-serif;
+  padding: 10px;
+}
+.grid1 {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.grid1 a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.update-card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.137);
+  color: #fff;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border-radius: 5px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  width: 50%;
+  justify-self: center;
+  cursor: text;
+}
+
+.update-card:hover {
+  transform: translateY(-2px);
+  border: 1px solid #3f3f64;
+  background: rgba(24, 31, 44, 0.15);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37, 42, 51, 0.25);
+}
+
+.titleh1 {
+  margin-bottom: 20px;
+}
+
+.update-card .title {
+  font-size: 2.3rem;
+  font-weight: 100;
+  margin-bottom: 8px;
+}
+
+.update-card .description {
+  font-size: 0.9rem;
+  color: #cfcfcf;
+  margin-bottom: 5px;
+}
+
+.update-card .poster {
+  font-size: 0.8rem;
+  color: #a8a8a8;
+}
+.poster .username {
+  color: #579aff;
+  text-decoration: none;
+}
+
+.poster .username:hover {
+  text-decoration: underline;
+}
+.update-contents p {
+  font-size: 14px;
+  font-family: monospace;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color:rgb(207, 207, 207)
 }

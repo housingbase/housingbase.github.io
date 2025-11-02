@@ -110,72 +110,126 @@ function getUncoloredName(name) {
   return uncoloredName;
 }
 
-function getActive() {
+async function getActive() {
+  const sortType = document.getElementById('sortOptions').value; 
   const output = document.getElementById('activeOutput');
-  const container = document.createElement('div');
+  output.innerHTML = ''; // Clear previous results
 
-  fetch(`https://housing-server-8aec.onrender.com/api/active`)
-    .then(response => {
-      if (response.status === 403) throw new Error("Hypixel API key is invalid or missing");
-      if (response.status === 429) throw new Error("Hypixel rate limit reached, please try again later");
-      if (response.status === 430) throw new Error("Rate limit reached, please try again later");
-      if (response.status === 404) throw new Error("Unable to fetch houses");
-      if (!response.ok) throw new Error(`Unexpected error: ${response.status}`);
-      return response.json();
-    })
-    .then(({lastUpdated, data}) => {
+  try {
+    const response = await fetch(`https://housing-server-8aec.onrender.com/api/active`);
+    if (!response.ok) throw new Error(`Failed to fetch active houses: ${response.status}`);
+    const { lastUpdated, data } = await response.json();
 
-      var lastUpdatedTime = getDate(lastUpdated);
-      var lastUpdatedTimeDiv = document.createElement('p');
-      lastUpdatedTimeDiv.innerText=`Viewing data from: ${lastUpdatedTime}`;
-      document.getElementsByClassName('timetext')[0].appendChild(lastUpdatedTimeDiv);
+    // Display last updated time
+    const lastUpdatedTime = getDate(lastUpdated);
+    const timeDiv = document.querySelector('.timetext');
+    timeDiv.style.display = 'block';
+    timeDiv.innerHTML = `Viewing data from: ${lastUpdatedTime}`;
 
-data.forEach(house => {
-  const div = document.createElement('div');
-  div.className = 'housecontainer';
-  div.style.cursor = 'pointer';
+    // Create all house divs in parallel
+    const housePromises = data.map(async house => {
+      const div = document.createElement('div');
+      div.className = 'housecontainer';
+      div.style.cursor = 'pointer';
 
-  fetch(`https://playerdb.co/api/player/minecraft/${house.owner}`, { // TODO switch off playerdb and use hypixel playerinfo displayname - for active i didnt do it because it would be a ton of requests
-    headers: {
-      'User-Agent': YOUR_DOMAIN
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    const username = data.data.player.username;
-    const headimg = 'https://mc-heads.net/head/' + house.owner;
+      try {
+        const playerRes = await fetch(`https://playerdb.co/api/player/minecraft/${house.owner}`, {
+          headers: { 'User-Agent': YOUR_DOMAIN }
+        });
+        const playerData = await playerRes.json();
+        const username = playerData.data.player.username;
+        const headimg = 'https://mc-heads.net/head/' + house.owner;
 
-    div.innerHTML = `
-      <p class="clickable-copy copytext" onclick="copyText(this)">/visit ${username} <i class="clipboard fa-regular fa-clipboard"></i></p>
-      <a href="player/?${house.owner}"><img class='headimg' src="${headimg}"></a>
-      <p class="coloredname"></p>
-      <p class="nocursor playertext">${house.players} players</p>
-      <p class="nocursor cookietext">${house.cookies.current} cookies</p>
-    `;
+        div.innerHTML = `
+          <p class="clickable-copy copytext" onclick="copyText(this)">/visit ${username}</p>
+          <a href="player/?${house.owner}"><img class='headimg' src="${headimg}"></a>
+          <p class="coloredname"></p>
+          <p class="nocursor playertext">${house.players} players</p>
+          <p class="nocursor cookietext">${house.cookies.current} cookies</p>
+        `;
 
-    div.querySelector(".coloredname").appendChild(getColoredName(house.name));
+        // Add colored house name
+        div.querySelector(".coloredname").appendChild(getColoredName(house.name));
 
-    // Make the entire container clickable, except for the avatar and copy button
-    div.addEventListener('click', (e) => {
-      if (!e.target.closest('a') && !e.target.closest('.clickable-copy')) {
-        window.location.href = `house/?${house.uuid}`;
+        // Make container clickable
+        div.addEventListener('click', e => {
+          if (!e.target.closest('a') && !e.target.closest('.clickable-copy')) {
+            window.location.href = `house/?${house.uuid}`;
+          }
+        });
+
+        return div;
+      } catch (err) {
+        div.innerHTML = `Error loading player data: ${err.message}`;
+        return div;
       }
     });
 
-    document.getElementsByClassName("preoutput")[0].hidden = true;
-    output.appendChild(div);
-  })
-      .catch(err => {
-        div.innerHTML = `Error loading player data: ${err.message}`;
-        output.appendChild(div);
-      });
-    });
-  })
-    .catch(err => {
-      container.innerHTML = `Error loading active houses: ${err.message}`;
-      output.appendChild(container);
-    });
+    // Wait for all house divs to be ready
+    const houseDivs = await Promise.all(housePromises);
+
+    // Append all houses to output
+    houseDivs.forEach(div => output.appendChild(div));
+
+    // Show preoutput
+    document.querySelector(".preoutput").hidden = true;
+
+    // Trigger default sorting and filtering
+    updateHousesDisplay();
+
+  } catch (err) {
+    output.innerHTML = `Error loading active houses: ${err.message}`;
+  }
 }
+
+
+const searchInput = document.getElementById('houseSearch');
+const sortSelect = document.getElementById('sortOptions');
+
+function updateHousesDisplay() {
+  const keyword = searchInput.value.toLowerCase();
+  const sortBy = sortSelect.value;
+
+  // Correct selector: match the divs you actually create
+  const houseElements = Array.from(document.querySelectorAll('#activeOutput .housecontainer'));
+
+  houseElements.forEach(el => {
+    // Grab the elements that actually contain text
+    const houseName = el.querySelector('.coloredname')?.textContent.toLowerCase() || '';
+    const ownerName = el.querySelector('.clickable-copy')?.textContent.toLowerCase() || '';
+
+    // Show or hide element based on search
+    if (houseName.includes(keyword) || ownerName.includes(keyword)) {
+      el.style.display = '';
+    } else {
+      el.style.display = 'none';
+    }
+  });
+
+  // Sort if needed
+  if (sortBy === 'cookies' || sortBy === 'guests') {
+    const sorted = houseElements
+      .filter(el => el.style.display !== 'none')
+      .sort((a, b) => {
+        const aVal = parseInt(
+          sortBy === 'cookies' ? a.querySelector('.cookietext')?.textContent || '0' : a.querySelector('.playertext')?.textContent || '0'
+        );
+        const bVal = parseInt(
+          sortBy === 'cookies' ? b.querySelector('.cookietext')?.textContent || '0' : b.querySelector('.playertext')?.textContent || '0'
+        );
+        return bVal - aVal; // descending
+      });
+
+    const container = document.getElementById('activeOutput');
+    sorted.forEach(el => container.appendChild(el));
+  }
+}
+
+
+// Event listeners
+searchInput.addEventListener('input', updateHousesDisplay);
+sortSelect.addEventListener('change', updateHousesDisplay);
+
 
 async function getHouseData(houseId) {
   const output = document.getElementById('houseOutput');
@@ -431,7 +485,7 @@ async function getPlayerData(playerId) {
     const playerInfo = document.createElement('div');
     playerInfo.className = 'playerinfo';
     playerInfo.innerHTML = `
-      <h2 class="rankedname"></h2>
+      <h2 id="forced" class="rankedname"></h2>
       <img src="${headimg}" alt="Player head">
     `;
     output.appendChild(playerInfo);

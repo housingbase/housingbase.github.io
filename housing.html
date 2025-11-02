@@ -10,36 +10,34 @@
 
 </head>
 <body>
-  <div id="spotlight"></div>
-    <!-- Announcement -->
-<div id="announcement" style="display:none;"></div>
+  <header>
+    <div class="logo">
+  <a href="/index.html" style="display: inline-block;">
+    <img src="image/blueblue.png" alt="HousingBase Logo">
+  </a>
+</div>
 
-<!-- Header -->
-<header class="banner">
-    <img src="/image/header.png" alt="Header Banner" class="header-img">
-    <div class="overlay-bar">
-      <div class="nav-left">
-        <h1 class="logo">SpigotBase</h1>
-        <nav class="nav-links">
-          <a href="/index.html">HTSL Browser</a><span class="divider"></span>
-          <a href="/projects.html">Projects</a><span class="divider"></span>
-          <a href="#">About</a><span class="divider"></span>
-          <a href="/housing.html">Housing Browser</a><span class="divider"></span>
-          <a href="https://github.com/BusterBrown1218/HTSL" target="_blank">HTSL</a><span class="divider"></span>
-          <a href="https://housingeditor.com" target="_blank">Housing Editor</a>
-        </nav>
-      </div>
-        <div class="nav-right">
-            <div id="logged-out" style="display:flex; align-items:center;">
-                <a href="/login.html"><button id="signInBtnHeader">Sign In</button></a>
-            </div>
-            <div id="logged-in" style="display:none; align-items:center;">
-                <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
-                <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
-            </div>
-        </div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-</header>
+    <nav class="nav-links">
+      <a href="/housing.html">Housing Browser</a>
+      <a href="/news.html">News</a>
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/projects.html">Projects</a>
+      
+      <div id="logged-out" style="display:flex; align-items:center;">
+       <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
+    </nav>
+  </header>
 <!-- Search area -->
 <div class="search-container", style="display:none;">
   <div class="search-box">
@@ -56,8 +54,20 @@
 
 <!-- Main content -->
 <div class="timetext nocursor", style="display: none;"></div>
-<h1 class="bigname"><a href="">Browse Hypixel Housing</a></h1>
-<h2 class="bigname"><a href="">on the web.</a></h2>
+  <section style="margin-top: 25px;" class="promo">
+    <h2>Browse <span class="highlight">Hypixel Housing.</span></h2>
+  
+  </section>
+<!-- Search and sort area -->
+<div class="search-sort-container">
+  <input type="text" id="houseSearch" placeholder="Search by house name or player name..." />
+
+  <select id="sortOptions">
+    <option value="guests">Guests</option>
+    <option value="cookies">Cookies</option>
+  </select>
+</div>
+
 
 <h2 id="preoutput" class="preoutput"></h2>
 <div id="activeOutput"></div>
@@ -67,16 +77,41 @@
 <script src="/script.js"></script>
 <script src="index.js"></script>
 <script>
-    // Ensure active houses load after DOM is ready
-    window.addEventListener('DOMContentLoaded', () => {
-        getActive();
+window.addEventListener('DOMContentLoaded', () => {
+    const sortSelect = document.getElementById('sortOptions');
+
+    // Set default to 'guests'
+    sortSelect.value = 'guests';
+
+    // Load active houses, passing current sort value
+    getActive(sortSelect.value);
+
+    // If you have a change event for sorting
+    sortSelect.addEventListener('change', () => {
+        getActive(sortSelect.value); // re-sort when user changes select
     });
+});
 </script>
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 <b>SpigotBase</b>. All Rights Reserved</p>
-      <p>Housing Browser by luckycdev</p>
-      <p>&copy; SpigotBase is in no way affiliated or endorsed by Hypixel OR SpigotMC/Bukkit.</p>
+<footer class="footer" style="margin-top: 50px;">
+    <div class="footer-container">
+      <div class="footer-top">
+        <img src="/image/fullwhite.png" alt="HousingBase Logo" class="footer-logo" />
+        <div class="social-icons">
+          <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="/index.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+      <p class="footer-credit">HousingBrowser API by luckycdev</p>
+      <p class="footer-credit">&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
     </div>
   </footer>
 

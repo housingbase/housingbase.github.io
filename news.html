@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/image/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <title>Home | HousingBase</title>
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        #typedText {
+            font-family: monospace;
+            background-color: rgb(19, 19, 19);
+            color: rgb(236, 236, 236);
+            white-space: nowrap;
+            z-index: 3;
+        }
+
+        #typewriter {
+            white-space: nowrap;
+            display: inline-block;
+            background-color: rgb(19, 19, 19);
+            padding-right: 7px;
+            padding-left: 2px;
+            z-index: 3;
+        }
+
+        #cursor {
+            display: inline-block;
+            opacity: 1;
+            animation: blink 1s step-start infinite;
+        }
+
+        #cursor.hidden {
+            opacity: 0;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50%,
+            100% {
+                opacity: 1;
+            }
+
+            25%,
+            75% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dot-background"></div>
+    <header>
+        <div class="logo">
+            <a href="/index.html" style="display: inline-block;">
+                <img src="image/blueblue.png" alt="HousingBase Logo">
+            </a>
+        </div>
+
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-links">
+            <a href="/housing.html">Housing Browser</a>
+            <a href="/news.html">News</a>
+            <a href="/browser.html">HTSL Library</a>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/projects.html">Projects</a>
+            <button class="nav-btn">Sign In</button>
+        </nav>
+    </header>
+
+    <section class="promo" style="margin-top: 20px;;">
+        <h2>HousingBase <span class="highlight">News.</span></h2>
+        <h3>Receive latest updates about HousingBase, or <a href="https://hypixel.net/housing/">Hypixel Housing</a>.
+        </h3>
+    </section>
+    <section class="grid1">
+                 <div class="update-card">
+            <h2 class="title">Closed Alpha ended - Open Beta!</h2>
+            <p class="description">TL;DR: Everyone is now able to test HousingBase.</p>
+            <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | Novemver 2nd 2025 - 11:19 PM</p>
+            <div class="section-divider"></div>
+            <a class="update-contents">
+                <div>
+                <a href="/register.html"><button style="padding: 12px; margin-top: 10px; margin-right: 5px;" class="secondary-btn">Create a account</button></a>
+                <a href="/login.html"><button style="padding: 11px; margin-top: 10px;" class="secondary-btn">Login to your account</button></a>
+            </div>
+            </a>
+        </div>
+         <div class="update-card">
+            <h2 class="title">Dashboard for more control regarding HTSL</h2>
+            <p class="description">Dashboard for project management</p>
+            <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 27th 2025 - 9:12 PM</p>
+            <div class="section-divider"></div>
+            <a class="update-contents">
+                <p>We have added a new system and page where you can now manage, edit and upload your HTSL content. Instead of the regular create page, you now do everything in your Dashboard.</p>
+                <div>
+                <a href="/dashboard.html"><button style="padding: 12px; margin-top: 10px; margin-right: 5px;" class="primary-btn">Open Dashboard</button></a>
+                <a href="/login.html"><button style="padding: 11px; margin-top: 10px;" class="secondary-btn">Login to your account</button></a>
+            </div>
+            </a>
+        </div>
+        <div class="update-card">
+            <h2 class="title">Online Housing Browser for HousingBase</h2>
+            <p class="description">Release of the Housing Browser</p>
+            <p class="poster">by <a class="username" href="/profile.html?user=spigotbase">@spigotbase</a> | October 24th 2025 - 9:16 AM</p>
+            <div class="section-divider"></div>
+            <a class="update-contents">
+                <p>The Housing Browser is now live on HousingBase! You can now explore all active housings on
+                Hypixel Housing through the web. Simply head to the "Browse Housing" section to get started.
+                Search, filter, and view housings with ease. We hope you enjoy this new feature as we continue
+                to enhance your HousingBase experience!</p>
+                <div>
+                <a href="/browser.html"><button style="padding: 12px; margin-top: 10px; margin-right: 5px;" class="primary-btn">Open Housing Browser</button></a>
+                <a href="#link=invalid"><button style="padding: 11px; margin-top: 10px;" class="secondary-btn"> < Link Invalid ></button></a>
+            </div>
+            </a>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <img src="/image/fullwhite.png" alt="HousingBase Logo" class="footer-logo" />
+                <div class="social-icons">
+                    <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="/index.html">About</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/terms.html">Terms</a>
+            </div>
+            <p class="footer-credit">&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>
