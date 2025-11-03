@@ -474,7 +474,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function initSearch() {
     // Wait until addons have loaded
-    await loadAddons(true);
+    await loadAddons(false);
     allAddons = Array.from(document.querySelectorAll("#addon-list .addon-card"));
   }
 
