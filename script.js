@@ -242,18 +242,19 @@ async function loadAddons(useFake = false) {
   const addons = useFake
     ? await fetchAddonsLocal()
     : await (async () => {
-      const token = localStorage.getItem("authToken");
-      const res = await fetch(`${API_BASE}/api/addons`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) return [];
-      return await res.json();
-    })();
+        const token = localStorage.getItem("authToken");
+        const res = await fetch(`${API_BASE}/api/addons`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) return [];
+        return await res.json();
+      })();
 
   addons.forEach(a => {
     const card = document.createElement("div");
     card.className = "addon-card";
 
+    // Top row with title and badges
     const topRow = document.createElement("div");
     topRow.style.display = "flex";
     topRow.style.justifyContent = "space-between";
@@ -270,27 +271,28 @@ async function loadAddons(useFake = false) {
     const badges = document.createElement("div");
     badges.style.display = "flex";
     badges.style.gap = "6px";
-      const v = document.createElement("span");
-      v.className = "cf-badge";
-      v.textContent = "1.8.9";
-      badges.appendChild(v);
 
-    if (a.downloads !== undefined) {
-      const d = document.createElement("span");
-      d.className = "cf-badge";
-      d.textContent = `⬇ ${a.downloads}`;
-      badges.appendChild(d);
-    }
-    if (a.likes !== undefined) {
-      const l = document.createElement("span");
-      l.className = "cf-badge";
-      l.textContent = `❤ ${a.likes}`;
-      badges.appendChild(l);
-    }
+    const v = document.createElement("span");
+    v.className = "cf-badge";
+    v.textContent = "1.8.9";
+    badges.appendChild(v);
+
+    // Downloads badge
+    const d = document.createElement("span");
+    d.className = "cf-badge dl-badge";
+    d.textContent = `⬇ ${a.downloads ?? 0}`;
+    badges.appendChild(d);
+
+    // Likes badge
+    const l = document.createElement("span");
+    l.className = "cf-badge like-badge";
+    l.textContent = `❤ ${a.likes ?? 0}`;
+    badges.appendChild(l);
 
     topRow.appendChild(badges);
     card.appendChild(topRow);
 
+    // Description
     if (a.description) {
       const desc = document.createElement("p");
       if (typeof a.description === "string" && a.description.replaceColorCodes) {
@@ -301,44 +303,68 @@ async function loadAddons(useFake = false) {
       card.appendChild(desc);
     }
 
+    // Buttons container
     const btnContainer = document.createElement("div");
     btnContainer.style.display = "flex";
     btnContainer.style.gap = "8px";
 
+    // Download button
     const downloadBtn = document.createElement("a");
-    downloadBtn.className = "dlbutton"
+    downloadBtn.className = "dlbutton";
     downloadBtn.href = useFake ? "#" : `${API_BASE}/api/addons/${a.id}/download`;
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
 
-    // Show delete button if it's a fake addon OR if real addon belongs to user/admin
-if (useFake || (me && (me.username === a.username || me.is_admin))) {
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "Delete";
-  delBtn.className = "del-btn";
-  delBtn.onclick = () => {
-    showDeleteModal(a.name, async () => {
-      if (!useFake) {
+    // Like button
+    const likeBtn = document.createElement("button");
+    likeBtn.textContent = "Like";
+    likeBtn.className = "like-btn";
+    likeBtn.onclick = async () => {
+      if (useFake) {
+        a.likes += 1;
+        l.textContent = `❤ ${a.likes}`;
+      } else {
         const token = localStorage.getItem("authToken");
-        const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
-          method: "DELETE",
+        const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
+          method: "POST",
           headers: { Authorization: `Bearer ${token}` }
         });
-        if (delRes.status === 204) loadAddons(useFake);
-      } else {
-        alert(`Fake addon "${a.name}" deleted!`);
-        card.remove();
+        if (res.ok) {
+          a.likes += 1;
+          l.textContent = `❤ ${a.likes}`;
+        }
       }
-    });
-  };
-  btnContainer.appendChild(delBtn);
-}
+    };
+    btnContainer.appendChild(likeBtn);
 
+    // Show delete button if fake or real user/admin
+    if (useFake || (me && (me.username === a.username || me.is_admin))) {
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.className = "del-btn";
+      delBtn.onclick = () => {
+        showDeleteModal(a.name, async () => {
+          if (!useFake) {
+            const token = localStorage.getItem("authToken");
+            const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
+              method: "DELETE",
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (delRes.status === 204) loadAddons(useFake);
+          } else {
+            alert(`Fake addon "${a.name}" deleted!`);
+            card.remove();
+          }
+        });
+      };
+      btnContainer.appendChild(delBtn);
+    }
 
     card.appendChild(btnContainer);
 
+    // Meta (author & date)
     const meta = document.createElement("p");
     meta.className = "meta";
     const avatarImg = document.createElement("img");
@@ -365,6 +391,7 @@ if (useFake || (me && (me.username === a.username || me.is_admin))) {
     meta.appendChild(dateSpan);
     card.appendChild(meta);
 
+    // Modal click
     card.addEventListener("click", e => {
       if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
@@ -401,6 +428,7 @@ if (useFake || (me && (me.username === a.username || me.is_admin))) {
     container.appendChild(card);
   });
 
+  // Modal close handling
   const modalClose = document.getElementById("modal-close");
   const modalOverlay = document.getElementById("modal-overlay");
   const modalBox = document.getElementById("modal-box");
