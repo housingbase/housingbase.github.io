@@ -317,7 +317,7 @@ async function loadAddons() {
       // Like button
       // needs to have a <span class="heart">❤</span> instead of just ❤
       const likeBtn = document.createElement("button");
-      likeBtn.textContent = "Like";
+      likeBtn.textContent = "";
       likeBtn.className = "like-btn";
 
       const heartSpan = document.createElement("span");
