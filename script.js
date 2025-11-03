@@ -278,65 +278,70 @@ async function loadAddons() {
       downloadBtn.appendChild(dlButton);
 
       downloadBtn.onclick = async (e) => {
-        e.preventDefault();
-        try {
-          const token = localStorage.getItem("authToken");
-          const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {}
-          });
-          if (!res.ok) { alert("Download failed."); return; }
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {}
+    });
+    if (!res.ok) { alert("Download failed."); return; }
 
-          // Update badge immediately
-          a.downloads = (a.downloads ?? 0) + 1;
-          d.textContent = `⬇ ${a.downloads}`;
+    // ✅ Fetch updated downloads count from headers or server endpoint
+    const updatedAddonRes = await fetch(`${API_BASE}/api/addons/${a.id}`);
+    const updatedAddon = await updatedAddonRes.json();
+    a.downloads = updatedAddon.downloads ?? a.downloads;
+    d.textContent = `⬇ ${a.downloads}`;
 
-          // Download file
-          const disposition = res.headers.get("Content-Disposition");
-          let filename = a.file_name || `${a.name}.htsl`;
-          if (disposition) {
-            const match = disposition.match(/filename="(.+)"/);
-            if (match) filename = match[1];
-          }
+    // Download file
+    const disposition = res.headers.get("Content-Disposition");
+    let filename = a.file_name || `${a.name}.htsl`;
+    if (disposition) {
+      const match = disposition.match(/filename="(.+)"/);
+      if (match) filename = match[1];
+    }
+    const blob = await res.blob();
+    const aTag = document.createElement("a");
+    aTag.href = URL.createObjectURL(blob);
+    aTag.download = filename;
+    document.body.appendChild(aTag);
+    aTag.click();
+    aTag.remove();
 
-          const blob = await res.blob();
-          const aTag = document.createElement("a");
-          aTag.href = URL.createObjectURL(blob);
-          aTag.download = filename;
-          document.body.appendChild(aTag);
-          aTag.click();
-          aTag.remove();
-        } catch (err) {
-          console.error(err);
-          alert("Download failed.");
-        }
-      };
+  } catch (err) {
+    console.error(err);
+    alert("Download failed.");
+  }
+};
       btnContainer.appendChild(downloadBtn);
 
       // Like button
       const likeBtn = document.createElement("button");
       likeBtn.textContent = "Like";
       likeBtn.className = "like-btn";
-      likeBtn.onclick = async () => {
-        try {
-          const token = localStorage.getItem("authToken");
-          if (!token) { alert("You must be logged in to like addons."); return; }
+likeBtn.onclick = async () => {
+  try {
+    const token = localStorage.getItem("authToken");
+    if (!token) { alert("You must be logged in to like addons."); return; }
 
-          const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          const data = await res.json();
-          if (res.ok) {
-            a.likes = data.likes;
-            l.textContent = `❤ ${a.likes}`; // ✅ update badge with server value
-          } else {
-            alert(data.error || "Failed to like addon");
-          }
-        } catch (err) {
-          console.error(err);
-          alert("Failed to like addon.");
-        }
-      };
+    const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      // ✅ Use server-provided value
+      a.likes = data.likes;
+      l.textContent = `❤ ${a.likes}`;
+    } else {
+      alert(data.error || "Failed to like addon");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Failed to like addon.");
+  }
+};
+
       btnContainer.appendChild(likeBtn);
 
       // Delete button
