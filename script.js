@@ -315,9 +315,17 @@ async function loadAddons() {
       btnContainer.appendChild(downloadBtn);
 
       // Like button
+      // needs to have a <span class="heart">❤</span> instead of just ❤
       const likeBtn = document.createElement("button");
       likeBtn.textContent = "Like";
       likeBtn.className = "like-btn";
+
+      const heartSpan = document.createElement("span");
+heartSpan.className = "heart";
+heartSpan.textContent = "❤";
+
+likeBtn.appendChild(heartSpan);
+      
 likeBtn.onclick = async () => {
   try {
     const token = localStorage.getItem("authToken");
