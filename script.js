@@ -224,7 +224,11 @@ async function loadAddons() {
       topRow.style.alignItems = "center";
 
       const title = document.createElement("h4");
-      title.textContent = a.name;
+      if (typeof a.name === "string" && a.name.replaceColorCodes) {
+        title.appendChild(a.name.replaceColorCodes()); // ✅ keep color codes
+      } else {
+        title.textContent = a.name;
+      }
       topRow.appendChild(title);
 
       const badges = document.createElement("div");
@@ -238,12 +242,12 @@ async function loadAddons() {
 
       const d = document.createElement("span");
       d.className = "cf-badge dl-badge";
-      d.textContent = `⬇ ${a.downloads ?? 0}`; // real value from server
+      d.textContent = `⬇ ${a.downloads ?? 0}`; // ✅ from server
       badges.appendChild(d);
 
       const l = document.createElement("span");
       l.className = "cf-badge like-badge";
-      l.textContent = `❤ ${a.likes ?? 0}`; // real value from server
+      l.textContent = `❤ ${a.likes ?? 0}`; // ✅ from server
       badges.appendChild(l);
 
       topRow.appendChild(badges);
@@ -252,11 +256,15 @@ async function loadAddons() {
       // Description
       if (a.description) {
         const desc = document.createElement("p");
-        desc.textContent = a.description;
+        if (typeof a.description === "string" && a.description.replaceColorCodes) {
+          desc.appendChild(a.description.replaceColorCodes()); // ✅ keep color codes
+        } else {
+          desc.textContent = a.description;
+        }
         card.appendChild(desc);
       }
 
-      // Buttons container
+      // Buttons
       const btnContainer = document.createElement("div");
       btnContainer.style.display = "flex";
       btnContainer.style.gap = "8px";
@@ -268,6 +276,7 @@ async function loadAddons() {
       const dlButton = document.createElement("button");
       dlButton.textContent = "Download";
       downloadBtn.appendChild(dlButton);
+
       downloadBtn.onclick = async (e) => {
         e.preventDefault();
         try {
@@ -275,12 +284,13 @@ async function loadAddons() {
           const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
           });
-          if (!res.ok) {
-            alert("Download failed.");
-            return;
-          }
+          if (!res.ok) { alert("Download failed."); return; }
 
-          // Get filename from server response
+          // Update badge immediately
+          a.downloads = (a.downloads ?? 0) + 1;
+          d.textContent = `⬇ ${a.downloads}`;
+
+          // Download file
           const disposition = res.headers.get("Content-Disposition");
           let filename = a.file_name || `${a.name}.htsl`;
           if (disposition) {
@@ -295,7 +305,6 @@ async function loadAddons() {
           document.body.appendChild(aTag);
           aTag.click();
           aTag.remove();
-
         } catch (err) {
           console.error(err);
           alert("Download failed.");
@@ -310,10 +319,7 @@ async function loadAddons() {
       likeBtn.onclick = async () => {
         try {
           const token = localStorage.getItem("authToken");
-          if (!token) {
-            alert("You must be logged in to like addons.");
-            return;
-          }
+          if (!token) { alert("You must be logged in to like addons."); return; }
 
           const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
             method: "POST",
@@ -321,7 +327,8 @@ async function loadAddons() {
           });
           const data = await res.json();
           if (res.ok) {
-            l.textContent = `❤ ${data.likes}`; // update badge from server
+            a.likes = data.likes;
+            l.textContent = `❤ ${a.likes}`; // ✅ update badge with server value
           } else {
             alert(data.error || "Failed to like addon");
           }
@@ -332,7 +339,7 @@ async function loadAddons() {
       };
       btnContainer.appendChild(likeBtn);
 
-      // Delete button if user is owner/admin
+      // Delete button
       if (me && (me.username === a.username || me.is_admin)) {
         const delBtn = document.createElement("button");
         delBtn.textContent = "Delete";
@@ -379,10 +386,9 @@ async function loadAddons() {
       meta.appendChild(dateSpan);
       card.appendChild(meta);
 
-      // Modal click
+      // Modal
       card.addEventListener("click", e => {
         if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
-
         document.getElementById("modal-title").textContent = a.name;
         document.getElementById("modal-desc").textContent = a.description || "No description provided.";
         document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
@@ -390,7 +396,6 @@ async function loadAddons() {
         const overlay = document.getElementById("modal-overlay");
         const box = document.getElementById("modal-box");
         const modalBody = document.querySelector(".modal-body");
-
         overlay.classList.add("show");
         overlay.style.opacity = "1";
         box.style.transform = "scale(1)";
