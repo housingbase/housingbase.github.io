@@ -433,7 +433,6 @@ function stripColorCodes(text) {
   return text.replace(/§[0-9A-FK-ORa-fk-or]/g, '');
 }
 document.addEventListener("DOMContentLoaded", async () => {
-  await loadAnnouncement();
   // --- Render authentication ---
   const me = await getMe();
   renderAuth(me);

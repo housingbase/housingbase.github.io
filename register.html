@@ -10,43 +10,34 @@
     <title>Register | HousingBase</title>
 </head>
 <body>
-    <img src="/image/header.png" alt="Header Banner" class="header-img">
-    <header>
-        
-        <div class="header-container">
-            <a href="/index.html">
-                <div class="logo-container">
-                    <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
-                    <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
-                </div>
-            </a>
+      <header>
+    <div class="logo">
+  <a href="/index.html" style="display: inline-block;">
+    <img src="image/blueblue.png" alt="HousingBase Logo">
+  </a>
+</div>
 
-            <nav class="nav-links">
-                <a href="/browser.html">HTSL Library</a>
-                <a href="/projects.html">Our Projects</a>
-                <a href="/housing.html">Browse Housing</a>
-                <a href="/create.html">Dashboard</a>
-            </nav>
-
-            <div class="user-status">
-                <div id="logged-out" style="display:flex; align-items:center;">
-                    <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
-                    <div style="margin-left: 5px;"></div>
-                    <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
-                </div>
-                <div id="logged-in" style="display:none; align-items:center;">
-                    <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
-                    <span id="displayName" class="display-name"></span>
-                </div>
-            </div>
-
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </header>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav class="nav-links">
+      <a href="/housing.html">Housing Browser</a>
+      <a href="/news.html">News</a>
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/projects.html">Projects</a>
+      
+      <div id="logged-out" style="display:flex; align-items:center;">
+       <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
+    </nav>
+  </header>
 
     <div id="announcement" style="display:none;"></div>
 <main>

@@ -64,27 +64,34 @@
 
 <body>
     <div class="dot-background"></div>
-    <header>
-        <div class="logo">
-            <a href="/index.html" style="display: inline-block;">
-                <img src="image/blueblue.png" alt="HousingBase Logo">
-            </a>
-        </div>
+  <header>
+    <div class="logo">
+  <a href="/index.html" style="display: inline-block;">
+    <img src="image/blueblue.png" alt="HousingBase Logo">
+  </a>
+</div>
 
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav class="nav-links">
-            <a href="/housing.html">Housing Browser</a>
-            <a href="/news.html">News</a>
-            <a href="/browser.html">HTSL Library</a>
-            <a href="/dashboard.html">Dashboard</a>
-            <a href="/projects.html">Projects</a>
-            <button class="nav-btn">Sign In</button>
-        </nav>
-    </header>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav class="nav-links">
+      <a href="/housing.html">Housing Browser</a>
+      <a href="/news.html">News</a>
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/projects.html">Projects</a>
+      
+      <div id="logged-out" style="display:flex; align-items:center;">
+       <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
+    </nav>
+  </header>
     <div id="announcement" style="display:none;"></div>
 
     <section class="promo" style="margin-top: 20px;;">
