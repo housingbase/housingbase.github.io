@@ -317,30 +317,43 @@ badges.appendChild(l);
     const dlButton = document.createElement("button");
     dlButton.textContent = "Download";
     downloadBtn.appendChild(dlButton);
-    downloadBtn.onclick = async () => {
+ downloadBtn.onclick = async () => {
   try {
     const token = localStorage.getItem("authToken");
     const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
-    if (res.ok) {
-      a.downloads++;
-      d.textContent = `⬇ ${a.downloads}`; // update badge
+    if (!res.ok) {
+      alert("Download failed.");
+      return;
+    }
 
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const aTag = document.createElement("a");
-      aTag.href = url;
-      aTag.download = `${a.name}.zip`; // adjust extension if needed
-      document.body.appendChild(aTag);
-      aTag.click();
-      aTag.remove();
-    } else alert("Download failed.");
+    // increment local badge
+    a.downloads = (a.downloads ?? 0) + 1;
+    d.textContent = `⬇ ${a.downloads}`;
+
+    // Get correct filename from server response
+    const disposition = res.headers.get("Content-Disposition");
+    let filename = a.file_name || a.name + ".htsl";
+    if (disposition) {
+      const match = disposition.match(/filename="(.+)"/);
+      if (match) filename = match[1];
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const aTag = document.createElement("a");
+    aTag.href = url;
+    aTag.download = filename;
+    document.body.appendChild(aTag);
+    aTag.click();
+    aTag.remove();
   } catch (err) {
     console.error(err);
     alert("Download failed.");
   }
 };
+
     btnContainer.appendChild(downloadBtn);
 
     // Like button
