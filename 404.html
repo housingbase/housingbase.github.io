@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/image/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <title>Home | HousingBase</title>
+
+  <style>
+    body {
+      overflow-x: hidden;
+    }
+
+    #typedText {
+      font-family: monospace;
+      background-color: rgb(19, 19, 19);
+      color: rgb(236, 236, 236);
+      white-space: nowrap;
+      z-index: 3;
+    }
+
+    #typewriter {
+      white-space: nowrap;
+      display: inline-block;
+      background-color: rgb(19, 19, 19);
+      padding-right: 7px;
+      padding-left: 2px;
+      z-index: 3;
+    }
+
+    #cursor {
+      display: inline-block;
+      opacity: 1;
+      animation: blink 1s step-start infinite;
+    }
+
+    #cursor.hidden {
+      opacity: 0;
+    }
+
+    @keyframes blink {
+
+      0%,
+      50%,
+      100% {
+        opacity: 1;
+      }
+
+      25%,
+      75% {
+        opacity: 0;
+      }
+    }
+  </style>
+<style>
+    body {
+          background: radial-gradient(circle at 50% 20%, #0f172a 0%, #020617 100%);
+    }
+  .promo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 20px;
+    min-height: 80vh;
+    position: relative;
+    background: radial-gradient(circle at 50% 20%, #0f172a 0%, #020617 100%);
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .error-container {
+    max-width: 700px;
+    z-index: 2;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .error-code {
+    font-size: clamp(6rem, 18vw, 14rem);
+    font-weight: 900;
+    margin: 0;
+    background-image: url("/image/external.png");
+    background-size: cover;
+    background-position: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .error-title {
+    font-size: 2.2rem;
+    margin: 15px 0;
+    color: #e0e0e0;
+    font-weight: 600;
+  }
+
+  .error-text {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .primary-btn {
+    background: #0078ff;
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .primary-btn:hover {
+    background: #005fd1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0, 120, 255, 0.3);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="dot-background"></div>
+  <header>
+    <div class="logo">
+  <a href="/index.html" style="display: inline-block;">
+    <img src="image/blueblue.png" alt="HousingBase Logo">
+  </a>
+</div>
+
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <nav class="nav-links">
+      <a href="/housing.html">Housing Browser</a>
+      <a href="/news.html">News</a>
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/projects.html">Projects</a>
+      
+      <div id="logged-out" style="display:flex; align-items:center;">
+       <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
+    </nav>
+  </header>
+  <div id="announcement" style="display:none;"></div>
+
+<section class="promo">
+  <div class="error-container">
+    <h1 class="error-code" style="user-select: none;">404</h1>
+    <h2 class="error-title" style="user-select: none;"><span class=highlighttxt style="user-select: none;">Page Not Found</span></h2>
+    <p class="error-text">
+      Looks like you've drifted out too far into <span class="highlight">outer space.</span><br>
+      Let’s guide you back home.
+    </p>
+    <a href="/index.html"><button class="primary-btn">Return to Homepage</button></a>
+  </div>
+</section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <img src="/image/fullwhite.png" alt="HousingBase Logo" class="footer-logo" />
+        <div class="social-icons">
+          <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="/index.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+      <p class="footer-credit">&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

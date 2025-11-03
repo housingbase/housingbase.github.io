@@ -1,9 +1,17 @@
 @import url('https://fonts.cdnfonts.com/css/monocraft');
+
 @font-face {
   font-family: "Monocraft";
   src: url("fonts/Monocraft.ttf") format("truetype");
-}*
-,
+}
+
+@font-face {
+  font-family: "Minecraftia";
+  src: url("Minecraftia-Regular.ttf") format("truetype");
+}
+
+*,
+
 *::before,
 *::after {
   margin: 0;
@@ -22,7 +30,6 @@ body {
 body {
   padding-top: 50px;
 }
-
 
 
 body::before {
@@ -512,10 +519,10 @@ h1 {
 
 .social-icons a svg {
   transition: transform 0.3s ease, stroke 0.3s ease;
+  color: #fff;
 }
 
 .social-icons a:hover svg {
-  stroke: #2563eb;
   transform: scale(1.1);
 }
 
@@ -1039,9 +1046,32 @@ h1 {
 
 }
 
+#featuredOutput {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  place-items: center;
+  margin: auto;
+  max-width: 1500px;
+  z-index: 3;
+  border-radius: 8px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #1f1f1f;
+  background-blend-mode: overlay;
+  border: rgba(20, 20, 20, 0.418) 5px solid;
+
+
+  background-image: url('image/dirt.png');
+  background-repeat: repeat;
+  background-size: auto;
+  background-position: top left;
+  background-size: 64px 64px;
+
+}
 
 
 
+#featuredOutput,
 #houseOutput,
 #activeOutput {
   position: relative;
@@ -1070,6 +1100,7 @@ h1 {
   text-shadow: 2px 2px 2px black;
   font-family: "Monocraft", sans-serif !important;
 }
+
 .rankedname h2 {
   font-family: "Monocraft", sans-serif !important;
 }
@@ -1269,6 +1300,7 @@ h1 {
 #forced {
   font-family: "Monocraft";
 }
+
 #forced span {
   font-family: "Monocraft";
 }
@@ -1483,6 +1515,7 @@ h1 {
   font-family: "Monocraft", sans-serif;
   padding: 10px;
 }
+
 .grid1 {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -1543,6 +1576,7 @@ h1 {
   font-size: 0.8rem;
   color: #a8a8a8;
 }
+
 .poster .username {
   color: #579aff;
   text-decoration: none;
@@ -1551,10 +1585,122 @@ h1 {
 .poster .username:hover {
   text-decoration: underline;
 }
+
 .update-contents p {
   font-size: 14px;
   font-family: monospace;
   margin-top: 10px;
   margin-bottom: 10px;
-  color:rgb(207, 207, 207)
+  color: rgb(207, 207, 207)
+}
+
+.addon-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.137);
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 3;
+}
+
+.addon-card:hover {
+  transform: translateY(-2px);
+  border: 1px solid #3f3f64;
+  background: rgba(24, 31, 44, 0.15);
+  outline: none;
+  box-shadow: 0 6px 18px rgba(37, 42, 51, 0.25);
+}
+
+.addon-card h4 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: #ffffff;
+  font-family: Minecraftia;
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+.addon-card p {
+  color: #dfdfdf;
+  font-family: Minecraftia;
+  font-size: 13px;
+  font-weight: lighter;
+}
+
+.user-link {
+  text-decoration: none;
+  color: #0073e6;
+
+}
+
+.avatar-img {
+  vertical-align: middle;
+}
+
+.user-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #005bb5;
+}
+
+.addon-card h4,
+.addon-card h4 span {
+  font-family: Minecraftia;
+}
+
+.addon-card p,
+.addon-card p span {
+  font-family: Minecraftia;
+}
+
+.addon-card .date {
+  font-family: "Inter", sans-serif;
+}
+
+.addon-card .user-link {
+  text-decoration: none;
+}
+
+.dlbutton {
+  display: block;
+  margin-top: 6px;
+  align-self: flex-start;
+}
+
+.addon-card {
+  position: relative;
+}
+
+.dlbutton button {
+  position: absolute;
+  right: 0;
+  margin-right: 15px;
+  bottom: 15px;
+  background: rgba(30, 30, 30, 0.35);
+  height: 35px;
+  backdrop-filter: blur(12px);
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #eee;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dlbutton button:hover {
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+  transform: translateY(-1px) scale(1.01);
+  border: 1px solid #2564eb;
+  background: rgba(37, 99, 235, 0.15);
+  color: #fff;
 }

@@ -2,97 +2,648 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTSL Library | HousingBase</title>
+
+  <!-- Keep your existing icon + fonts if you want -->
   <link rel="icon" href="/image/favicon.png" type="image/png">
   <link rel="apple-touch-icon" sizes="180x180" href="/image/apple-touch-icon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-  <title>HTSL Library | HousingBase</title>
+
+  <!-- New stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Base page look (neutral, CurseForge/Bukkit vibe) */
+    :root {
+      --card: #ffffff;
+      --border: #dcdfe4;
+      --text: #ffffff;
+      --muted: #667085;
+      --link: #0a6cff;
+      --link-hover: #004ec2;
+      --accent: #ff6a00;
+      /* optional accent */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+      color: var(--text);
+    }
+
+    /* Top bar */
+    .cf-container {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    .cf-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cf-breadcrumb {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .cf-breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .cf-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .cf-breadcrumb .sep {
+      margin: 0 6px;
+    }
+
+    .cf-breadcrumb .current {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Top search */
+    .cf-search {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cf-search input {
+      background: #222222;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      width: 280px;
+    }
+
+    .cf-search-btn {
+      border: 1px solid var(--border);
+      background: #292929;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .cf-search-btn:hover {
+      background: #1b1b1b;
+    }
+
+    /* Layout: sidebar + content */
+    .cf-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+    }
+
+    /* Sidebar */
+    .cf-sidebar {
+      border-radius: 8px;
+      padding: 16px;
+      align-self: start;
+      border-radius: 12px;
+      font-family: "Inter", sans-serif;
+      backdrop-filter: blur(2px);
+      z-index: 3;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(30, 30, 30, 0.137);
+      transition: all 0.1s ease;
+    }
+
+    .cf-sidebar:hover {
+      border: 1px solid #3f3f64;
+      background: rgba(24, 31, 44, 0.15);
+      outline: none;
+      box-shadow: 0 6px 18px rgba(37, 42, 51, 0.25);
+    }
+
+    .cf-side-title {
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .cf-side-list {
+      list-style: none;
+      margin: 0 0 16px 0;
+      padding: 0;
+    }
+
+    .cf-side-list li {
+      margin-bottom: 6px;
+    }
+
+    .cf-side-list a {
+      display: block;
+      padding: 0.4rem 1rem;
+      border-radius: 10px;
+      border: rgba(0, 0, 0, 0.08) 1px solid;
+      color: var(--text);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .cf-side-list a:hover {
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px) scale(1.01);
+      border: 1px solid #2564eb;
+      background: rgba(37, 99, 235, 0.15);
+      color: #fff;
+    }
+
+    .cf-side-list a.active {
+      backdrop-filter: blur(0.1px);
+      background: rgba(35, 60, 129, 0.35);
+      padding: 0.4rem 1rem;
+      border-radius: 10px;
+      color: #eee;
+      border: 1px solid rgba(29, 68, 139, 0.37);
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 18px rgba(15, 50, 116, 0.25);
+    }
+
+    .cf-side-list a.active:hover {
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px) scale(1.01);
+      border: 1px solid #2564eb;
+      background: rgba(37, 99, 235, 0.15);
+      color: #fff;
+    }
+
+    .cf-filter {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cf-label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .cf-sidebar select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    /* Content header row */
+    .cf-content {
+      min-width: 0;
+    }
+
+    .cf-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0 12px 0;
+    }
+
+    .cf-title {
+      margin: 0;
+      font-size: 1.7rem;
+      font-family: "Inter", sans-serif;font-family: "Inter", sans-serif;
+      font-weight: bold;
+    }
+
+    .cf-subtitle {
+      margin: 4px 0 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .cf-actions-right .cf-primary {
+      background: var(--link);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .cf-actions-right .cf-primary:hover {
+      background: var(--link-hover);
+    }
+
+    /* List container */
+    .cf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Single item */
+    .cf-item {
+      display: grid;
+      grid-template-columns: 64px 1fr auto;
+      gap: 16px;
+      align-items: start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .cf-item:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .cf-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: #e4e7ec;
+      object-fit: cover;
+    }
+
+    /* Main block */
+    .cf-item-main {
+      min-width: 0;
+    }
+
+    .cf-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .cf-item-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    .cf-item-title:hover {
+      color: var(--link-hover);
+    }
+
+    .cf-item-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cf-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: #f1f3f6;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
+    .cf-item-desc {
+      margin: 6px 0 6px 0;
+      color: #3b3f45;
+      font-size: 0.95rem;
+    }
+
+    .cf-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .cf-item-meta .dot {
+      color: var(--border);
+    }
+
+    /* Right actions */
+    .cf-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cf-link {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.92rem;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .cf-link:hover {
+      background: #f6f8fa;
+    }
+
+    .cf-download {
+      color: #fff;
+      background: var(--link);
+      border-radius: 6px;
+      padding: 6px 10px;
+      text-decoration: none;
+      font-size: 0.92rem;
+      border: 1px solid var(--link);
+    }
+
+    .cf-download:hover {
+      background: var(--link-hover);
+    }
+
+    /* Pagination */
+    .cf-pagination {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0 0 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .cf-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cf-sidebar {
+        order: 1;
+      }
+
+      .cf-content {
+        order: 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .cf-topbar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .cf-search {
+        width: 100%;
+      }
+
+      .cf-search input {
+        width: 100%;
+      }
+
+      .cf-item {
+        grid-template-columns: 48px 1fr;
+      }
+
+      .cf-icon {
+        width: 48px;
+        height: 48px;
+      }
+
+      .cf-item-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+      }
+
+      .cf-item-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <img src="/image/header.png" alt="Header Banner" class="header-img">
+  <!-- Keep your own header -->
   <header>
-
-    <div class="header-container">
-      <a href="/index.html">
-        <div class="logo-container">
-          <img src="/image/blueblue.png" alt="HousingBase Logo" class="logo-default">
-          <img src="/image/blueblue.png" alt="HousingBase Logo Hover" class="logo-hover">
-        </div>
+    <div class="logo">
+      <a href="/index.html" style="display: inline-block;">
+        <img src="image/blueblue.png" alt="HousingBase Logo">
       </a>
-
-      <nav class="nav-links">
-        <a href="/browser.html">HTSL Library</a>
-        <a href="/projects.html">Our Projects</a>
-        <a href="/housing.html">Browse Housing</a>
-        <a href="/create.html">Dashboard</a>
-      </nav>
-
-      <div class="user-status">
-        <div id="logged-out" style="display:flex; align-items:center;">
-          <a href="/login.html"><button id="signInBtnHeader">Login</button></a>
-          <div style="margin-left: 5px;"></div>
-          <a href="/register.html"><button id="registerBtnHeader">Register</button></a>
-        </div>
-        <div id="logged-in" style="display:none; align-items:center;">
-          <img id="avatarSmall" width="32" height="32" alt="Avatar" class="avatar-small">
-          <span id="displayName" class="display-name"></span>
-        </div>
-      </div>
-
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
     </div>
-  </header>
 
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+
+    <nav class="nav-links">
+      <a href="/housing.html">Housing Browser</a>
+      <a href="/news.html">News</a>
+      <a href="/browser.html">HTSL Library</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/projects.html">Projects</a>
+
+      <div id="logged-out" style="display:flex; align-items:center;">
+        <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+      </div>
+      <div id="logged-in" style="display:none; align-items:center;">
+        <img id="avatarSmall" width="32" height="32" alt="Avatar"
+          style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName"
+          style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+      </div>
+    </nav>
+  </header>
   <div id="announcement" style="display:none;"></div>
 
-  <main class="container">
-    <div class="light">
-      <h2>HTSL Library</h2>
-      <p>Discover and upload user created HTSL.</p>
-      <a href="/create.html"><button class="create-btn" style="margin-right: 15px; margin-top: 25px; padding: 10px 20px;">Upload HTSL</button></a>
-      <div class="section-divider"></div>
-    </div>
-    <div id="addon-list" class="card-grid"></div>
-  </main>
-
-  <footer>
-    <div class="container">
-      <div class="social-links">
-        <a class="yt" href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
-          <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
+  <main class="cf-container" style="margin-top: 100px;">
+    <!-- Page top bar (like CurseForge/Bukkit) -->
+    <div class="cf-topbar">
+      <div class="cf-breadcrumb">
+        <a href="#">HousingBase</a>
+        <span class="sep">/</span>
+        <a href="#">HTSL Library</a>
+        <span class="sep">/</span>
+        <span class="current">Uploads</span>
       </div>
 
+      <div class="cf-search">
+        <input type="text" placeholder="Search HousingBase Projects" aria-label="Search projects" />
+        <button class="cf-search-btn" aria-label="Search">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       width="16" height="16" viewBox="0 0 24 24" 
+       fill="currentColor">
+    <path d="M10 2a8 8 0 105.293 14.293l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
+  </svg>
+</button>
 
-      <div class="section-divider"></div>
-      <p class="info"><a href="/index.html">About</a> <a href="/contact.html">Contact</a> <a
-          href="/terms.html">Terms</a></p>
-      <a>
-        <p>-</p>
-      </a>
-      <p>&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
+      </div>
+    </div>
+
+    <div class="cf-layout">
+      <!-- Sidebar -->
+      <aside class="cf-sidebar">
+        <h3 class="cf-side-title">Categories</h3>
+        <ul class="cf-side-list">
+          <li><a class="active" href="?category=all">All Uploads</a></li>
+          <li><a href="?category=featured">Featured HTSL</a></li>
+          <li><a href="?category=tools">Tools</a></li>
+          <li><a href="?category=full">Full Housings</a></li>
+          <li><a href="?category=official">By HousingBase</a></li>
+        </ul>
+
+        <h3 class="cf-side-title">Filter</h3>
+        <div class="cf-filter">
+          <label class="cf-label">Game Version</label>
+          <select>
+            <option>All versions</option>
+            <option>1.21</option>
+            <option>1.20</option>
+            <option>1.19</option>
+          </select>
+
+          <label class="cf-label">Sort by</label>
+          <select id="cf-sort">
+            <option selected>Popularity</option>
+            <option>Last updated</option>
+            <option>Newest</option>
+            <option>Most downloads</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <section class="cf-content">
+        <div class="cf-header-row">
+          <div>
+            <h1 class="cf-title">HousingBase Projects</h1>
+            <p class="cf-subtitle">Sorted by popularity • <span id="addon-count">0</span> projects</p>
+          </div>
+          <div class="cf-actions-right">
+            <button class="cf-primary">Add Project</button>
+          </div>
+        </div>
+
+        <div id="addon-list" class="cf-list">
+          <!-- Example entries (your JS should generate these) -->
+          <article class="cf-item">
+            <img class="cf-icon" src="image/worldedit.png" alt="WorldEdit icon" />
+            <div class="cf-item-main">
+              <div class="cf-item-top">
+                <a class="cf-item-title" href="#">WorldEdit for Bukkit</a>
+                <div class="cf-item-badges">
+                  <span class="cf-badge"><i class="fa fa-code-branch"></i> 1.21</span>
+                  <span class="cf-badge"><i class="fa fa-download"></i> 1.2M</span>
+                  <span class="cf-badge"><i class="fa fa-heart"></i> 5,421</span>
+                </div>
+              </div>
+              <p class="cf-item-desc">A Minecraft map editor that is useful for both creative and survival mode.</p>
+              <div class="cf-item-meta">
+                <span>By <a href="#">@Demo_User</a></span>
+                <span class="dot">•</span>
+                <span>Updated 2 days ago</span>
+              </div>
+            </div>
+            <div class="cf-item-actions">
+              <a class="cf-link" href="#"><i class="fa fa-file-alt"></i> Project</a>
+              <a class="cf-link" href="#"><i class="fa fa-code"></i> Source</a>
+              <a class="cf-download" href="#"><i class="fa fa-download"></i> Download</a>
+            </div>
+          </article>
+
+          <article class="cf-item">
+            <img class="cf-icon" src="image/worldguard.png" alt="WorldGuard icon" />
+            <div class="cf-item-main">
+              <div class="cf-item-top">
+                <a class="cf-item-title" href="#">WorldGuard</a>
+                <div class="cf-item-badges">
+                  <span class="cf-badge"><i class="fa fa-code-branch"></i> 1.21</span>
+                  <span class="cf-badge"><i class="fa fa-download"></i> 950k</span>
+                  <span class="cf-badge"><i class="fa fa-heart"></i> 4,003</span>
+                </div>
+              </div>
+              <p class="cf-item-desc">Protect your worlds with regions, flags, and anti-griefing tools.</p>
+              <div class="cf-item-meta">
+                <span>By <a href="#">@Demo_User</a></span>
+                <span class="dot">•</span>
+                <span>Updated 1 week ago</span>
+              </div>
+            </div>
+            <div class="cf-item-actions">
+              <a class="cf-link" href="#"><i class="fa fa-file-alt"></i> Project</a>
+              <a class="cf-link" href="#"><i class="fa fa-code"></i> Source</a>
+              <a class="cf-download" href="#"><i class="fa fa-download"></i> Download</a>
+            </div>
+          </article>
+
+          <article class="cf-item">
+            <img class="cf-icon" src="image/shopkeepers.png" alt="Shopkeepers icon" />
+            <div class="cf-item-main">
+              <div class="cf-item-top">
+                <a class="cf-item-title" href="#">Shopkeepers</a>
+                <div class="cf-item-badges">
+                  <span class="cf-badge"><i class="fa fa-code-branch"></i> 1.21</span>
+                  <span class="cf-badge"><i class="fa fa-download"></i> 800k</span>
+                  <span class="cf-badge"><i class="fa fa-heart"></i> 3,215</span>
+                </div>
+              </div>
+              <p class="cf-item-desc">Create custom villager shopkeepers with GUI and pricing controls.</p>
+              <div class="cf-item-meta">
+                <span>By <a href="#">@Demo_User</a></span>
+                <span class="dot">•</span>
+                <span>Updated 3 days ago</span>
+              </div>
+            </div>
+            <div class="cf-item-actions">
+              <a class="cf-link" href="#"><i class="fa fa-file-alt"></i> Project</a>
+              <a class="cf-link" href="#"><i class="fa fa-code"></i> Source</a>
+              <a class="cf-download" href="#"><i class="fa fa-download"></i> Download</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Keep your own footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <img src="/image/fullwhite.png" alt="HousingBase Logo" class="footer-logo" />
+        <div class="social-icons">
+          <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube" class="icon-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+              <path
+                d="M23.498 6.186a2.97 2.97 0 0 0-2.09-2.103C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.408.583a2.97 2.97 0 0 0-2.09 2.103A31.4 31.4 0 0 0 .5 12a31.4 31.4 0 0 0 .002 5.814 2.97 2.97 0 0 0 2.09 2.103C4.495 20.5 12 20.5 12 20.5s7.505 0 9.408-.583a2.97 2.97 0 0 0 2.09-2.103A31.4 31.4 0 0 0 23.5 12a31.4 31.4 0 0 0-.002-5.814z" />
+              <path d="M9.75 15.02v-6.04L15.5 12l-5.75 3.02z" fill="black" />
+            </svg>
+          </a>
+          <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub" class="icon-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 .5C5.648.5.5 5.648.5 12c0 5.096 3.292 9.417 7.863 10.95.575.104.785-.25.785-.556v-1.94c-3.2.694-3.875-1.544-3.875-1.544-.524-1.329-1.28-1.682-1.28-1.682-1.046-.716.08-.7.08-.7 1.157.08 1.766 1.188 1.766 1.188 1.03 1.767 2.704 1.257 3.364.96.104-.747.403-1.257.732-1.546-2.553-.29-5.238-1.276-5.238-5.68 0-1.256.448-2.283 1.183-3.087-.12-.29-.512-1.468.112-3.06 0 0 .964-.31 3.162 1.18A10.98 10.98 0 0 1 12 6.845a10.9 10.9 0 0 1 2.88.39c2.197-1.49 3.162-1.18 3.162-1.18.624 1.592.232 2.77.112 3.06.735.804 1.183 1.83 1.183 3.087 0 4.418-2.69 5.385-5.26 5.67.416.36.784 1.077.784 2.174v3.22c0 .31.208.67.792.555C20.21 21.41 23.5 17.09 23.5 12 23.5 5.648 18.352.5 12 .5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="/index.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+      <p class="footer-credit">&copy; 2025 <b>HousingBase</b>. All Rights Reserved</p>
     </div>
   </footer>
+
+  <!-- Existing modals -->
   <div id="modal-overlay">
     <div id="modal-box">
-      <!-- Modal Header -->
       <div class="modal-header">
         <h3 id="modal-title"></h3>
         <span id="modal-close">&times;</span>
       </div>
-
-      <!-- Modal Body -->
       <div class="modal-body">
         <p id="modal-desc"></p>
         <a id="modal-download" href="#" target="_blank">
@@ -102,6 +653,7 @@
       </div>
     </div>
   </div>
+
   <div id="del-confirm-overlay" class="del-modal-overlay">
     <div id="del-confirm-box" class="del-modal-box">
       <div class="del-modal-header">
@@ -118,9 +670,11 @@
     </div>
   </div>
 
-
-  <script src="/script.js"></script>
-
+  <script>
+    document.addEventListener("DOMContentLoaded", () => { setTimeout(() => { const addonCount = document.querySelectorAll("#addon-list .addon-card").length; const addonCountSpan = document.getElementById("addon-count"); if (addonCountSpan) addonCountSpan.textContent = addonCount; }, 500); });
+  </script>
+    <script src="/script.js"></script>
+  <script src="MinecraftColorCodes.3.7.js"></script>
 </body>
 
 </html>
