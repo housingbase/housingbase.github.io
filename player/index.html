@@ -31,15 +31,17 @@
       <a href="/dashboard.html">Dashboard</a>
       <a href="/projects.html">Projects</a>
 
-      <div id="logged-out" style="display:flex; align-items:center;">
-        <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
-      </div>
-      <div id="logged-in" style="display:none; align-items:center;">
-        <img id="avatarSmall" width="32" height="32" alt="Avatar"
-          style="border-radius:6px; cursor:pointer; margin-left:8px;">
-        <span id="displayName"
-          style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
-      </div>
+  <div class="user-status" style="display: flex; align-items: center; gap: 8px;">
+    <div id="logged-out" style="display:flex; align-items:center;">
+      <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+    </div>
+    <div id="logged-in" style="display:none; align-items:center;">
+      <img id="avatarSmall" width="32" height="32" alt="Avatar"
+        style="border-radius:6px; cursor:pointer; margin-left:8px;">
+      <span id="displayName"
+        style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer;"></span>
+    </div>
+  </div>
     </nav>
   </header>
 
