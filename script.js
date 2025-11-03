@@ -199,273 +199,205 @@ function closeDeleteModal() {
 }
 
 
-async function loadAddons(useFake = false) {
-  const FAKE_ADDONS = [
-    {
-      id: "fake1",
-      name: "§4Item§6Blocker §8- §aBlock Items easily",
-      description: "§dAllows you to block certain unwanted items in your housing.",
-      username: "demoUser",
-      displayName: "Demo User",
-      avatar: "/uploads/avatars/default.png",
-      created_at: new Date().toISOString(),
-      version: "1.2.3",
-      downloads: 120,
-      likes: 25,
-      content: "print('Hello, ByteBukkit!')\n# This is fake addon 1 content"
-    },
-    {
-      id: "fake2",
-      name: "Example Addon 2",
-      description: "This is a preview of addon 2.",
-      username: "demoUser",
-      displayName: "Demo User",
-      avatar: "/uploads/avatars/default.png",
-      created_at: new Date().toISOString(),
-      version: "0.9.1",
-      downloads: 58,
-      likes: 12,
-      content: "print('Addon 2 content')\n# More fake content here"
-    }
-  ];
-
-  async function fetchAddonsLocal() {
-    await new Promise(res => setTimeout(res, 200));
-    return FAKE_ADDONS.map(a => ({ ...a }));
-  }
-
+async function loadAddons() {
   const me = await getMe();
   const container = document.getElementById("addon-list");
   if (!container) return;
   container.innerHTML = "";
 
-  const addons = useFake
-    ? await fetchAddonsLocal()
-    : await (async () => {
-        const token = localStorage.getItem("authToken");
-        const res = await fetch(`${API_BASE}/api/addons`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (!res.ok) return [];
-        return await res.json();
-      })();
+  try {
+    const token = localStorage.getItem("authToken");
+    const res = await fetch(`${API_BASE}/api/addons`, {
+      headers: { Authorization: token ? `Bearer ${token}` : "" }
+    });
+    if (!res.ok) return;
+    const addons = await res.json();
 
-  addons.forEach(a => {
-    const card = document.createElement("div");
-    card.className = "addon-card";
+    addons.forEach(a => {
+      const card = document.createElement("div");
+      card.className = "addon-card";
 
-    // Top row with title and badges
-    const topRow = document.createElement("div");
-    topRow.style.display = "flex";
-    topRow.style.justifyContent = "space-between";
-    topRow.style.alignItems = "center";
+      // Top row with title and badges
+      const topRow = document.createElement("div");
+      topRow.style.display = "flex";
+      topRow.style.justifyContent = "space-between";
+      topRow.style.alignItems = "center";
 
-    const title = document.createElement("h4");
-    if (typeof a.name === "string" && a.name.replaceColorCodes) {
-      title.appendChild(a.name.replaceColorCodes());
-    } else {
+      const title = document.createElement("h4");
       title.textContent = a.name;
-    }
-    topRow.appendChild(title);
+      topRow.appendChild(title);
 
-  const badges = document.createElement("div");
-badges.style.display = "flex";
-badges.style.gap = "6px";
+      const badges = document.createElement("div");
+      badges.style.display = "flex";
+      badges.style.gap = "6px";
 
-// Version badge
-const v = document.createElement("span");
-v.className = "cf-badge";
-v.textContent = a.version || "1.0.0";
-badges.appendChild(v);
+      const v = document.createElement("span");
+      v.className = "cf-badge";
+      v.textContent = a.version || "1.0.0";
+      badges.appendChild(v);
 
-// Downloads badge
-const d = document.createElement("span");
-d.className = "cf-badge dl-badge";
-d.textContent = `⬇ ${a.downloads ?? 0}`;
-badges.appendChild(d);
+      const d = document.createElement("span");
+      d.className = "cf-badge dl-badge";
+      d.textContent = `⬇ ${a.downloads ?? 0}`; // real value from server
+      badges.appendChild(d);
 
-// Likes badge
-const l = document.createElement("span");
-l.className = "cf-badge like-badge";
-l.textContent = `❤ ${a.likes ?? 0}`;
-badges.appendChild(l);
+      const l = document.createElement("span");
+      l.className = "cf-badge like-badge";
+      l.textContent = `❤ ${a.likes ?? 0}`; // real value from server
+      badges.appendChild(l);
 
+      topRow.appendChild(badges);
+      card.appendChild(topRow);
 
-    topRow.appendChild(badges);
-    card.appendChild(topRow);
-
-    // Description
-    if (a.description) {
-      const desc = document.createElement("p");
-      if (typeof a.description === "string" && a.description.replaceColorCodes) {
-        desc.appendChild(a.description.replaceColorCodes());
-      } else {
+      // Description
+      if (a.description) {
+        const desc = document.createElement("p");
         desc.textContent = a.description;
+        card.appendChild(desc);
       }
-      card.appendChild(desc);
-    }
 
-    // Buttons container
-    const btnContainer = document.createElement("div");
-    btnContainer.style.display = "flex";
-    btnContainer.style.gap = "8px";
+      // Buttons container
+      const btnContainer = document.createElement("div");
+      btnContainer.style.display = "flex";
+      btnContainer.style.gap = "8px";
 
-    // Download button
-    const downloadBtn = document.createElement("a");
-    downloadBtn.className = "dlbutton";
-    downloadBtn.href = useFake ? "#" : `${API_BASE}/api/addons/${a.id}/download`;
-    const dlButton = document.createElement("button");
-    dlButton.textContent = "Download";
-    downloadBtn.appendChild(dlButton);
- downloadBtn.onclick = async () => {
-  try {
-    const token = localStorage.getItem("authToken");
-    const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
-    });
-    if (!res.ok) {
-      alert("Download failed.");
-      return;
-    }
+      // Download button
+      const downloadBtn = document.createElement("a");
+      downloadBtn.className = "dlbutton";
+      downloadBtn.href = `${API_BASE}/api/addons/${a.id}/download`;
+      const dlButton = document.createElement("button");
+      dlButton.textContent = "Download";
+      downloadBtn.appendChild(dlButton);
+      downloadBtn.onclick = async (e) => {
+        e.preventDefault();
+        try {
+          const token = localStorage.getItem("authToken");
+          const res = await fetch(`${API_BASE}/api/addons/${a.id}/download`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+          });
+          if (!res.ok) {
+            alert("Download failed.");
+            return;
+          }
 
-    // increment local badge
-    a.downloads = (a.downloads ?? 0) + 1;
-    d.textContent = `⬇ ${a.downloads}`;
+          // Get filename from server response
+          const disposition = res.headers.get("Content-Disposition");
+          let filename = a.file_name || `${a.name}.htsl`;
+          if (disposition) {
+            const match = disposition.match(/filename="(.+)"/);
+            if (match) filename = match[1];
+          }
 
-    // Get correct filename from server response
-    const disposition = res.headers.get("Content-Disposition");
-    let filename = a.file_name || a.name + ".htsl";
-    if (disposition) {
-      const match = disposition.match(/filename="(.+)"/);
-      if (match) filename = match[1];
-    }
+          const blob = await res.blob();
+          const aTag = document.createElement("a");
+          aTag.href = URL.createObjectURL(blob);
+          aTag.download = filename;
+          document.body.appendChild(aTag);
+          aTag.click();
+          aTag.remove();
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const aTag = document.createElement("a");
-    aTag.href = url;
-    aTag.download = filename;
-    document.body.appendChild(aTag);
-    aTag.click();
-    aTag.remove();
-  } catch (err) {
-    console.error(err);
-    alert("Download failed.");
-  }
-};
+        } catch (err) {
+          console.error(err);
+          alert("Download failed.");
+        }
+      };
+      btnContainer.appendChild(downloadBtn);
 
-    btnContainer.appendChild(downloadBtn);
+      // Like button
+      const likeBtn = document.createElement("button");
+      likeBtn.textContent = "Like";
+      likeBtn.className = "like-btn";
+      likeBtn.onclick = async () => {
+        try {
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+            alert("You must be logged in to like addons.");
+            return;
+          }
 
-    // Like button
-  // Like button
-const likeBtn = document.createElement("button");
-likeBtn.textContent = "Like";
-likeBtn.className = "like-btn";
-likeBtn.onclick = async () => {
-  try {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      alert("You must be logged in to like addons.");
-      return;
-    }
+          const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (res.ok) {
+            l.textContent = `❤ ${data.likes}`; // update badge from server
+          } else {
+            alert(data.error || "Failed to like addon");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Failed to like addon.");
+        }
+      };
+      btnContainer.appendChild(likeBtn);
 
-    const res = await fetch(`${API_BASE}/api/addons/${a.id}/like`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-
-    if (res.ok) {
-      a.likes = data.likes;             // update local count
-      l.textContent = `❤ ${a.likes}`;   // update badge
-    } else {
-      alert(data.error || "Failed to like addon");
-    }
-  } catch (err) {
-    console.error("Like error:", err);
-    alert("Failed to like addon.");
-  }
-};
-
-
-    btnContainer.appendChild(likeBtn);
-
-    // Show delete button if fake or real user/admin
-    if (useFake || (me && (me.username === a.username || me.is_admin))) {
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "Delete";
-      delBtn.className = "del-btn";
-      delBtn.onclick = () => {
-        showDeleteModal(a.name, async () => {
-          if (!useFake) {
+      // Delete button if user is owner/admin
+      if (me && (me.username === a.username || me.is_admin)) {
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.className = "del-btn";
+        delBtn.onclick = () => {
+          showDeleteModal(a.name, async () => {
             const token = localStorage.getItem("authToken");
             const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
               method: "DELETE",
               headers: { Authorization: `Bearer ${token}` }
             });
-            if (delRes.status === 204) loadAddons(useFake);
-          } else {
-            alert(`Fake addon "${a.name}" deleted!`);
-            card.remove();
-          }
-        });
-      };
-      btnContainer.appendChild(delBtn);
-    }
+            if (delRes.status === 204) loadAddons();
+          });
+        };
+        btnContainer.appendChild(delBtn);
+      }
 
-    card.appendChild(btnContainer);
+      card.appendChild(btnContainer);
 
-    // Meta (author & date)
-    const meta = document.createElement("p");
-    meta.className = "meta";
-    const avatarImg = document.createElement("img");
-    avatarImg.src = avatarURL(a.avatar);
-    avatarImg.width = 24;
-    avatarImg.height = 24;
-    avatarImg.alt = "Avatar";
-    avatarImg.className = "avatar-img";
-    avatarImg.style.borderRadius = "4px";
-    avatarImg.style.marginRight = "6px";
+      // Meta (author & date)
+      const meta = document.createElement("p");
+      meta.className = "meta";
+      const avatarImg = document.createElement("img");
+      avatarImg.src = avatarURL(a.avatar);
+      avatarImg.width = 24;
+      avatarImg.height = 24;
+      avatarImg.alt = "Avatar";
+      avatarImg.className = "avatar-img";
+      avatarImg.style.borderRadius = "4px";
+      avatarImg.style.marginRight = "6px";
 
-    const userLink = document.createElement("a");
-    userLink.href = `/profile.html?user=${a.username}`;
-    userLink.textContent = "@" + (a.displayName || a.username);
-    userLink.className = "user-link";
+      const userLink = document.createElement("a");
+      userLink.href = `/profile.html?user=${a.username}`;
+      userLink.textContent = "@" + (a.displayName || a.username);
+      userLink.className = "user-link";
 
-    const dateSpan = document.createElement("span");
-    dateSpan.style.marginLeft = "8px";
-    dateSpan.textContent = new Date(a.created_at).toLocaleString();
-    dateSpan.className = "date";
+      const dateSpan = document.createElement("span");
+      dateSpan.style.marginLeft = "8px";
+      dateSpan.textContent = new Date(a.created_at).toLocaleString();
+      dateSpan.className = "date";
 
-    meta.appendChild(avatarImg);
-    meta.appendChild(userLink);
-    meta.appendChild(dateSpan);
-    card.appendChild(meta);
+      meta.appendChild(avatarImg);
+      meta.appendChild(userLink);
+      meta.appendChild(dateSpan);
+      card.appendChild(meta);
 
-    // Modal click
-    card.addEventListener("click", e => {
-      if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
+      // Modal click
+      card.addEventListener("click", e => {
+        if (e.target.closest("a") || e.target.tagName === "BUTTON") return;
 
-      document.getElementById("modal-title").textContent = a.name;
-      document.getElementById("modal-desc").textContent = a.description || "No description provided.";
-      document.getElementById("modal-download").href = useFake ? "#" : `${API_BASE}/api/addons/${a.id}/download`;
+        document.getElementById("modal-title").textContent = a.name;
+        document.getElementById("modal-desc").textContent = a.description || "No description provided.";
+        document.getElementById("modal-download").href = `${API_BASE}/api/addons/${a.id}/download`;
 
-      const overlay = document.getElementById("modal-overlay");
-      const box = document.getElementById("modal-box");
-      const modalBody = document.querySelector(".modal-body");
+        const overlay = document.getElementById("modal-overlay");
+        const box = document.getElementById("modal-box");
+        const modalBody = document.querySelector(".modal-body");
 
-      overlay.classList.add("show");
-      overlay.style.opacity = "1";
-      box.style.transform = "scale(1)";
+        overlay.classList.add("show");
+        overlay.style.opacity = "1";
+        box.style.transform = "scale(1)";
 
-      const oldPre = modalBody.querySelector("pre");
-      if (oldPre) oldPre.remove();
+        const oldPre = modalBody.querySelector("pre");
+        if (oldPre) oldPre.remove();
 
-      if (useFake) {
-        const pre = document.createElement("pre");
-        pre.textContent = a.content;
-        modalBody.appendChild(pre);
-      } else {
         fetch(`${API_BASE}/api/addons/${a.id}/contents`)
           .then(res => res.json())
           .then(data => {
@@ -473,38 +405,16 @@ likeBtn.onclick = async () => {
             pre.textContent = data.content || "(empty file)";
             modalBody.appendChild(pre);
           }).catch(console.error);
-      }
+      });
+
+      container.appendChild(card);
     });
 
-    container.appendChild(card);
-  });
-
-  // Modal close handling
-  const modalClose = document.getElementById("modal-close");
-  const modalOverlay = document.getElementById("modal-overlay");
-  const modalBox = document.getElementById("modal-box");
-
-  function closeModal() {
-    modalOverlay.style.opacity = "0";
-    modalBox.style.transform = "scale(0.5)";
-    modalOverlay.addEventListener("transitionend", function handler(e) {
-      if (e.propertyName === "opacity") {
-        modalOverlay.classList.remove("show");
-        modalOverlay.style.opacity = "";
-        modalBox.style.transform = "";
-        modalOverlay.removeEventListener("transitionend", handler);
-      }
-    });
+  } catch (err) {
+    console.error("Failed to load addons:", err);
   }
-
-  if (modalClose) modalClose.onclick = closeModal;
-  if (modalOverlay) modalOverlay.onclick = e => {
-    if (e.target.id === "modal-overlay") closeModal();
-  };
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeModal();
-  });
 }
+
 
 
 // Utility to remove Minecraft-style color codes
@@ -525,7 +435,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function initSearch() {
     // Wait until addons have loaded
-    await loadAddons(false);
+    await loadAddons();
     allAddons = Array.from(document.querySelectorAll("#addon-list .addon-card"));
   }
 
