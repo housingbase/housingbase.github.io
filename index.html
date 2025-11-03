@@ -65,10 +65,10 @@
   <div class="dot-background"></div>
   <header>
     <div class="logo">
-  <a href="/index.html" style="display: inline-block;">
-    <img src="image/blueblue.png" alt="HousingBase Logo">
-  </a>
-</div>
+      <a href="/index.html" style="display: inline-block;">
+        <img src="image/blueblue.png" alt="HousingBase Logo">
+      </a>
+    </div>
 
     <div class="hamburger">
       <span></span>
@@ -81,13 +81,15 @@
       <a href="/browser.html">HTSL Library</a>
       <a href="/dashboard.html">Dashboard</a>
       <a href="/projects.html">Projects</a>
-      
+
       <div id="logged-out" style="display:flex; align-items:center;">
-       <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
+        <a href="/login.html"><button class="primary-btn" id="signInBtnHeader">Sign In</button></a>
       </div>
       <div id="logged-in" style="display:none; align-items:center;">
-        <img id="avatarSmall" width="32" height="32" alt="Avatar" style="border-radius:6px; cursor:pointer; margin-left:8px;">
-        <span id="displayName" style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
+        <img id="avatarSmall" width="32" height="32" alt="Avatar"
+          style="border-radius:6px; cursor:pointer; margin-left:8px;">
+        <span id="displayName"
+          style="margin-left:8px; font-weight:bold; color:#fff; cursor:pointer; display: none;"></span>
       </div>
     </nav>
   </header>
@@ -143,11 +145,20 @@
       <div class="footer-top">
         <img src="/image/fullwhite.png" alt="HousingBase Logo" class="footer-logo" />
         <div class="social-icons">
-          <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube">
-            <i class="fab fa-youtube"></i>
+          <a href="https://www.youtube.com/@spigotbase" target="_blank" aria-label="YouTube" class="icon-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+              <path
+                d="M23.498 6.186a2.97 2.97 0 0 0-2.09-2.103C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.408.583a2.97 2.97 0 0 0-2.09 2.103A31.4 31.4 0 0 0 .5 12a31.4 31.4 0 0 0 .002 5.814 2.97 2.97 0 0 0 2.09 2.103C4.495 20.5 12 20.5 12 20.5s7.505 0 9.408-.583a2.97 2.97 0 0 0 2.09-2.103A31.4 31.4 0 0 0 23.5 12a31.4 31.4 0 0 0-.002-5.814z" />
+              <path d="M9.75 15.02v-6.04L15.5 12l-5.75 3.02z" fill="black" />
+            </svg>
           </a>
-          <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub">
-            <i class="fab fa-github"></i>
+
+
+          <a href="https://github.com/spigotbase" target="_blank" aria-label="GitHub" class="icon-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 .5C5.648.5.5 5.648.5 12c0 5.096 3.292 9.417 7.863 10.95.575.104.785-.25.785-.556v-1.94c-3.2.694-3.875-1.544-3.875-1.544-.524-1.329-1.28-1.682-1.28-1.682-1.046-.716.08-.7.08-.7 1.157.08 1.766 1.188 1.766 1.188 1.03 1.767 2.704 1.257 3.364.96.104-.747.403-1.257.732-1.546-2.553-.29-5.238-1.276-5.238-5.68 0-1.256.448-2.283 1.183-3.087-.12-.29-.512-1.468.112-3.06 0 0 .964-.31 3.162 1.18A10.98 10.98 0 0 1 12 6.845a10.9 10.9 0 0 1 2.88.39c2.197-1.49 3.162-1.18 3.162-1.18.624 1.592.232 2.77.112 3.06.735.804 1.183 1.83 1.183 3.087 0 4.418-2.69 5.385-5.26 5.67.416.36.784 1.077.784 2.174v3.22c0 .31.208.67.792.555C20.21 21.41 23.5 17.09 23.5 12 23.5 5.648 18.352.5 12 .5z" />
+            </svg>
           </a>
         </div>
       </div>
@@ -160,7 +171,6 @@
     </div>
   </footer>
 
-  <!-- Modal -->
   <div id="modal-overlay">
     <div id="modal-box">
       <div class="modal-header">
@@ -223,18 +233,21 @@
           avatar.src = avatarURL(a.avatar);
           item.appendChild(avatar);
 
-          const name = document.createElement("div");
-          name.className = "addon-name";
-          name.textContent = a.name.length > 15 ? a.name.slice(0, 15) + "…" : a.name;
-          item.appendChild(name);
+const name = document.createElement("div");
+name.className = "addon-name";
+// Apply Minecraft color codes and truncate visually
+let rawName = a.name.length > 15 ? a.name.slice(0, 15) + "…" : a.name;
+name.appendChild(rawName.replaceColorCodes());
+item.appendChild(name);
 
-          const desc = document.createElement("div");
-          desc.className = "addon-desc";
-          desc.textContent = a.description
-            ? (a.description.length > 15 ? a.description.slice(0, 15) + "…" : a.description)
-            : "";
+const desc = document.createElement("div");
+desc.className = "addon-desc";
+let rawDesc = a.description 
+    ? (a.description.length > 15 ? a.description.slice(0, 15) + "…" : a.description) 
+    : "";
+desc.appendChild(rawDesc.replaceColorCodes());
+item.appendChild(desc);
 
-          item.appendChild(desc);
 
           item.addEventListener("click", async () => {
             document.getElementById("modal-title").textContent = a.name;
@@ -271,8 +284,6 @@
           return item;
         };
 
-        // Fill once
-        // Fill ticker and duplicate until it's at least 2x viewport width
         addons.forEach(a => ticker.appendChild(createItem(a)));
         while (ticker.scrollWidth < ticker.clientWidth * 2) {
           addons.forEach(a => ticker.appendChild(createItem(a)));
@@ -302,7 +313,6 @@
     }
 
 
-    // Modal close logic
     function closeModal() {
       const overlay = document.getElementById("modal-overlay");
       const box = document.getElementById("modal-box");
@@ -333,7 +343,6 @@
   </script>
 
   <script>
-    // Hamburger menu
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     hamburger.addEventListener('click', () => {
@@ -341,7 +350,6 @@
       hamburger.classList.toggle('open');
     });
 
-    // Fade in on load
     window.addEventListener('load', () => {
       const fadeElements = document.querySelectorAll('.hero-text > *, .promo > *, header, footer');
       fadeElements.forEach((el, i) => {
@@ -352,7 +360,6 @@
       });
     });
 
-    // Typewriter effect
     document.addEventListener('DOMContentLoaded', () => {
       const typedTextEl = document.getElementById('typedText');
       const cursorEl = document.getElementById('cursor');
@@ -405,6 +412,7 @@
     });
   </script>
   <script src="script.js"></script>
+  <script src="MinecraftColorCodes.3.7.js"></script>
 </body>
 
 </html>
