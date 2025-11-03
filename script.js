@@ -26,22 +26,26 @@ function renderAuth(user) {
   const displayName = document.getElementById("displayName");
 
   if (user) {
+    // Show logged-in, hide logged-out
     if (loggedOut) loggedOut.style.display = "none";
-    if (loggedIn) loggedIn.style.display = "flex"; // flex works for your nav
+    if (loggedIn) loggedIn.style.display = "flex"; // flex aligns nicely in nav
 
+    // Update avatar
     if (avatar) {
       avatar.src = avatarURL(user.avatar);
       avatar.style.cursor = "pointer";
       avatar.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
 
+    // Update display name
     if (displayName) {
       displayName.textContent = user.displayName || user.username;
+      displayName.style.display = "inline"; // show the span
       displayName.style.cursor = "pointer";
-      displayName.style.display = "inline"; // <- show the span
       displayName.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
   } else {
+    // Show logged-out, hide logged-in
     if (loggedOut) loggedOut.style.display = "flex";
     if (loggedIn) loggedIn.style.display = "none";
     if (displayName) displayName.style.display = "none";
@@ -428,8 +432,13 @@ async function loadAddons(useFake = false) {
 function stripColorCodes(text) {
   return text.replace(/§[0-9A-FK-ORa-fk-or]/g, '');
 }
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadAnnouncement();
+  // --- Render authentication ---
+  const me = await getMe();
+  renderAuth(me);
 
-document.addEventListener("DOMContentLoaded", () => {
+  // --- Search functionality ---
   const searchInput = document.querySelector(".cf-search input");
   if (!searchInput) return;
 
@@ -443,7 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Initialize cache
-  initSearch();
+  await initSearch();
 
   // Live search
   searchInput.addEventListener("input", e => {
