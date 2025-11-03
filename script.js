@@ -22,29 +22,32 @@ function avatarURL(path) {
 function renderAuth(user) {
   const loggedOut = document.getElementById("logged-out");
   const loggedIn = document.getElementById("logged-in");
+  const avatar = document.getElementById("avatarSmall");
+  const displayName = document.getElementById("displayName");
 
   if (user) {
     if (loggedOut) loggedOut.style.display = "none";
-    if (loggedIn) loggedIn.style.display = "inline-flex";
+    if (loggedIn) loggedIn.style.display = "flex"; // flex works for your nav
 
-    const avatar = document.getElementById("avatarSmall");
     if (avatar) {
       avatar.src = avatarURL(user.avatar);
       avatar.style.cursor = "pointer";
       avatar.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
 
-    const displayName = document.getElementById("displayName");
     if (displayName) {
       displayName.textContent = user.displayName || user.username;
       displayName.style.cursor = "pointer";
+      displayName.style.display = "inline"; // <- show the span
       displayName.onclick = () => window.location.href = `/profile.html?user=${user.username}`;
     }
   } else {
     if (loggedOut) loggedOut.style.display = "flex";
     if (loggedIn) loggedIn.style.display = "none";
+    if (displayName) displayName.style.display = "none";
   }
 }
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
