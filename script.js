@@ -270,13 +270,11 @@ async function loadAddons(useFake = false) {
     const badges = document.createElement("div");
     badges.style.display = "flex";
     badges.style.gap = "6px";
-
-    if (a.version) {
       const v = document.createElement("span");
       v.className = "cf-badge";
-      v.textContent = `v${a.version}`;
+      v.textContent = "1.8.9";
       badges.appendChild(v);
-    }
+
     if (a.downloads !== undefined) {
       const d = document.createElement("span");
       d.className = "cf-badge";
@@ -315,27 +313,29 @@ async function loadAddons(useFake = false) {
     downloadBtn.appendChild(dlButton);
     btnContainer.appendChild(downloadBtn);
 
-    if (me && (me.username === a.username || me.is_admin)) {
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "Delete";
-      delBtn.className = "del-btn";
-      delBtn.onclick = () => {
-        showDeleteModal(a.name, async () => {
-          if (!useFake) {
-            const token = localStorage.getItem("authToken");
-            const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
-              method: "DELETE",
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            if (delRes.status === 204) loadAddons(useFake);
-          } else {
-            alert(`Fake addon "${a.name}" deleted!`);
-            card.remove();
-          }
+    // Show delete button if it's a fake addon OR if real addon belongs to user/admin
+if (useFake || (me && (me.username === a.username || me.is_admin))) {
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "Delete";
+  delBtn.className = "del-btn";
+  delBtn.onclick = () => {
+    showDeleteModal(a.name, async () => {
+      if (!useFake) {
+        const token = localStorage.getItem("authToken");
+        const delRes = await fetch(`${API_BASE}/api/addons/${a.id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` }
         });
-      };
-      btnContainer.appendChild(delBtn);
-    }
+        if (delRes.status === 204) loadAddons(useFake);
+      } else {
+        alert(`Fake addon "${a.name}" deleted!`);
+        card.remove();
+      }
+    });
+  };
+  btnContainer.appendChild(delBtn);
+}
+
 
     card.appendChild(btnContainer);
 
@@ -446,7 +446,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function initSearch() {
     // Wait until addons have loaded
-    await loadAddons(false);
+    await loadAddons(true);
     allAddons = Array.from(document.querySelectorAll("#addon-list .addon-card"));
   }
 

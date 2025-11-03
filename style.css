@@ -1704,3 +1704,29 @@ h1 {
   background: rgba(37, 99, 235, 0.15);
   color: #fff;
 }
+.del-btn {
+  position: absolute;
+  right: 0;
+  margin-right: 115px;
+  bottom: 15px;
+  background: rgba(30, 30, 30, 0.35);
+  height: 35px;
+  backdrop-filter: blur(12px);
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #eee;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.del-btn:hover {
+  box-shadow: 0 6px 18px rgba(235, 37, 37, 0.25);
+  transform: translateY(-1px) scale(1.01);
+  border: 1px solid #eb2525;
+  background: rgba(235, 37, 37, 0.15);
+  color: #fff;
+}
